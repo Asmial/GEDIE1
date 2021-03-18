@@ -1,0 +1,20 @@
+// Bootstrap
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+//Fontawesome
+
+$fa-font-path: "../fonts";
+@import "../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/scss/regular.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/scss/brands.scss";
+
+
+
+//Custom
+
+body {
+    @extend body;
+    min-width: 320px;
+}
