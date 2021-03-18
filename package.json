@@ -6,13 +6,15 @@
   "scripts": {
     "minbuild": "node build-client.js min",
     "build": "node build-client.js",
-    "fullbuild": "node build-client.js full"
+    "fullbuild": "node build-client.js full",
+    "autobuild": "npx watchify js/index.js -o html/bundle/bundle.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "browserify": "^17.0.0",
-    "sass": "^1.32.8"
+    "sass": "^1.32.8",
+    "watchify": "^4.0.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",

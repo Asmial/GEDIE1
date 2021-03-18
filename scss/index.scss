@@ -10,11 +10,17 @@ $fa-font-path: "../fonts";
 @import "../node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
 @import "../node_modules/@fortawesome/fontawesome-free/scss/brands.scss";
 
-
-
 //Custom
 
 body {
     @extend body;
     min-width: 320px;
+}
+
+figure[data-fullscreen="true"] video::-webkit-media-controls {
+    display: none !important;
+}
+
+figure[data-fullscreen="true"] .controls {
+    z-index: 2147483647;
 }
