@@ -14,23 +14,36 @@
         <h1>BRO, ACTÍVATE EL JAVASCRIPT, BRO </h1>
     </noscript>
 
-    <div id="video-container">
-        <video controls class="video" id="video" preload="metadata" poster="img/a_mimir.png">
-            <source src="video/video.mp4" type="video/mp4">
-            </source>
-        </video>
+    <main>
+        <div class="container h-100 justify-content-center align-content-center">
+            <div class="row">
+                <div class="col-lg-8 col-md-12" id="video-container" class="p-0">
+                    <video controls class="w-100" id="video" preload="metadata" poster="img/a_mimir.png">
+                        <source src="video/video.mp4" type="video/mp4">
+                        </source>
+                    </video>
 
-        <div class="video-controls" id="video-controls" style="position: absolute;">
-            <a href="#" id="play-button">
-                <i class="fas fa-play"></i>
-            </a>
-            <input type="range" id='volume-slider' class="volume" value="1" data-mute="0.5" type="range" max="1" min="0"
-                step="0.01">
-            <a href="#" id="fullscreen-toggle">
-                <i class="fas fa-expand"></i>
-            </a>
+                    <div class="bottom-0 position-absolute" id="video-controls">
+                        <a href="#" id="play-button">
+                            <i class="fas fa-play"></i>
+                        </a>
+                        <input type="range" id='volume-slider' class="volume" value="1" data-mute="0.5" type="range"
+                            max="1" min="0" step="0.01">
+                        <a href="#" id="fullscreen-toggle">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12" id="side" class="p-0">
+                    DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA
+                    DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA
+                    DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA
+                    DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA
+                    DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA DOTMOLA
+                </div>
+            </div>
         </div>
-    </div>
+    </main>
 
 </body>
 

@@ -48,9 +48,11 @@ jQuery(() => {
         video.volume = volume
     }
 
+    setVolume(Number(volumeSlider.val()))
+
     volumeSlider.on('input', () => {
         setVolume(Number(volumeSlider.val()))
-    })
+    });
 
     function toggleFullScreen() {
         if (document.fullscreenElement) {
@@ -67,22 +69,34 @@ jQuery(() => {
     }
 
     playButton.on('click', togglePlay);
-    
+
     fullscreenToggle.on('click', toggleFullScreen);
-    
+
+    volumeSlider.on('wheel', (event) => {
+        event.preventDefault()
+        if (event.originalEvent.deltaY > 0 && videoEl.volume - delta >= 0) {
+            setVolume($(video).volume -= delta)
+          //check for scroll up 
+          } else if(event.originalEvent.deltaY < 0 && videoEl.volume + delta <= 1) {
+            setVolume($(video).volume += delta)
+          }
+        volumeSlider.val()
+    } )
+
+    $(video).on('dblclick', toggleFullScreen)
     $(video).on('click', togglePlay)
     $(video).on('play pause', () => {
         var icon = playButton.children()
-        if (video.paused) {
-            playButton.attr('data-title', 'Reproducir (k)')
-            icon.removeClass("fa-pause");
-            icon.addClass("fa-play");
-        } else {
-            playButton.attr('data-title', 'Pausar (k)')
-            icon.removeClass("fa-play")
-            icon.addClass("fa-pause");
-        }
+        playButton.attr('data-title', 'Reproducir (k)')
+        icon.removeClass("fa-pause");
+        icon.addClass("fa-play");
     });
+    $(video).on('pause', () => {
+        var icon = playButton.children();
+        playButton.attr('data-title', 'Pausar (k)');
+        icon.removeClass("fa-play");
+        icon.addClass("fa-pause");
+    })
 
 })
 
