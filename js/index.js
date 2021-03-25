@@ -11,6 +11,8 @@ jQuery(() => {
 
     const playButton = $('#play-button');
     const volumeSlider = $('#volume-slider');
+    const videoContainer = $('#video-container').get(0);
+    const fullscreenToggle = $("#fullscreen-toggle");
 
 
     $(document).on('keypress', function (e) {
@@ -49,7 +51,22 @@ jQuery(() => {
         setVolume(Number(volumeSlider.val()))
     })
 
+    function toggleFullScreen() {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else if (document.webkitFullscreenElement) {
+            // Need this to support Safari
+            document.webkitExitFullscreen();
+        } else if (videoContainer.webkitRequestFullscreen) {
+            // Need this to support Safari
+            videoContainer.webkitRequestFullscreen();
+        } else {
+            videoContainer.requestFullscreen();
+        }
+    }
+
     playButton.on('click', togglePlay);
+    fullscreenToggle.on('click', toggleFullScreen);
 
     $(video).on('play pause', () => {
         var icon = playButton.children()
