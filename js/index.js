@@ -2,17 +2,16 @@ const $ = require('jquery');
 window['jQuery'] = window['$'] = $;
 var bootstrap = require('bootstrap')
 
-
-
-
-
 jQuery(() => {
 
     /** @type HTMLVideoElement */
     // @ts-ignore
     const video = $('#video').get(0);
     const videoControls = $('#video-controls');
-    const playButton = $('#play');
+
+    const playButton = $('#play-button');
+    const volumeSlider = $('#volume-slider');
+
 
     $(document).on('keypress', function (e) {
         switch (e.key) {
@@ -38,6 +37,17 @@ jQuery(() => {
             video.pause();
         }
     }
+
+    /**
+     * @param {number} volume
+     */
+    function setVolume(volume) {
+        video.volume = volume
+    }
+
+    volumeSlider.on('input', () => {
+        setVolume(Number(volumeSlider.val()))
+    })
 
     playButton.on('click', togglePlay);
 
