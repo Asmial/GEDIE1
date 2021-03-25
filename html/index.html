@@ -16,22 +16,26 @@
 
     <main>
         <div class="container h-100 justify-content-center align-content-center">
-            <div class="row">
-                <div class="col-lg-8 col-md-12" id="video-container" class="p-0">
-                    <video controls class="w-100" id="video" preload="metadata" poster="img/a_mimir.png">
+            <div class="row p-0">
+                <div class="col-lg-8 col-md-12 h-75 position-relative p-0" id="video-container"
+                    class="p-0 d-inline-block">
+
+                    <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/a_mimir.png">
                         <source src="video/video.mp4" type="video/mp4">
                         </source>
                     </video>
 
-                    <div class="bottom-0 position-absolute" id="video-controls">
-                        <a href="#" id="play-button">
-                            <i class="fas fa-play"></i>
-                        </a>
+                    <div class="bottom-0 left-0 right-0 position-absolute w-100" id="video-controls">
+                        <button id="play-button">
+                            <i class="mdi mdi-play"></i></button>
                         <input type="range" id='volume-slider' class="volume" value="1" data-mute="0.5" type="range"
-                            max="1" min="0" step="0.01">
-                        <a href="#" id="fullscreen-toggle">
-                            <i class="fas fa-expand"></i>
-                        </a>
+                            max="1" min="0" step="0.01" />
+                        <button id="fullscreen-toggle">
+                            <i class="mdi mdi-fullscreen"></i></button>
+                        <button id="rewind-scene">
+                            <i class="mdi mdi-rewind"></i></button>
+                        <button id="mute-toggle">
+                            <i class="mdi mdi-volume-high"></i></button>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12" id="side" class="p-0">

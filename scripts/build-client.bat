@@ -1,1 +1,1 @@
-xcopy node_modules\\@fortawesome\\fontawesome-free\\webfonts html\\fonts /E/H/Y
+xcopy node_modules\\@mdi\\font\\fonts html\\fonts /E/H/Y
