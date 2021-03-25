@@ -67,8 +67,10 @@ jQuery(() => {
     }
 
     playButton.on('click', togglePlay);
+    
     fullscreenToggle.on('click', toggleFullScreen);
-
+    
+    $(video).on('click', togglePlay)
     $(video).on('play pause', () => {
         var icon = playButton.children()
         if (video.paused) {
