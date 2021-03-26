@@ -36,11 +36,38 @@ $(() => {
     $(document).on('keypress', function (e) {
         switch (e.key) {
             case ' ':
-            case 'w':
+            case 'k':
                 togglePlay();
+                break;
+            case '0':
+                hambreDot(0);
                 break;
             case '1':
                 hambreDot(1);
+                break;
+            case '2':
+                hambreDot(2);
+                break;
+            case '3':
+                hambreDot(3);
+                break;
+            case '4':
+                hambreDot(4);
+                break;
+            case '5':
+                hambreDot(5);
+                break;
+            case '6':
+                hambreDot(6);
+                break;
+            case '7':
+                hambreDot(7);
+                break;
+            case '8':
+                hambreDot(8);
+                break;
+            case '9':
+                hambreDot(9);
                 break;
             default:
                 console.log('has pulsado ' + e.key);
