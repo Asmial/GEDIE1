@@ -28,10 +28,19 @@ $(() => {
         }
     }
 
-    function hambreDot(num) {
+    function menosMuslo(num) {
         var str = "#hambre-dot" + num
-        $(str).hide(300)
+        $(str).hide(500)
     }
+
+    function masMuslo(num) {
+        var str = "#hambre-dot" + num
+        $(str).show(500)
+    }
+
+    ve.videoControls.on('click dblclick', (e) => {
+        e.stopPropagation();
+    })
 
     $(document).on('keypress', function (e) {
         switch (e.key) {
@@ -40,34 +49,34 @@ $(() => {
                 togglePlay();
                 break;
             case '0':
-                hambreDot(0);
+                menosMuslo(0);
                 break;
             case '1':
-                hambreDot(1);
+                menosMuslo(1);
                 break;
             case '2':
-                hambreDot(2);
+                menosMuslo(2);
                 break;
             case '3':
-                hambreDot(3);
+                menosMuslo(3);
                 break;
             case '4':
-                hambreDot(4);
+                menosMuslo(4);
                 break;
             case '5':
-                hambreDot(5);
+                menosMuslo(5);
                 break;
             case '6':
-                hambreDot(6);
+                menosMuslo(6);
                 break;
             case '7':
-                hambreDot(7);
+                menosMuslo(7);
                 break;
             case '8':
-                hambreDot(8);
+                menosMuslo(8);
                 break;
             case '9':
-                hambreDot(9);
+                menosMuslo(9);
                 break;
             default:
                 console.log('has pulsado ' + e.key);
@@ -143,6 +152,7 @@ $(() => {
 
 
     ve.playButton.on('click', togglePlay);
+    ve.playMain.on('click', ve.video.play);
 
     ve.fullscreenToggle.on('click', toggleFullScreen);
 
