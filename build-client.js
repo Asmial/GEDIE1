@@ -1,10 +1,19 @@
-fs = require('fs');
+const fs = require('fs');
+const path = require('path');
 
-const browserify = require('browserify');
-var jswrite = fs.createWriteStream('html/bundle/bundle.js');
-var b = browserify();
-b.add('./js/index.js');
-b.bundle().pipe(jswrite)
+const webpack = require('webpack');
+webpack({
+   entry: './js/index.js',
+   mode: 'development',
+   output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, 'html/bundle')
+   }
+}, (err, stats) => {
+   if (err || stats.hasErrors()) {
+      console.error(err)
+   }
+});
 
 if (process.argv[2] !== 'min') {
    const sass = require('sass');
