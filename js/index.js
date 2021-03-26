@@ -28,11 +28,19 @@ $(() => {
         }
     }
 
+    function hambreDot(num) {
+        var str = "#hambre-dot" + num
+        $(str).hide(300)
+    }
+
     $(document).on('keypress', function (e) {
         switch (e.key) {
             case ' ':
-            case 'k':
+            case 'w':
                 togglePlay();
+                break;
+            case '1':
+                hambreDot(1);
                 break;
             default:
                 console.log('has pulsado ' + e.key);
