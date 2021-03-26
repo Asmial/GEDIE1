@@ -1,9 +1,11 @@
-import { resolve } from 'path';
+const path = require('path');
 
-export const entry = './js/index.js';
-export const mode = 'development';
-export const watch = true;
-export const output = {
-    filename: 'bundle.js',
-    path: resolve(__dirname, 'html/bundle')
-};
+module.exports = {
+    entry: './js/index.js',
+    mode: 'development',
+    watch: true,
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'html/bundle')
+    }
+}
