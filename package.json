@@ -7,14 +7,16 @@
     "minbuild": "node build-client.js min",
     "build": "node build-client.js",
     "fullbuild": "node build-client.js full",
-    "autobuild": "npx watchify js/index.js -o html/bundle/bundle.js"
+    "autobuild": "npx webpack"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "browserify": "^17.0.0",
     "sass": "^1.32.8",
-    "watchify": "^4.0.0"
+    "watchify": "^4.0.0",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.5.0"
   },
   "dependencies": {
     "@popperjs/core": "^2.9.1",

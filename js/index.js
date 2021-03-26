@@ -1,35 +1,25 @@
-const $ = require('jquery');
+import $ from 'jquery';
 window['jQuery'] = window['$'] = $;
-// @ts-ignore
-var bootstrap = require('bootstrap')
+import bootstrap from 'bootstrap';
 
-jQuery(() => {
 
-    /** @type HTMLVideoElement */
-    // @ts-ignore
-    const video = $('#video').get(0);
-
-    const videoControls = $('#video-controls');
-    const playButton = $('#play-button');
-    const volumeSlider = $('#volume-slider');
-    const videoContainer = $('#video-container').get(0);
-    const fullscreenToggle = $("#fullscreen-toggle");
-    const muteToggle = $("#mute-toggle");
+$(() => {
+    const ve = require('./videoElements');
 
     require("./videoEvents");
 
     //Hay que quitar esto !!!!!!!!!!
-    video.currentTime = 18;
+    ve.video.currentTime = 18;
 
-    
 
-    muteToggle.on('click', toggleMute)
+
+    ve.muteToggle.on('click', toggleMute)
 
     function toggleMute() {
-        video.muted = !video.muted;
-        var icon = muteToggle.children();
+        ve.video.muted = !ve.video.muted;
+        var icon = ve.muteToggle.children();
 
-        if (video.muted) {
+        if (ve.video.muted) {
             icon.removeClass('mdi-volume-high');
             icon.addClass('mdi-volume-off');
         } else {
@@ -51,15 +41,15 @@ jQuery(() => {
 
     const videoWorks = !!document.createElement('video').canPlayType;
     if (videoWorks) {
-        video.controls = false;
-        videoControls.removeClass('hidden');
+        ve.video.controls = false;
+        ve.videoControls.removeClass('hidden');
     }
 
     function togglePlay() {
-        if (video.paused || video.ended) {
-            video.play();
+        if (ve.video.paused || ve.video.ended) {
+            ve.video.play();
         } else {
-            video.pause();
+            ve.video.pause();
         }
     }
 
@@ -67,21 +57,21 @@ jQuery(() => {
      * @param {number} volume
      */
     function setVolume(volume) {
-        video.volume = volume;
-        video.muted = false;
+        ve.video.volume = volume;
+        ve.video.muted = false;
     }
 
-    setVolume(Number(volumeSlider.val()))
+    setVolume(Number(ve.volumeSlider.val()))
 
     function volumeChanged() {
-        volumeSlider.val(video.volume)
-        var icon = muteToggle.children();
+        ve.volumeSlider.val(ve.video.volume)
+        var icon = ve.muteToggle.children();
 
-        if (!video.muted) {
-            if (video.volume < .25) {
+        if (!ve.video.muted) {
+            if (ve.video.volume < .25) {
                 icon.removeClass(icon.get(0).classList[1]);
                 icon.addClass('mdi-volume-low');
-            } else if (video.volume < .75) {
+            } else if (ve.video.volume < .75) {
                 icon.removeClass(icon.get(0).classList[1]);
                 icon.addClass('mdi-volume-medium');
             } else {
@@ -93,53 +83,49 @@ jQuery(() => {
 
     }
 
-    volumeSlider.on('input', () => {
-        setVolume(Number(volumeSlider.val()))
+    ve.volumeSlider.on('input', () => {
+        setVolume(Number(ve.volumeSlider.val()))
     });
 
     function toggleFullScreen() {
         if (document.fullscreenElement) {
             document.exitFullscreen();
-        // @ts-ignore
+            // @ts-ignore
         } else if (document.webkitFullscreenElement) {
             // Need this to support Safari
             // @ts-ignore
             document.webkitExitFullscreen();
-        // @ts-ignore
-        } else if (videoContainer.webkitRequestFullscreen) {
+            // @ts-ignore
+        } else if (ve.videoContainer.webkitRequestFullscreen) {
             // Need this to support Safari
             // @ts-ignore
-            videoContainer.webkitRequestFullscreen();
+            ve.videoContainer.webkitRequestFullscreen();
         } else {
-            videoContainer.requestFullscreen();
+            ve.videoContainer.requestFullscreen();
         }
     }
 
-    
 
-    playButton.on('click', togglePlay);
 
-    fullscreenToggle.on('click', toggleFullScreen);
+    ve.playButton.on('click', togglePlay);
 
-    volumeSlider.on('wheel', (event) => {
-        event.preventDefault()
+    ve.fullscreenToggle.on('click', toggleFullScreen);
+
+    ve.volumeSlider.on('DOMMouseScroll mousewheel', (e) => {
+        e.preventDefault()
         // @ts-ignore
-        if (event.originalEvent.deltaY > 0 && video.volume - delta >= 0) {
-            // @ts-ignore
-            setVolume($(video).volume -= delta)
-            //check for scroll up 
-        // @ts-ignore
-        } else if (event.originalEvent.deltaY < 0 && video.volume + delta <= 1) {
-            // @ts-ignore
-            setVolume($(video).volume += delta)
+        if (e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) {
+            ve.volumeSlider.val(ve.volumeSlider.val() <= .1 ? 0 : Number(ve.volumeSlider.val()) - .1)
+        } else {
+            ve.volumeSlider.val(ve.volumeSlider.val() >= .9 ? 1 : Number(ve.volumeSlider.val()) + .1);
         }
-        volumeSlider.val()
+        setVolume(Number(ve.volumeSlider.val()))
     })
 
     $('#video-container').on('dblclick', toggleFullScreen)
-    $(video).on('click', togglePlay)
-    
-    $(video).on('volumechange', volumeChanged)
+    $(ve.video).on('click', togglePlay)
+
+    $(ve.video).on('volumechange', volumeChanged)
 })
 
 
