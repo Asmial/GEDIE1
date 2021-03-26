@@ -4,12 +4,14 @@
 
 //Fontawesome
 
-$fa-font-path: "../fonts";
+$mdi-font-path: "../fonts";
 @import "../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "../node_modules/@fortawesome/fontawesome-free/scss/regular.scss";
 @import "../node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
 @import "../node_modules/@fortawesome/fontawesome-free/scss/brands.scss";
 
+$fa-font-path: "../fonts";
+@import "../node_modules/@mdi/font/scss/materialdesignicons.scss";
 //Custom
 
 body {
@@ -23,4 +25,15 @@ figure[data-fullscreen="true"] video::-webkit-media-controls {
 
 figure[data-fullscreen="true"] .controls {
     z-index: 2147483647;
+}
+
+button {
+    cursor: pointer;
+    position: relative;
+    margin-right: 7px;
+    font-size: 12px;
+    padding: 3px;
+    border: none;
+    outline: none;
+    background-color: transparent;
 }

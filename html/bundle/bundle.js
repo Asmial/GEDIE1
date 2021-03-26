@@ -1,6 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const $ = require('jquery');
 window['jQuery'] = window['$'] = $;
+// @ts-ignore
 var bootstrap = require('bootstrap')
 
 jQuery(() => {
@@ -8,13 +9,35 @@ jQuery(() => {
     /** @type HTMLVideoElement */
     // @ts-ignore
     const video = $('#video').get(0);
-    const videoControls = $('#video-controls');
 
+    const videoControls = $('#video-controls');
     const playButton = $('#play-button');
     const volumeSlider = $('#volume-slider');
     const videoContainer = $('#video-container').get(0);
     const fullscreenToggle = $("#fullscreen-toggle");
+    const muteToggle = $("#mute-toggle");
 
+    require("./videoEvents");
+
+    //Hay que quitar esto !!!!!!!!!!
+    video.currentTime = 18;
+
+    
+
+    muteToggle.on('click', toggleMute)
+
+    function toggleMute() {
+        video.muted = !video.muted;
+        var icon = muteToggle.children();
+
+        if (video.muted) {
+            icon.removeClass('mdi-volume-high');
+            icon.addClass('mdi-volume-off');
+        } else {
+            icon.addClass('mdi-volume-high');
+            icon.removeClass('mdi-volume-off');
+        }
+    }
 
     $(document).on('keypress', function (e) {
         switch (e.key) {
@@ -45,10 +68,31 @@ jQuery(() => {
      * @param {number} volume
      */
     function setVolume(volume) {
-        video.volume = volume
+        video.volume = volume;
+        video.muted = false;
     }
 
     setVolume(Number(volumeSlider.val()))
+
+    function volumeChanged() {
+        volumeSlider.val(video.volume)
+        var icon = muteToggle.children();
+
+        if (!video.muted) {
+            if (video.volume < .25) {
+                icon.removeClass(icon.get(0).classList[1]);
+                icon.addClass('mdi-volume-low');
+            } else if (video.volume < .75) {
+                icon.removeClass(icon.get(0).classList[1]);
+                icon.addClass('mdi-volume-medium');
+            } else {
+                icon.removeClass(icon.get(0).classList[1]);
+                icon.addClass('mdi-volume-high');
+            }
+        }
+
+
+    }
 
     volumeSlider.on('input', () => {
         setVolume(Number(volumeSlider.val()))
@@ -57,16 +101,22 @@ jQuery(() => {
     function toggleFullScreen() {
         if (document.fullscreenElement) {
             document.exitFullscreen();
+        // @ts-ignore
         } else if (document.webkitFullscreenElement) {
             // Need this to support Safari
+            // @ts-ignore
             document.webkitExitFullscreen();
+        // @ts-ignore
         } else if (videoContainer.webkitRequestFullscreen) {
             // Need this to support Safari
+            // @ts-ignore
             videoContainer.webkitRequestFullscreen();
         } else {
             videoContainer.requestFullscreen();
         }
     }
+
+    
 
     playButton.on('click', togglePlay);
 
@@ -74,35 +124,84 @@ jQuery(() => {
 
     volumeSlider.on('wheel', (event) => {
         event.preventDefault()
-        if (event.originalEvent.deltaY > 0 && videoEl.volume - delta >= 0) {
+        // @ts-ignore
+        if (event.originalEvent.deltaY > 0 && video.volume - delta >= 0) {
+            // @ts-ignore
             setVolume($(video).volume -= delta)
-          //check for scroll up 
-          } else if(event.originalEvent.deltaY < 0 && videoEl.volume + delta <= 1) {
+            //check for scroll up 
+        // @ts-ignore
+        } else if (event.originalEvent.deltaY < 0 && video.volume + delta <= 1) {
+            // @ts-ignore
             setVolume($(video).volume += delta)
-          }
+        }
         volumeSlider.val()
-    } )
-
-    $(video).on('dblclick', toggleFullScreen)
-    $(video).on('click', togglePlay)
-    $(video).on('play pause', () => {
-        var icon = playButton.children()
-        playButton.attr('data-title', 'Reproducir (k)')
-        icon.removeClass("fa-pause");
-        icon.addClass("fa-play");
-    });
-    $(video).on('pause', () => {
-        var icon = playButton.children();
-        playButton.attr('data-title', 'Pausar (k)');
-        icon.removeClass("fa-play");
-        icon.addClass("fa-pause");
     })
 
+    $('#video-container').on('dblclick', toggleFullScreen)
+    $(video).on('click', togglePlay)
+    
+    $(video).on('volumechange', volumeChanged)
 })
 
 
 
-},{"bootstrap":3,"jquery":4}],2:[function(require,module,exports){
+},{"./videoEvents":2,"bootstrap":4,"jquery":5}],2:[function(require,module,exports){
+const $ = require('jquery');
+
+/** @type HTMLVideoElement */
+// @ts-ignore
+const video = $('#video').get(0);
+const playButton = $('#play-button');
+const volumeSlider = $('#volume-slider');
+const fullscreenToggle = $("#fullscreen-toggle");
+const muteToggle = $("#mute-toggle");
+
+$(document).on('fullscreenchange', () => {
+    if (document.fullscreenElement) {
+        var icon = fullscreenToggle.children()
+        fullscreenToggle.attr('data-title', 'Pantalla Completa (f)');
+        icon.removeClass("mdi-fullscreen");
+        icon.addClass("mdi-fullscreen-exit");
+    } else {
+        var icon = fullscreenToggle.children()
+        fullscreenToggle.attr('data-title', 'Salir de Pantalla Completa (f)');
+        icon.removeClass("mdi-fullscreen-exit");
+        icon.addClass("mdi-fullscreen");
+    }
+});
+
+$(video).on('play', () => {
+    var icon = playButton.children();
+    playButton.attr('data-title', 'Pausar (k)');
+    icon.removeClass("mdi-play");
+    icon.addClass("mdi-pause");
+});
+
+$(video).on('pause', () => {
+    var icon = playButton.children()
+    playButton.attr('data-title', 'Reproducir (k)')
+    icon.removeClass("mdi-pause");
+    icon.addClass("mdi-play");
+});
+
+$(video).on('volumechange', () => {
+    volumeSlider.val(video.volume)
+    var icon = muteToggle.children();
+
+    if (!video.muted) {
+        if (video.volume < .25) {
+            icon.removeClass(icon.get(0).classList[1]);
+            icon.addClass('mdi-volume-low');
+        } else if (video.volume < .75) {
+            icon.removeClass(icon.get(0).classList[1]);
+            icon.addClass('mdi-volume-medium');
+        } else {
+            icon.removeClass(icon.get(0).classList[1]);
+            icon.addClass('mdi-volume-high');
+        }
+    }
+});
+},{"jquery":5}],3:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @popperjs/core v2.9.1 - MIT License
@@ -2000,7 +2099,7 @@ exports.preventOverflow = preventOverflow$1;
 
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":5}],3:[function(require,module,exports){
+},{"_process":6}],4:[function(require,module,exports){
 /*!
   * Bootstrap v5.0.0-beta2 (https://getbootstrap.com/)
   * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
@@ -6953,7 +7052,7 @@ exports.preventOverflow = preventOverflow$1;
 })));
 
 
-},{"@popperjs/core":2}],4:[function(require,module,exports){
+},{"@popperjs/core":3}],5:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.6.0
  * https://jquery.com/
@@ -17836,7 +17935,7 @@ if ( typeof noGlobal === "undefined" ) {
 return jQuery;
 } );
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
