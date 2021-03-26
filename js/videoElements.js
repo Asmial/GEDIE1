@@ -10,3 +10,4 @@ export const volumeSlider = $('#volume-slider');
 export const videoContainer = $('#video-container').get(0);
 export const fullscreenToggle = $("#fullscreen-toggle");
 export const muteToggle = $("#mute-toggle");
+export const playMain = $("#play-main");

@@ -20,6 +20,7 @@ $(ve.video).on('play', () => {
     ve.playButton.attr('data-title', 'Pausar (k)');
     icon.removeClass("mdi-play");
     icon.addClass("mdi-pause");
+    ve.playMain.hide(300);
 });
 
 $(ve.video).on('pause', () => {
@@ -27,6 +28,7 @@ $(ve.video).on('pause', () => {
     ve.playButton.attr('data-title', 'Reproducir (k)')
     icon.removeClass("mdi-pause");
     icon.addClass("mdi-play");
+    ve.playMain.show(300);
 });
 
 $(ve.video).on('volumechange', () => {
