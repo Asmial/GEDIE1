@@ -20,6 +20,8 @@ $container-max-widths: (
 );
 
 
+
+
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 
@@ -55,13 +57,3 @@ button {
     background-color: transparent;
 }
 
-.parent {
-  position: relative;
-}
-
-.image1 {
-  position: relative;
-}
-.image2 {
-  position: absolute;
-}
