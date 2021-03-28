@@ -5,6 +5,7 @@ import { setHungerLevel } from './muslos';
 import * as ve from './videoElements'
 import * as vp from './videoPlayer'
 import * as vc from './videoCards'
+import * as vt from './videoTracks'
 
 $(() => {
     require("./videoEvents");
@@ -12,6 +13,7 @@ $(() => {
     require("./videoTracks")
 
     window['vc'] = vc;
+    window['vt'] = vt;
 
     function desapareceEscena(num) {
         var str = "#eleccion" + num

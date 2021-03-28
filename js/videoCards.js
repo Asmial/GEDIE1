@@ -42,11 +42,14 @@ export function setCardsText(question, answer0, answer1) {
 
 /**
  * @param {Function} callback0
- * @param {Function} callback1
+ * @param {Function} [callback1]
  */
 export function setCardsCallbacks(callback0, callback1) {
     cardCallback0 = callback0;
-    cardCallback1 = callback1;
+    if (callback1)
+        cardCallback1 = callback1;
+    else
+        cardCallback1 = null;
 }
 
 export function showCards() {
