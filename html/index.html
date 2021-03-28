@@ -32,7 +32,7 @@
                         <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/a_mimir.png">
                             <source src="video/video.mp4" type="video/mp4">
                             </source>
-                            <track label="videoTrack" kind="captions" srclang="en" src="video/bandersdot.vtt" />
+                            <track default label="videoTrack" kind="captions" srclang="en" src="video/bandersdot.vtt" />
                             <track label="videoTrack2" kind="subtitles" src="video/sample.vtt" />
                         </video>
                         <div class="left-50 top-50 position-absolute justify-content-center"
@@ -47,10 +47,13 @@
                             style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));">
                             <div class="row">
                                 <div class="col-8 justify-content-start">
-                                    <button id="play-button" class="fs-3 text-white"><i class="mdi mdi-play"></i></button>
-                                    <button id="mute-toggle" class="fs-3 text-white"><i class="mdi mdi-volume-high"></i></button>
-                                    <input type="range" id='volume-slider' class="form-range d-none d-sm-inline" value="1" data-mute="0.5"
-                                        type="range" max="1" min="0" step="0.01" style="cursor: pointer; width: 44%;"/>
+                                    <button id="play-button" class="fs-3 text-white"><i
+                                            class="mdi mdi-play"></i></button>
+                                    <button id="mute-toggle" class="fs-3 text-white"><i
+                                            class="mdi mdi-volume-high"></i></button>
+                                    <input type="range" id='volume-slider' class="form-range d-none d-sm-inline"
+                                        value="1" data-mute="0.5" type="range" max="1" min="0" step="0.01"
+                                        style="cursor: pointer; width: 44%;" />
                                 </div>
                                 <div class="col-8 text-center">
                                     <button id="rewind-scene" class="fs-2 text-white">
@@ -65,20 +68,20 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-lg-8 col-md-24 mb-3">
                 <div class="p-0 w-100 h-100 bg-light border rounded-3" id="side">
                     <div class="text-center py-3 mb-4 border-bottom bg-danger">
                         <h3>Indicador de hambre</h3>
                     </div>
-                    <div><button onclick="setCurTime()" type="button" >Decide</button></div>
+                    <div><button onclick="setCurTime()" type="button">Decide</button></div>
                     <script>
 
                         var vid = document.getElementById("video");
-                        
-                        
-                        function setCurTime() { 
-                            vid.currentTime=5;
+
+
+                        function setCurTime() {
+                            vid.currentTime = 5;
                         }
                     </script>
                     <div id="hambre-dot" class="d-flex justify-content-around">

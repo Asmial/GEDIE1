@@ -2,6 +2,7 @@ import $ from 'jquery';
 
 /** @type {HTMLVideoElement} */
 export var video;
+export var track;
 /** @type {JQuery<HTMLElement>} */
 export var videoControls;
 /** @type {JQuery<HTMLElement>} */
@@ -20,6 +21,7 @@ export var playMain;
 $(() => {
     // @ts-ignore
     video = $('#video').get(0)
+    track = $('#track').get(0)
     videoControls = $('#video-controls');
     playButton = $('#play-button');
     volumeSlider = $('#volume-slider');

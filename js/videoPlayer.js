@@ -93,19 +93,37 @@ function volumeChanged() {
 
 $(() => {
 
-    ve.video.onplay = function () {
-        var cueList = ve.video.textTracks[0];
-        var cueObject = cueList
+    $(ve.video).on('loadedmetadata', () => {
+        var cueList = ve.video.textTracks;
+        //var cueObject = cueList.cues
 
+        var trackElem = cueList
+
+        for (var i = 0; i < trackElem.length; i++) {
+            trackElem[i].addEventListener("load", function() {
+            var textTrack = this.track;
+            // for each cue
+            for (var j = 0; j < textTrack.cues.length; ++j) {
+                var cue = textTrack.cues[j];
+                console.log(cue)
+                // do something
+            }
+        })
+        }
+
+        cueList.addEventListener('cuechange', (e) => {
+            alert('Cuechange: ' + e);
+        })
         console.log(cueList)
+        //console.log(cue)
 
-        var event = new CustomEvent('custom_event', 
+        var event = new CustomEvent('custom_event',
         );
 
-        
+
         //cueObject.dispatchEvent(event)
-        
-    }
+
+    });
 
     ve.muteToggle.on('click', toggleMute);
 
@@ -148,11 +166,10 @@ $(() => {
 
     $(ve.videoContainer).on('dblclick', toggleFullScreen);
 
-    $(ve.videoContainer).on('click touchStart touchend', (e) => {
+    $(ve.videoContainer).on('click touchend', (e) => {
         if (!vc.isCardsShown()) {
             if (e.type == 'click') {
                 togglePlay()
-                console.log(e.type)
             }
             else {
                 console.log(e.type);

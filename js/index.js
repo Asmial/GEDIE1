@@ -21,6 +21,8 @@ $(() => {
         $(str).show(500)
     }
 
+    window['video'] = ve.video;
+
 
 
     $(document).on('keypress', function (e) {
