@@ -1,13 +1,30 @@
 import $ from 'jquery';
 
-/** @type HTMLVideoElement */
-// @ts-ignore
-export const video = $('#video').get(0);
+/** @type {HTMLVideoElement} */
+export var video;
+/** @type {JQuery<HTMLElement>} */
+export var videoControls;
+/** @type {JQuery<HTMLElement>} */
+export var playButton;
+/** @type {JQuery<HTMLElement>} */
+export var volumeSlider;
+/** @type {HTMLElement} */
+export var videoContainer;
+/** @type {JQuery<HTMLElement>} */
+export var fullscreenToggle;
+/** @type {JQuery<HTMLElement>} */
+export var muteToggle;
+/** @type {JQuery<HTMLElement>} */
+export var playMain;
 
-export const videoControls = $('#video-controls');
-export const playButton = $('#play-button');
-export const volumeSlider = $('#volume-slider');
-export const videoContainer = $('#video-container').get(0);
-export const fullscreenToggle = $("#fullscreen-toggle");
-export const muteToggle = $("#mute-toggle");
-export const playMain = $("#play-main");
+$(() => {
+    // @ts-ignore
+    video = $('#video').get(0)
+    videoControls = $('#video-controls');
+    playButton = $('#play-button');
+    volumeSlider = $('#volume-slider');
+    videoContainer = $('#video-container').get(0);
+    fullscreenToggle = $("#fullscreen-toggle");
+    muteToggle = $("#mute-toggle");
+    playMain = $("#play-main");
+})

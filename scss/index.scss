@@ -1,5 +1,7 @@
 // Bootstrap
 
+$grid-columns:      24;
+
 $grid-breakpoints: (
   xs: 0,
   sm: 576px,
@@ -7,7 +9,7 @@ $grid-breakpoints: (
   lg: 992px,
   xl: 1200px,
   xxl: 1400px,
-  xxxl: 2000px
+  xxxl: 1920px
 );
 
 $container-max-widths: (
@@ -16,22 +18,20 @@ $container-max-widths: (
   lg: 960px,
   xl: 1140px,
   xxl: 1320px,
-  xxxl: 1920px
+  xxxl: 1860px
 );
-
-
-
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 
 // Material Design Icons
-
 $mdi-font-path: "../fonts";
 @import "../node_modules/@mdi/font/scss/materialdesignicons.scss";
 
 
 //Custom
+
+@import "imagen.scss";
 
 body {
     @extend body;
@@ -56,4 +56,3 @@ button {
     outline: none;
     background-color: transparent;
 }
-
