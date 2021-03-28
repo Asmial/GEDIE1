@@ -32,7 +32,8 @@
                         <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/a_mimir.png">
                             <source src="video/video.mp4" type="video/mp4">
                             </source>
-                            <track default kind="subtitles" src="video/bandersdot.vtt" />
+                            <track label="videoTrack" kind="captions" srclang="en" src="video/bandersdot.vtt" />
+                            <track label="videoTrack2" kind="subtitles" src="video/sample.vtt" />
                         </video>
                         <div class="left-50 top-50 position-absolute justify-content-center"
                             style="width: 80px; height: 80px;margin-left: -40px; margin-top: -40px;">
@@ -92,7 +93,7 @@
                         <h3>Selector de escenas</h3>
                     </div>
                     <div class="container-fluid">
-                        <div class="row containerZoom" id="contenedor-secuencias">
+                        <div class="row" id="contenedor-secuencias">
                         </div>
                     </div>
                 </div>

@@ -92,6 +92,21 @@ function volumeChanged() {
 }
 
 $(() => {
+
+    ve.video.onplay = function () {
+        var cueList = ve.video.textTracks[0];
+        var cueObject = cueList
+
+        console.log(cueList)
+
+        var event = new CustomEvent('custom_event', 
+        );
+
+        
+        //cueObject.dispatchEvent(event)
+        
+    }
+
     ve.muteToggle.on('click', toggleMute);
 
     ve.videoControls.on('mousemove mouseenter', (e) => {
