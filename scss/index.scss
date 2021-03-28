@@ -1,6 +1,6 @@
 // Bootstrap
 
-$grid-columns:      24;
+$grid-columns: 24;
 
 $grid-breakpoints: (
   xs: 0,
@@ -9,7 +9,7 @@ $grid-breakpoints: (
   lg: 992px,
   xl: 1200px,
   xxl: 1400px,
-  xxxl: 1920px
+  xxxl: 1920px,
 );
 
 $container-max-widths: (
@@ -18,41 +18,50 @@ $container-max-widths: (
   lg: 960px,
   xl: 1140px,
   xxl: 1320px,
-  xxxl: 1860px
+  xxxl: 1860px,
 );
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
-
 // Material Design Icons
 $mdi-font-path: "../fonts";
 @import "../node_modules/@mdi/font/scss/materialdesignicons.scss";
-
 
 //Custom
 
 @import "imagen.scss";
 
 body {
-    @extend body;
-    min-width: 320px;
+  @extend body;
+  min-width: 320px;
 }
 
 figure[data-fullscreen="true"] video::-webkit-media-controls {
-    display: none !important;
+  display: none !important;
 }
 
 figure[data-fullscreen="true"] .controls {
-    z-index: 2147483647;
+  z-index: 2147483647;
 }
 
 button {
-    cursor: pointer;
-    position: relative;
-    margin-right: 7px;
-    font-size: 12px;
-    padding: 3px;
-    border: none;
-    outline: none;
-    background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  margin-right: 7px;
+  font-size: 12px;
+  padding: 3px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.noselect {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.c-pointer {
+  cursor: pointer;
 }

@@ -4,12 +4,14 @@ import bootstrap from 'bootstrap';
 import { setHungerLevel } from './muslos';
 import * as ve from './videoElements'
 import * as vp from './videoPlayer'
-
-
+import * as vc from './videoCards'
 
 $(() => {
     require("./videoEvents");
     require("./secuencias");
+    require("./videoTracks")
+
+    window['vc'] = vc;
 
     function desapareceEscena(num) {
         var str = "#eleccion" + num

@@ -93,38 +93,6 @@ function volumeChanged() {
 
 $(() => {
 
-    $(ve.video).on('loadedmetadata', () => {
-        var cueList = ve.video.textTracks;
-        //var cueObject = cueList.cues
-
-        var trackElem = cueList
-
-        for (var i = 0; i < trackElem.length; i++) {
-            trackElem[i].addEventListener("load", function() {
-            var textTrack = this.track;
-            // for each cue
-            for (var j = 0; j < textTrack.cues.length; ++j) {
-                var cue = textTrack.cues[j];
-                console.log(cue)
-                // do something
-            }
-        })
-        }
-
-        cueList.addEventListener('cuechange', (e) => {
-            alert('Cuechange: ' + e);
-        })
-        console.log(cueList)
-        //console.log(cue)
-
-        var event = new CustomEvent('custom_event',
-        );
-
-
-        //cueObject.dispatchEvent(event)
-
-    });
-
     ve.muteToggle.on('click', toggleMute);
 
     ve.videoControls.on('mousemove mouseenter', (e) => {

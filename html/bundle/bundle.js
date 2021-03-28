@@ -68,17 +68,48 @@ window['setHungerLevel'] = setHungerLevel
 /*!**************************!*\
   !*** ./js/secuencias.js ***!
   \**************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-for (let i = 0; i < 8; i++) {
-    $("#contenedor-secuencias").append(
-        `<div class="col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center">
-    <a class= "thumbnail" href = "#">
-    <img id="eleccion${i}" class="imageUp" src="img/${i % 2 == 0 ? "hungerEmptyIcon" : "peralesDormidoFeliz"}.png" width="200"
-        height="200"></a>
-    </div >`);
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "hideSecuencias": () => (/* binding */ hideSecuencias),
+/* harmony export */   "showSecuencia": () => (/* binding */ showSecuencia)
+/* harmony export */ });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 
+const numSecuencias = 8;
+const secuenciaContainers = new Array(numSecuencias);
+
+/**
+ * @param {any} num
+ */
+function hideSecuencias(num) {
+    for (let i = num; i < numSecuencias; i++) {
+        secuenciaContainers[i].hide(500);
+    }
 }
+
+/**
+ * @param {any} num
+ */
+function showSecuencia(num) {
+    if (num < numSecuencias)
+        secuenciaContainers[num].show(500);
+}
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
+    for (let i = 0; i < numSecuencias; i++) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#contenedor-secuencias").append(
+            `<div id="secuencia-container${i}" class="col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center">
+                <a class='escena thumbnail' href = "#">
+                    <img id="eleccion${i}" class="imageUp" src="img/decision${i}.jpg" width="200">
+                </a>
+            </div>`);
+        secuenciaContainers[i] = jquery__WEBPACK_IMPORTED_MODULE_0___default()(`secuencia-container${i}`);
+    }
+});
 
 /***/ }),
 
@@ -91,19 +122,105 @@ for (let i = 0; i < 8; i++) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isCardsShown": () => (/* binding */ isCardsShown)
+/* harmony export */   "isCardsShown": () => (/* binding */ isCardsShown),
+/* harmony export */   "setCardsText": () => (/* binding */ setCardsText),
+/* harmony export */   "setCardsCallbacks": () => (/* binding */ setCardsCallbacks),
+/* harmony export */   "showCards": () => (/* binding */ showCards),
+/* harmony export */   "hideCards": () => (/* binding */ hideCards)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _videoElements__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./videoElements */ "./js/videoElements.js");
+/* harmony import */ var _videoPlayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./videoPlayer */ "./js/videoPlayer.js");
+
+
 
 
 
 var cardsShown = false;
 
+/** @type {JQuery<HTMLElement>} */
+var singleOption;
+/** @type {JQuery<HTMLElement>} */
+var cardsQuestion;
+/** @type {JQuery<HTMLElement>} */
+var cardAnswer0;
+/** @type {JQuery<HTMLElement>} */
+var cardAnswer1;
+/** @type {JQuery<HTMLElement>} */
+var videoCards;
+
+var cardCallback0 = null;
+var cardCallback1 = null;
+
 function isCardsShown() {
     return cardsShown;
 }
+
+/**
+ * @param {string} question
+ * @param {string} answer0
+ * @param {string} [answer1]
+ */
+function setCardsText(question, answer0, answer1) {
+    cardsQuestion.html(question);
+    cardAnswer0.html(answer0);
+
+    if (!answer1) {
+        singleOption.addClass('d-none');
+    } else {
+        singleOption.removeClass('d-none');
+        cardAnswer1.html(answer1);
+    }
+}
+
+/**
+ * @param {Function} callback0
+ * @param {Function} callback1
+ */
+function setCardsCallbacks(callback0, callback1) {
+    cardCallback0 = callback0;
+    cardCallback1 = callback1;
+}
+
+function showCards() {
+    cardsShown = true;
+    videoCards.fadeIn(200);
+}
+
+function hideCards() {
+    cardsShown = false;
+    videoCards.fadeOut(200);
+}
+
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
+    videoCards = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#video-cards');
+    singleOption = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#single-option');
+    cardsQuestion = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#cards-question');
+    cardAnswer0 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#card-answer0');
+    cardAnswer1 = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#card-answer1');
+
+    videoCards.fadeOut(0);
+
+    cardAnswer0.on('click', (e) => {
+        e.stopPropagation();
+        if (cardsShown && cardCallback0)
+            cardCallback0(e);
+        hideCards();
+    });
+    cardAnswer1.on('click', (e) => {
+        e.stopPropagation();
+        if (cardsShown && cardCallback1)
+            cardCallback1(e);
+        hideCards();
+    });
+    videoCards.on('click', (e) => {
+        e.stopPropagation();
+    })
+})
+
 
 /***/ }),
 
@@ -117,7 +234,6 @@ function isCardsShown() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "video": () => (/* binding */ video),
-/* harmony export */   "track": () => (/* binding */ track),
 /* harmony export */   "videoControls": () => (/* binding */ videoControls),
 /* harmony export */   "playButton": () => (/* binding */ playButton),
 /* harmony export */   "volumeSlider": () => (/* binding */ volumeSlider),
@@ -132,7 +248,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /** @type {HTMLVideoElement} */
 var video;
-var track;
 /** @type {JQuery<HTMLElement>} */
 var videoControls;
 /** @type {JQuery<HTMLElement>} */
@@ -151,7 +266,6 @@ var playMain;
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     // @ts-ignore
     video = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#video').get(0)
-    track = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#track').get(0)
     videoControls = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#video-controls');
     playButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#play-button');
     volumeSlider = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#volume-slider');
@@ -349,38 +463,6 @@ function volumeChanged() {
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.video).on('loadedmetadata', () => {
-        var cueList = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.textTracks;
-        //var cueObject = cueList.cues
-
-        var trackElem = cueList
-
-        for (var i = 0; i < trackElem.length; i++) {
-            trackElem[i].addEventListener("load", function() {
-            var textTrack = this.track;
-            // for each cue
-            for (var j = 0; j < textTrack.cues.length; ++j) {
-                var cue = textTrack.cues[j];
-                console.log(cue)
-                // do something
-            }
-        })
-        }
-
-        cueList.addEventListener('cuechange', (e) => {
-            alert('Cuechange: ' + e);
-        })
-        console.log(cueList)
-        //console.log(cue)
-
-        var event = new CustomEvent('custom_event',
-        );
-
-
-        //cueObject.dispatchEvent(event)
-
-    });
-
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.muteToggle.on('click', toggleMute);
 
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.videoControls.on('mousemove mouseenter', (e) => {
@@ -457,6 +539,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     });
 })
 
+
+/***/ }),
+
+/***/ "./js/videoTracks.js":
+/*!***************************!*\
+  !*** ./js/videoTracks.js ***!
+  \***************************/
+/***/ (() => {
+
+throw new Error("Module parse failed: Unexpected token (28:39)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n|     };\n| \n>     $(ve.video).on('loadedmetadata' () => {\n|         decisionCues[0].onenter = function() {\n|             ve.video.pause()");
 
 /***/ }),
 
@@ -19499,9 +19591,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _muslos__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./muslos */ "./js/muslos.js");
 /* harmony import */ var _videoElements__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./videoElements */ "./js/videoElements.js");
 /* harmony import */ var _videoPlayer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./videoPlayer */ "./js/videoPlayer.js");
+/* harmony import */ var _videoCards__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./videoCards */ "./js/videoCards.js");
 
 window['jQuery'] = window['$'] = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
-
 
 
 
@@ -19511,6 +19603,9 @@ window['jQuery'] = window['$'] = (jquery__WEBPACK_IMPORTED_MODULE_0___default())
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     __webpack_require__(/*! ./videoEvents */ "./js/videoEvents.js");
     __webpack_require__(/*! ./secuencias */ "./js/secuencias.js");
+    __webpack_require__(/*! ./videoTracks */ "./js/videoTracks.js")
+
+    window['vc'] = _videoCards__WEBPACK_IMPORTED_MODULE_5__;
 
     function desapareceEscena(num) {
         var str = "#eleccion" + num

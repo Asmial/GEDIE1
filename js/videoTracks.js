@@ -17,7 +17,18 @@ $(() => {
         var numEscena = parseInt(escena[escena.length - 1]);
         es.hideSecuencias(numEscena);
         goToScene(numEscena)
+        alert(hola)
     });
 
-    $(ve.video).
+    decisionCues[0].onenter = function() {
+        ve.video.pause()
+        console.log("pito")
+    };
+
+    $(ve.video).on('loadedmetadata' () => {
+        decisionCues[0].onenter = function() {
+            ve.video.pause()
+            console.log("pito")
+        };
+    });
 })

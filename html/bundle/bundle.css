@@ -36631,3 +36631,14 @@ button {
   outline: none;
   background-color: transparent;
 }
+
+.noselect {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.c-pointer {
+  cursor: pointer;
+}

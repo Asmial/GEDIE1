@@ -26,20 +26,38 @@
         <div class="row">
             <div class="col-lg-16 col-md-24 h-100 ">
                 <div class="bg-light border rounded-3 overflow-hidden mb-3">
-                    <div class="position-relative p-0" id="video-container" class="p-0 d-inline-block"
+                    <div class="position-relative p-0 noselect" id="video-container" class="p-0 d-inline-block"
                         style="margin-bottom: -5px;">
 
                         <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/a_mimir.png">
                             <source src="video/video.mp4" type="video/mp4">
                             </source>
                             <track default label="videoTrack" kind="captions" srclang="en" src="video/bandersdot.vtt" />
-                            <track label="videoTrack2" kind="subtitles" src="video/sample.vtt" />
                         </video>
+
                         <div class="left-50 top-50 position-absolute justify-content-center"
                             style="width: 80px; height: 80px;margin-left: -40px; margin-top: -40px;">
                             <button id="play-main" class="text-white">
                                 <i class="mdi mdi-play"></i>
                             </button>
+                        </div>
+
+                        <div class="top-0 left-0 right-0 position-absolute p-2 container-fluid" id="video-cards"
+                            style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));">
+                            <div class="row justify-content-center">
+                                <div class="col-12 text-white">
+                                    <div class="text-center mb-3" id="cards-question" style="font-size: 2vw;">¿Qué quieres desayunar?</div>
+
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer" id="card-answer0" style="font-size: 2vw;">Nesquik</div>
+                                </div>
+                                <div class="col-12" id="single-option">
+                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer" id="card-answer1" style="font-size: 2vw;">ColaCao ColaCao ColaCao ColaCao ColaCao ColaCao ColaCao </div>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -74,16 +92,6 @@
                     <div class="text-center py-3 mb-4 border-bottom bg-danger">
                         <h3>Indicador de hambre</h3>
                     </div>
-                    <div><button onclick="setCurTime()" type="button">Decide</button></div>
-                    <script>
-
-                        var vid = document.getElementById("video");
-
-
-                        function setCurTime() {
-                            vid.currentTime = 5;
-                        }
-                    </script>
                     <div id="hambre-dot" class="d-flex justify-content-around">
                     </div>
                 </div>

@@ -1,26 +1,35 @@
 WEBVTT - Some title
 
-1 - Alarma
-00:01.000 --> 00:05.000
-Suena alarma
+1 - Eleccion 1
+00:05.000 --> 00:10.000
+Suena halarma
 
-2 - Eleccion 1
-00:55.000 --> 00:56.500
-¿Colacao o Nesquik?
+2 - Posponer
+00:10.000 --> 00:20.500
 
-3 - Colacao
-01:09.000 --> 01:09.001
+3 - Despertarse
+00:20.000 --> 00:20.001
+
+4 - Elección 2
+01:05.000 --> 01:10.000
+¿Colacao o Nesquic?
+
+5 - Nesquik
+01:10.000 --> 01:21.500
+
+6 - Colacao
+01:25.000 --> 01:25.001
 Coje colacao
 
-4 - Eleccion 2
-02:01.000 --> 02:05.000
-¿Brutal death metal o Trap local?
+7 - Eleccion 3
+02:20.000 --> 02:25.000
+¿Brutal dez metal o Trap local?
 
-5 - Eleccion 3
+8 - Eleccion 3
 02:30.033 --> 02:32.033
-¿A comer o a entrenar?
+¿A komer o a entrenar?
 
-6 - Entrenar
+9 - Entrenar
 03:10.000 --> 03:10.001
 Entrena
 
