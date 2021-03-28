@@ -6,6 +6,8 @@ module.exports = {
     watch: true,
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'html/bundle')
-    }
+        path: path.resolve(__dirname, 'html/bundle'),
+        sourceMapFilename: "bundle.js.map"
+    },
+    devtool: "source-map"
 }
