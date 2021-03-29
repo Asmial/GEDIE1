@@ -606,7 +606,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
             going = false;
             /** @type {VTTCue} */
             // @ts-ignore
-            var track = this.activeCues[0];
+            var track = this.activeCues[this.activeCues.length - 1];
 
             // @ts-ignore
             var data = JSON.parse(track.text);
@@ -616,15 +616,24 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                 };
 
             if (data['pregunta']) {
-                if (data['respuesta1']) {
-                    _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
-                    _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => { goToScene(data.escena0) }, () => { goToScene(data.escena1) });
+                if (!data['respuesta1'])
+                    data['respuesta1'] = null
+                _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+
+                _videoCards__WEBPACK_IMPORTED_MODULE_3__.showCards();
+
+                if (data['escena0']) {
+                    if (!data['escena1'])
+                        data['escena1'] = null
+                    _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
                 }
-                else {
-                    _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsText(data.pregunta, data.respuesta0);
-                    _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => { goToScene(data.escena0) });
+
+                if (data['musica0']) {
+                    if (!data['musica1'])
+                        data['musica1'] = null
+                    _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
                 }
-                _videoCards__WEBPACK_IMPORTED_MODULE_3__.showCards()
+
             }
         }
     }

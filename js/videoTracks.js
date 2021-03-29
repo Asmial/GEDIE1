@@ -40,7 +40,7 @@ $(() => {
             going = false;
             /** @type {VTTCue} */
             // @ts-ignore
-            var track = this.activeCues[0];
+            var track = this.activeCues[this.activeCues.length - 1];
 
             // @ts-ignore
             var data = JSON.parse(track.text);
@@ -50,15 +50,24 @@ $(() => {
                 };
 
             if (data['pregunta']) {
-                if (data['respuesta1']) {
-                    vc.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
-                    vc.setCardsCallbacks(() => { goToScene(data.escena0) }, () => { goToScene(data.escena1) });
+                if (!data['respuesta1'])
+                    data['respuesta1'] = null
+                vc.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+
+                vc.showCards();
+
+                if (data['escena0']) {
+                    if (!data['escena1'])
+                        data['escena1'] = null
+                    vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
                 }
-                else {
-                    vc.setCardsText(data.pregunta, data.respuesta0);
-                    vc.setCardsCallbacks(() => { goToScene(data.escena0) });
+
+                if (data['musica0']) {
+                    if (!data['musica1'])
+                        data['musica1'] = null
+                    vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
                 }
-                vc.showCards()
+
             }
         }
     }
