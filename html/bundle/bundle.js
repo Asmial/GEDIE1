@@ -26,7 +26,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
             <img id="hambre-dot${i}" class="position-absolute top-50 start-50 translate-middle"
                 src="img/hungerIcon.png" height="37">
             <img class="image1" src="img/hungerEmptyIcon.png" height="37">
-        </div>`);
+        </div>
+        `);
         muslos[i] = jquery__WEBPACK_IMPORTED_MODULE_0___default()(`#hambre-dot${i}`);
     }
 });
@@ -104,10 +105,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     for (let i in elecciones) {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#contenedor-secuencias").append(
             `<div id="secuencia-container${i}" class="col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center">
-                <a class='escena thumbnail' href = "#">
-                    <img id="eleccion${elecciones[i]}" class="imageUp" src="img/decision${i}.jpg" width="200">
+                <a class='escena' href = "#">
+                    <img id="eleccion${elecciones[i]}" class="imageUp thumbnail" src="img/decision${i}.jpg" width="200">
                 </a>
-            </div>`);
+            </div>
+            `);
         secuenciaContainers[i] = jquery__WEBPACK_IMPORTED_MODULE_0___default()(`secuencia-container${i}`);
     }
 });
@@ -19744,8 +19746,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 
     window['sc'] = _secuencias__WEBPACK_IMPORTED_MODULE_7__;
 
-
-
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('keypress', function (e) {
         e.preventDefault();
         switch (e.key) {
@@ -19757,6 +19757,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                 console.log('has pulsado ' + e.key);
         }
     });
+
+    // Activar los toggles de los iconos del video
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-toggle="tooltip"]').tooltip()
+    })
 
     _videoPlayer__WEBPACK_IMPORTED_MODULE_4__.setVolume(Number(_videoElements__WEBPACK_IMPORTED_MODULE_3__.volumeSlider.val()))
 })

@@ -29,8 +29,6 @@ $(() => {
 
     window['sc'] = sc;
 
-
-
     $(document).on('keypress', function (e) {
         e.preventDefault();
         switch (e.key) {
@@ -42,6 +40,11 @@ $(() => {
                 console.log('has pulsado ' + e.key);
         }
     });
+
+    // Activar los toggles de los iconos del video
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 
     vp.setVolume(Number(ve.volumeSlider.val()))
 })
