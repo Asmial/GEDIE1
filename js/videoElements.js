@@ -16,6 +16,10 @@ export var fullscreenToggle;
 export var muteToggle;
 /** @type {JQuery<HTMLElement>} */
 export var playMain;
+/** @type {JQuery<HTMLElement>} */
+export var rewind;
+/** @type {JQuery<HTMLElement>} */
+export var fastForward;
 
 $(() => {
     // @ts-ignore
@@ -27,4 +31,6 @@ $(() => {
     fullscreenToggle = $("#fullscreen-toggle");
     muteToggle = $("#mute-toggle");
     playMain = $("#play-main");
+    rewind = $("#play-rewind")
+    fastForward = $("#play-fast-forward")
 })

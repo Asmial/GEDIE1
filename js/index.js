@@ -6,6 +6,7 @@ import * as ve from './videoElements'
 import * as vp from './videoPlayer'
 import * as vc from './videoCards'
 import * as vt from './videoTracks'
+import * as sc from './secuencias'
 
 $(() => {
     require("./videoEvents");
@@ -14,6 +15,7 @@ $(() => {
 
     window['vc'] = vc;
     window['vt'] = vt;
+    window['ve'] = ve;
 
     function desapareceEscena(num) {
         var str = "#eleccion" + num
@@ -25,7 +27,7 @@ $(() => {
         $(str).show(500)
     }
 
-    window['video'] = ve.video;
+    window['sc'] = sc;
 
 
 

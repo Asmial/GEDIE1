@@ -20,11 +20,35 @@ function goToScene(num) {
     ve.video.currentTime = decisionCues[num].startTime
 }
 
+function decision(data) {
+    going = false;
+
+    if (data['pregunta']) {
+        if (!data['respuesta1'])
+            data['respuesta1'] = null
+
+        vc.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+
+        vc.showCards();
+
+        if (data['escena0']) {
+            if (!data['escena1'])
+                data['escena1'] = null
+            vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
+        }
+
+        if (data['musica0']) {
+            if (!data['musica1'])
+                data['musica1'] = null
+            vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
+        }
+    } else vc.hideCards();
+}
+
 $(() => {
 
     textTracks = ve.video.textTracks;
     decisionTrack = textTracks[0];
-    console.log(decisionTrack);
     decisionCues = decisionTrack.cues;
 
     // @ts-ignore
@@ -32,43 +56,29 @@ $(() => {
         var escena = $(this).children().get(0).id;
         var numEscena = parseInt(escena[escena.length - 1]);
         es.hideSecuencias(numEscena);
-        goToScene(numEscena)
+        going = true;
+        goToScene(numEscena);
     });
 
-    decisionTrack.oncuechange = function (e) {
-        if (this.activeCues.length > 0) {
-            going = false;
+    var start = 0;
+
+    decisionTrack.mode = 'hidden';
+
+    decisionTrack.addEventListener('cuechange', () => {
+        for (let i = start; i < decisionCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
-            var track = this.activeCues[this.activeCues.length - 1];
+            const cue = decisionCues[i];
+            const data = JSON.parse(cue.text);
 
-            // @ts-ignore
-            var data = JSON.parse(track.text);
             if (data['next'])
-                track.onexit = () => {
-                    if (!going) goToScene(data.next)
-                };
+                cue.onexit = () => { if (!going) goToScene(data.next) };
 
-            if (data['pregunta']) {
-                if (!data['respuesta1'])
-                    data['respuesta1'] = null
-                vc.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+            cue.onenter = (e) => decision(data)
+            cue.data = data;
 
-                vc.showCards();
-
-                if (data['escena0']) {
-                    if (!data['escena1'])
-                        data['escena1'] = null
-                    vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
-                }
-
-                if (data['musica0']) {
-                    if (!data['musica1'])
-                        data['musica1'] = null
-                    vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
-                }
-
-            }
+            console.log(cue.data);
         }
-    }
-})
+        start = decisionCues.length;
+    });
+});

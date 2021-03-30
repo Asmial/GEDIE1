@@ -52,4 +52,16 @@ $(() => {
             }
         }
     });
+
+    $(ve.rewind).on('click', () => {
+        var ct = ve.video.currentTime;
+
+        ve.video.currentTime = ve.video.currentTime - 5;
+    });
+
+    $(ve.fastForward).on('click', () => {
+        var ct = ve.video.currentTime;
+
+        ve.video.currentTime = ve.video.currentTime + 5;
+    });
 });

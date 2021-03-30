@@ -244,7 +244,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "videoContainer": () => (/* binding */ videoContainer),
 /* harmony export */   "fullscreenToggle": () => (/* binding */ fullscreenToggle),
 /* harmony export */   "muteToggle": () => (/* binding */ muteToggle),
-/* harmony export */   "playMain": () => (/* binding */ playMain)
+/* harmony export */   "playMain": () => (/* binding */ playMain),
+/* harmony export */   "rewind": () => (/* binding */ rewind),
+/* harmony export */   "fastForward": () => (/* binding */ fastForward)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -266,6 +268,10 @@ var fullscreenToggle;
 var muteToggle;
 /** @type {JQuery<HTMLElement>} */
 var playMain;
+/** @type {JQuery<HTMLElement>} */
+var rewind;
+/** @type {JQuery<HTMLElement>} */
+var fastForward;
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     // @ts-ignore
@@ -277,6 +283,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     fullscreenToggle = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#fullscreen-toggle");
     muteToggle = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#mute-toggle");
     playMain = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#play-main");
+    rewind = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#play-rewind")
+    fastForward = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#play-fast-forward")
 })
 
 /***/ }),
@@ -346,6 +354,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                 icon.addClass('mdi-volume-high');
             }
         }
+    });
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.rewind).on('click', () => {
+        var ct = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime;
+
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime - 5;
+    });
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.fastForward).on('click', () => {
+        var ct = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime;
+
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime + 5;
     });
 });
 
@@ -586,11 +606,35 @@ function goToScene(num) {
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = decisionCues[num].startTime
 }
 
+function decision(data) {
+    going = false;
+
+    if (data['pregunta']) {
+        if (!data['respuesta1'])
+            data['respuesta1'] = null
+
+        _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+
+        _videoCards__WEBPACK_IMPORTED_MODULE_3__.showCards();
+
+        if (data['escena0']) {
+            if (!data['escena1'])
+                data['escena1'] = null
+            _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
+        }
+
+        if (data['musica0']) {
+            if (!data['musica1'])
+                data['musica1'] = null
+            _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
+        }
+    } else _videoCards__WEBPACK_IMPORTED_MODULE_3__.hideCards();
+}
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 
     textTracks = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.textTracks;
     decisionTrack = textTracks[0];
-    console.log(decisionTrack);
     decisionCues = decisionTrack.cues;
 
     // @ts-ignore
@@ -598,46 +642,32 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
         var escena = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).children().get(0).id;
         var numEscena = parseInt(escena[escena.length - 1]);
         _secuencias__WEBPACK_IMPORTED_MODULE_2__.hideSecuencias(numEscena);
-        goToScene(numEscena)
+        going = true;
+        goToScene(numEscena);
     });
 
-    decisionTrack.oncuechange = function (e) {
-        if (this.activeCues.length > 0) {
-            going = false;
+    var start = 0;
+
+    decisionTrack.mode = 'hidden';
+
+    decisionTrack.addEventListener('cuechange', () => {
+        for (let i = start; i < decisionCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
-            var track = this.activeCues[this.activeCues.length - 1];
+            const cue = decisionCues[i];
+            const data = JSON.parse(cue.text);
 
-            // @ts-ignore
-            var data = JSON.parse(track.text);
             if (data['next'])
-                track.onexit = () => {
-                    if (!going) goToScene(data.next)
-                };
+                cue.onexit = () => { if (!going) goToScene(data.next) };
 
-            if (data['pregunta']) {
-                if (!data['respuesta1'])
-                    data['respuesta1'] = null
-                _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+            cue.onenter = (e) => decision(data)
+            cue.data = data;
 
-                _videoCards__WEBPACK_IMPORTED_MODULE_3__.showCards();
-
-                if (data['escena0']) {
-                    if (!data['escena1'])
-                        data['escena1'] = null
-                    _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
-                }
-
-                if (data['musica0']) {
-                    if (!data['musica1'])
-                        data['musica1'] = null
-                    _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
-                }
-
-            }
+            console.log(cue.data);
         }
-    }
-})
+        start = decisionCues.length;
+    });
+});
 
 /***/ }),
 
@@ -19682,8 +19712,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _videoPlayer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./videoPlayer */ "./js/videoPlayer.js");
 /* harmony import */ var _videoCards__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./videoCards */ "./js/videoCards.js");
 /* harmony import */ var _videoTracks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./videoTracks */ "./js/videoTracks.js");
+/* harmony import */ var _secuencias__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./secuencias */ "./js/secuencias.js");
 
 window['jQuery'] = window['$'] = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
+
 
 
 
@@ -19698,6 +19730,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 
     window['vc'] = _videoCards__WEBPACK_IMPORTED_MODULE_5__;
     window['vt'] = _videoTracks__WEBPACK_IMPORTED_MODULE_6__;
+    window['ve'] = _videoElements__WEBPACK_IMPORTED_MODULE_3__;
 
     function desapareceEscena(num) {
         var str = "#eleccion" + num
@@ -19709,7 +19742,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()(str).show(500)
     }
 
-    window['video'] = _videoElements__WEBPACK_IMPORTED_MODULE_3__.video;
+    window['sc'] = _secuencias__WEBPACK_IMPORTED_MODULE_7__;
 
 
 

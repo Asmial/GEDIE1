@@ -18,7 +18,7 @@
     <header class="p-3 border-bottom bg-dark text-white mb-3">
         <div class="container-fluid d-grid gap-3 align-items-center">
             <div class="d-flex align-items-center">
-                <img class="bi me-4" src="img/iconoWeb.svg" width="100">
+                <img class="bi me-4" src="img/iconoWeb.svg" width="80">
                 <h1>Bandersdot</h1>
             </div>
         </div>
@@ -28,19 +28,19 @@
         <div class="row">
             <div class="col-lg-16 col-md-24 h-100 ">
                 <div class="bg-light border rounded-3 overflow-hidden mb-3">
-                    <div class="position-relative p-0 noselect" id="video-container"
-                        style="margin-bottom: -5px;">
+                    <div class="position-relative p-0 noselect" id="video-container" style="margin-bottom: -5px;">
 
                         <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/a_mimir.png">
                             <source src="video/video.mp4" type="video/mp4" />
-                            <track default label="elecciones" kind="subtitles"  srclang="en" src="video/elecciones.vtt" />
-                            <track default label="escenas" kind="subtitles" srclang="en" src="video/escenas.vtt" />
+                            <track default label="elecciones" kind="subtitles" srclang="en"
+                                src="video/elecciones.vtt" />
+                            <!-- <track default label="escenas" kind="subtitles" srclang="en" src="video/escenas.vtt" /> -->
                         </video>
 
                         <div class="left-50 top-50 position-absolute justify-content-center"
                             style="width: 80px; height: 80px;margin-left: -40px; margin-top: -40px;">
                             <button id="play-main" class="text-white">
-                                <i class="mdi mdi-play"></i>
+                                <i class="mdi mdi-play" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></i>
                             </button>
                         </div>
 
@@ -80,8 +80,12 @@
                                         style="cursor: pointer; width: 44%;" />
                                 </div>
                                 <div class="col-8 text-center">
+                                    <button id="play-rewind" class="fs-3 text-white"><i
+                                            class="mdi mdi-rewind-5"></i></button>
                                     <button id="rewind-scene" class="fs-2 text-white">
                                         <i class="mdi mdi-rewind"></i></button>
+                                    <button id="play-fast-forward" class="fs-3 text-white"><i
+                                            class="mdi mdi-fast-forward-5"></i></button>
                                 </div>
                                 <div class="col-8 text-end">
                                     <button id="fullscreen-toggle" class="fs-2 text-white">
