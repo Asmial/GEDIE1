@@ -20,11 +20,12 @@ export function showSecuencia(num) {
         secuenciaContainers[num].show(500);
 }
 
+
 $(() => {
     for (let i in elecciones) {
         $("#contenedor-secuencias").append(
-            `<div id="secuencia-container${i}" class="col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center">
-                <a class='escena' href = "#">
+            `<div id="secuencia-container${i}" class="secuencia col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center">
+                <a class="escena" href = "#">
                     <img id="eleccion${elecciones[i]}" class="imageUp thumbnail" src="img/decision${i}.jpg" width="200">
                 </a>
             </div>

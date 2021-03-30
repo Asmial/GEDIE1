@@ -101,11 +101,12 @@ function showSecuencia(num) {
         secuenciaContainers[num].show(500);
 }
 
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     for (let i in elecciones) {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#contenedor-secuencias").append(
-            `<div id="secuencia-container${i}" class="col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center">
-                <a class='escena' href = "#">
+            `<div id="secuencia-container${i}" class="secuencia col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center">
+                <a class="escena" href = "#">
                     <img id="eleccion${elecciones[i]}" class="imageUp thumbnail" src="img/decision${i}.jpg" width="200">
                 </a>
             </div>
@@ -662,10 +663,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
             if (data['next'])
                 cue.onexit = () => { if (!going) goToScene(data.next) };
 
-            cue.onenter = (e) => decision(data)
-            cue.data = data;
-
-            console.log(cue.data);
+            cue.onenter = (e) => decision(data);
         }
         start = decisionCues.length;
     });

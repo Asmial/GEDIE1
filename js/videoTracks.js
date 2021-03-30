@@ -74,10 +74,7 @@ $(() => {
             if (data['next'])
                 cue.onexit = () => { if (!going) goToScene(data.next) };
 
-            cue.onenter = (e) => decision(data)
-            cue.data = data;
-
-            console.log(cue.data);
+            cue.onenter = (e) => decision(data);
         }
         start = decisionCues.length;
     });
