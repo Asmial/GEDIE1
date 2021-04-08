@@ -2,7 +2,7 @@ WEBVTT - Some title
 
 0 - Introduccion
 00:00.000 --> 00:05.000
-{}
+{ }
 
 1 - Eleccion 1
 00:05.000 --> 00:09.900
@@ -21,7 +21,7 @@ WEBVTT - Some title
 
 3 - Desactivar
 00:20.000 --> 01:05.000
-{ "next": 4 }
+{ }
 
 4 - Elección 2
 01:05.000 --> 01:09.900

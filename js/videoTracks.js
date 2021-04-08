@@ -20,8 +20,15 @@ function goToScene(num) {
     ve.video.currentTime = decisionCues[num].startTime
 }
 
+var waitDisbaleGoing;
+
+/**
+ * @param {{ [x: string]: any; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
+ */
 function decision(data) {
-    going = false;
+    waitDisbaleGoing = setTimeout(() => {
+        going = false;
+    }, 1000);
 
     if (data['pregunta']) {
         if (!data['respuesta1'])
@@ -72,7 +79,9 @@ $(() => {
             const data = JSON.parse(cue.text);
 
             if (data['next'])
-                cue.onexit = () => { if (!going) goToScene(data.next) };
+                cue.onexit = function () {
+                    if (!going) { goToScene(data.next) }
+                };
 
             cue.onenter = (e) => decision(data);
         }
