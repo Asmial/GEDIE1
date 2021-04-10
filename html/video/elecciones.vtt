@@ -1,7 +1,7 @@
-WEBVTT - Some title
+WEBVTT
 
 0 - Introduccion
-00:00.000 --> 00:05.000
+00:00.000 --> 00:04.950
 { }
 
 1 - Eleccion 1
@@ -16,11 +16,11 @@ WEBVTT - Some title
 }
 
 2 - Posponer
-00:10.000 --> 00:20.000
+00:10.000 --> 00:19.950
 { "next": 1 }
 
 3 - Desactivar
-00:20.000 --> 01:05.000
+00:20.000 --> 01:04.950
 { }
 
 4 - Elección 2
@@ -35,11 +35,11 @@ WEBVTT - Some title
 }
 
 5 - Nesquik
-01:10.000 --> 01:21.500
+01:10.000 --> 01:21.450
 { "next": 6 }
 
 6 - Colacao
-01:25.050 --> 02:20.000
+01:25.050 --> 02:20.100
 { "next": 7 }
 
 7 - Elección 3
@@ -49,6 +49,149 @@ WEBVTT - Some title
     "pregunta": "¿Qué quieres que suene?",
     "respuesta0": "Brutal Death Metal",
     "respuesta1": "Trap Local",
-    "escena0": 6,
-    "escena1": 5
+    "escena0": 8,
+    "escena1": 8
+}
+
+8 - Carrefour
+02:25.000 --> 04:00.000
+{ }
+
+9 - Elección Comer
+04:00.000 --> 04:04.900
+{
+    "next": 9,
+    "pregunta": "¿Quiéres ir a comer?",
+    "respuesta0": "Ir a comer",
+    "respuesta1": "No ir a comer",
+    "escena0": 10,
+    "escena1": 11
+}
+
+10 - Comer
+04:05.000 --> 04:42.167
+{ "next": 12 }
+
+11 - No Comer
+04:45.000 --> 04:49.350
+{
+    "next": 12
+}
+
+12 - Pre-entrenamiento
+04:50.000 --> 04:58.150
+{
+    "next": 13
+}
+
+13 - Entrenamiento
+05:00.000 --> 05:00.900
+{
+    "next": 13,
+    "pregunta": "¡A entrenar!",
+    "respuesta0": "Levantar 💪🏿",
+    "respuesta1": "Ir al duelo",
+    "pesa": true,
+    "levantar": 14,
+    "seguir": 16,
+    "morirse": 15
+}
+
+14 - Levantar
+05:01.000 --> 05:04.450
+{
+    "levantando": true,
+    "next": 13,
+    "levantar": true
+}
+
+15 - Morirse Pesa
+05:05.000 --> 05:11.300
+{
+    "muerte": true
+}
+
+16 - Salir
+05:15.000 --> 05:26.400
+{
+    "comida": true,
+    "haComido": 18,
+    "noHaComido": 17
+}
+
+17 - Morirse Hambre
+05:26.400 --> 05:38.600
+{
+    "muerte": true
+}
+
+
+18 - Hacia Milan
+05:40.000 --> 05:50.000
+{ }
+
+19 - Eleccion Camino
+05:50.000 --> 05:54.900
+{
+    "next": 19,
+    "pregunta": "¿Por dónde quiéres ir?",
+    "respuesta0": "Izquierda",
+    "respuesta1": "¿Derecha?",
+    "escena0": 23,
+    "escena1": 20
+}
+
+20 - Derecha
+05:55.000 --> 06:40.000
+{ }
+
+21 - Eleccion Delincuentes
+06:40.000 --> 06:44.900
+{
+    "next": 21,
+    "pregunta": "¿Qué utilizas contra ellos?",
+    "respuesta0": "La palabra",
+    "respuesta1": "La violencia",
+    "escena0": 22,
+    "escena1": 23
+}
+
+22 - Palabra
+06:45.000 --> 06:58.050
+{ "muerte": true }
+
+23 - Violencia
+07:00.000 --> 07:32.533
+{ "next": 25 }
+
+
+24 - Camino duelo
+07:35.000 --> 07:40.000
+{ }
+
+25 - Duelo
+07:40.000 --> 08:20.000
+{ }
+
+26 - Eleccion arma
+08:20.000 --> 08:24.900
+{
+    "next": 26,
+    "pregunta": "¿Qué utilizas contra Milan?",
+    "respuesta0": "Pañuelos",
+    "respuesta1": "Guantes",
+    "escena0": 27,
+    "escena1": 28
+}
+
+27 - Pañuelos
+08:25.000 --> 08:59.000
+{
+    "muerte": true
+}
+
+28 - Guantes
+09:00.000 --> 09:55.900
+{
+    "muerte": true
 }
