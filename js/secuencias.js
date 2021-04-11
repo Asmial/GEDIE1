@@ -1,5 +1,5 @@
 import $ from 'jquery';
-const elecciones = [1, 4, 7, 1, 4, 7, 1, 4];
+const elecciones = [1, 4, 7, 9, 13, 19, 21, 26];
 const numSecuencias = elecciones.length;
 const secuenciaContainers = new Array(numSecuencias);
 
@@ -28,8 +28,7 @@ $(() => {
                 <a class="escena" href = "#">
                     <img id="eleccion${elecciones[i]}" class="imageUp thumbnail" src="img/decision${i}.jpg" width="200">
                 </a>
-            </div>
-            `);
+            </div>`);
         secuenciaContainers[i] = $(`secuencia-container${i}`);
     }
 });

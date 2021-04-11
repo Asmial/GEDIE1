@@ -80,7 +80,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 
-const elecciones = [1, 4, 7, 1, 4, 7, 1, 4];
+const elecciones = [1, 4, 7, 9, 13, 19, 21, 26];
 const numSecuencias = elecciones.length;
 const secuenciaContainers = new Array(numSecuencias);
 
@@ -109,8 +109,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                 <a class="escena" href = "#">
                     <img id="eleccion${elecciones[i]}" class="imageUp thumbnail" src="img/decision${i}.jpg" width="200">
                 </a>
-            </div>
-            `);
+            </div>`);
         secuenciaContainers[i] = jquery__WEBPACK_IMPORTED_MODULE_0___default()(`secuencia-container${i}`);
     }
 });
@@ -129,6 +128,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isCardsShown": () => (/* binding */ isCardsShown),
 /* harmony export */   "setCardsText": () => (/* binding */ setCardsText),
 /* harmony export */   "setCardsCallbacks": () => (/* binding */ setCardsCallbacks),
+/* harmony export */   "getCardsCallbacks": () => (/* binding */ getCardsCallbacks),
 /* harmony export */   "showCards": () => (/* binding */ showCards),
 /* harmony export */   "hideCards": () => (/* binding */ hideCards)
 /* harmony export */ });
@@ -188,6 +188,10 @@ function setCardsCallbacks(callback0, callback1) {
         cardCallback1 = callback1;
     else
         cardCallback1 = null;
+}
+
+function getCardsCallbacks() {
+    return [cardCallback0, cardCallback1]
 }
 
 function showCards() {
@@ -611,15 +615,47 @@ function goToScene(num) {
 
 var waitDisbaleGoing;
 
+var status = {
+    haComido: false,
+    levantamientos: 0,
+    levantar: false,
+};
+
+function levantar() {
+    going = true;
+    status.levantar = true;
+}
+
 /**
- * @param {{ [x: string]: any; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
+ * @param {{ [x: string]: any; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
  */
 function decision(data) {
     waitDisbaleGoing = setTimeout(() => {
         going = false;
-    }, 1000);
+    }, 100);
 
-    if (data['pregunta']) {
+    if (!data['levantando'] && !data['pesa']) {
+        status.levantar = false;
+        status.levantamientos = 0;
+    }
+
+    if (data['muerte']) {
+        status.levantamientos = 0;
+    } else if (data['levantando']) {
+        status.levantamientos++;
+        status.levantar = false;
+    } else if (data['pesa']) {
+        going = false;
+        if (_videoCards__WEBPACK_IMPORTED_MODULE_3__.getCardsCallbacks()[0] != levantar) {
+            _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(levantar, () => { goToScene(data.seguir) });
+        }
+        if (status.levantamientos == 0) {
+            _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsText(data.pregunta, data.respuesta0, null);
+        } else {
+            _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+        }
+        _videoCards__WEBPACK_IMPORTED_MODULE_3__.showCards();
+    } else if (data['pregunta']) {
         if (!data['respuesta1'])
             data['respuesta1'] = null
 
@@ -640,7 +676,7 @@ function decision(data) {
         }
     } else _videoCards__WEBPACK_IMPORTED_MODULE_3__.hideCards();
 }
-
+console.log("hola");
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 
     textTracks = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.textTracks;
@@ -650,7 +686,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     // @ts-ignore
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.escena').on('click', function (e) {
         var escena = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).children().get(0).id;
-        var numEscena = parseInt(escena[escena.length - 1]);
+        var numEscena = parseInt(escena.substring(8));
         _secuencias__WEBPACK_IMPORTED_MODULE_2__.hideSecuencias(numEscena);
         going = true;
         goToScene(numEscena);
@@ -667,11 +703,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
             const cue = decisionCues[i];
             const data = JSON.parse(cue.text);
 
-            if (data['next'])
+            if (data['pesa'])
                 cue.onexit = function () {
-                    if (!going) { goToScene(data.next) }
+                    if (status.levantamientos >= 4 && status.levantar) {
+                        goToScene(data.morirse)
+                    } else if (!status.levantar && !going) {
+                        goToScene(data.next)
+                    }
                 };
-
+            else if (data['next']) {
+                cue.onexit = () => { if (!going) { goToScene(data.next) } }
+            }
             cue.onenter = (e) => decision(data);
         }
         start = decisionCues.length;
@@ -1431,6 +1473,17 @@ function getTrueOffsetParent(element) {
 
 function getContainingBlock(element) {
   var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
+  var isIE = navigator.userAgent.indexOf('Trident') !== -1;
+
+  if (isIE && (0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element)) {
+    // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
+    var elementCss = (0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_1__.default)(element);
+
+    if (elementCss.position === 'fixed') {
+      return null;
+    }
+  }
+
   var currentNode = (0,_getParentNode_js__WEBPACK_IMPORTED_MODULE_2__.default)(element);
 
   while ((0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(currentNode) && ['html', 'body'].indexOf((0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_3__.default)(currentNode)) < 0) {

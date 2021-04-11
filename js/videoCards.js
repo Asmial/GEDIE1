@@ -52,6 +52,10 @@ export function setCardsCallbacks(callback0, callback1) {
         cardCallback1 = null;
 }
 
+export function getCardsCallbacks() {
+    return [cardCallback0, cardCallback1]
+}
+
 export function showCards() {
     cardsShown = true;
     videoCards.fadeIn(200);
