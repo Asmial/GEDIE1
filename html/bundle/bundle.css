@@ -36623,6 +36623,10 @@ textarea.form-control-lg {
   transform: translate(-50%, -50%);
 }
 
+.imgActores {
+  opacity: 0.5;
+}
+
 body {
   min-width: 320px;
 }

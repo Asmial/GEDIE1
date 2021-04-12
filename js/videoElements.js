@@ -2,6 +2,8 @@ import $ from 'jquery';
 
 /** @type {HTMLVideoElement} */
 export var video;
+export var audioTrap;
+export var audioMetal;
 /** @type {JQuery<HTMLElement>} */
 export var videoControls;
 /** @type {JQuery<HTMLElement>} */
@@ -24,6 +26,8 @@ export var fastForward;
 $(() => {
     // @ts-ignore
     video = $('#video').get(0)
+    audioTrap = $('#video').get(1);
+    audioMetal = $('#video').get(2);
     videoControls = $('#video-controls');
     playButton = $('#play-button');
     volumeSlider = $('#volume-slider');

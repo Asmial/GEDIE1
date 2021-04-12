@@ -29,14 +29,13 @@
             <div class="col-lg-16 col-md-24 h-100 ">
                 <div class="bg-light border rounded-3 overflow-hidden mb-3">
                     <div class="position-relative p-0 noselect" id="video-container" style="margin-bottom: -5px;">
-
                         <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/a_mimir.png">
                             <source src="video/video.mp4" type="video/mp4" />
+
                             <track default label="elecciones" kind="subtitles" srclang="en"
                                 src="video/elecciones.vtt" />
-                            <!-- <track default label="escenas" kind="subtitles" srclang="en" src="video/escenas.vtt" /> -->
+                            <!--<track default label="escenas" kind="subtitles" srclang="en" src="video/escenas.vtt" /> -->
                         </video>
-
                         <div class="left-50 top-50 position-absolute justify-content-center"
                             style="width: 80px; height: 80px;margin-left: -40px; margin-top: -40px;">
                             <button id="play-main" class="text-white">
@@ -51,7 +50,6 @@
                                 <div class="col-12 text-white">
                                     <div class="text-center mb-3" id="cards-question" style="font-size: 2vw;">¿Qué
                                         quieres desayunar?</div>
-
                                 </div>
                             </div>
                             <div class="row justify-content-center">
@@ -72,31 +70,30 @@
                             style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));">
                             <div class="row">
                                 <div class="col-8 justify-content-start">
-                                    <button id="play-button" class="fs-3 text-white"><i
-                                            class="mdi mdi-play" data-toggle="tooltip"
-                                            data-placement="right" title="botón de reproducción (k)"></i></button>
-                                    <button id="mute-toggle" class="fs-3 text-white"><i
-                                            class="mdi mdi-volume-high" data-toggle="tooltip"
-                                            data-placement="top" title="silenciar"></i></button>
+                                    <button id="play-button" class="fs-3 text-white"><i class="mdi mdi-play"
+                                            data-toggle="tooltip" data-placement="right"
+                                            title="botón de reproducción (k)"></i></button>
+                                    <button id="mute-toggle" class="fs-3 text-white"><i class="mdi mdi-volume-high"
+                                            data-toggle="tooltip" data-placement="top" title="silenciar"></i></button>
                                     <input type="range" id='volume-slider' class="form-range d-none d-sm-inline"
                                         value="1" data-mute="0.5" max="1" min="0" step="0.01"
                                         style="cursor: pointer; width: 44%;" />
                                 </div>
                                 <div class="col-8 text-center">
-                                    <button id="play-rewind" class="fs-3 text-white"><i
-                                            class="mdi mdi-rewind-5" data-toggle="tooltip"
-                                            data-placement="top" title="retroceder 5 segundos"></i></button>
+                                    <button id="play-rewind" class="fs-3 text-white"><i class="mdi mdi-rewind-5"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="retroceder 5 segundos"></i></button>
                                     <button id="rewind-scene" class="fs-2 text-white">
-                                        <i class="mdi mdi-rewind" data-toggle="tooltip"
-                                        data-placement="top" title="retroceder una escena"></i></button>
+                                        <i class="mdi mdi-rewind" data-toggle="tooltip" data-placement="top"
+                                            title="retroceder una escena"></i></button>
                                     <button id="play-fast-forward" class="fs-3 text-white"><i
-                                            class="mdi mdi-fast-forward-5" data-toggle="tooltip"
-                                            data-placement="top" title="avanzar 5 segundos"></i></button>
+                                            class="mdi mdi-fast-forward-5" data-toggle="tooltip" data-placement="top"
+                                            title="avanzar 5 segundos"></i></button>
                                 </div>
                                 <div class="col-8 text-end">
                                     <button id="fullscreen-toggle" class="fs-2 text-white">
-                                        <i class="mdi mdi-fullscreen" data-toggle="tooltip"
-                                        data-placement="left" title="pantalla completa"></i></button>
+                                        <i class="mdi mdi-fullscreen" data-toggle="tooltip" data-placement="left"
+                                            title="pantalla completa"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -111,6 +108,15 @@
                     </div>
                     <div id="hambre-dot" class="d-flex justify-content-around">
                     </div>
+                    <div class="text-center py-3 mb-4 border-bottom bg-danger">
+                        <h3>Reparto</h3>
+                    </div>
+
+                    <div class="container">
+                        <div id="contenedor-actores" class="row">
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

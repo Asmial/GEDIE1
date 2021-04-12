@@ -76,4 +76,19 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
+}
+
+.imgActores {
+    opacity: 0.5;
+}
+
+.special-card {
+    /* create a custom class so you 
+       do not run into specificity issues 
+       against bootstraps styles
+       which tends to work better than using !important 
+       (future you will thank you later)*/
+    
+      background-color: rgba(0, 0, 0, 1);
+      opacity: .4;
+    }

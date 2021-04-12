@@ -1,6 +1,109 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./js/actores.js":
+/*!***********************!*\
+  !*** ./js/actores.js ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "hideActor": () => (/* binding */ hideActor),
+/* harmony export */   "showActor": () => (/* binding */ showActor)
+/* harmony export */ });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const actores = [
+    {
+        nombre: "Dot",
+        personaje: "Doan Dot",
+        imagen: "dot"
+    },
+    {
+        nombre: "Momo",
+        personaje: "Momo",
+        imagen: "momoDeGalaDNI"
+    },
+    {
+        nombre: "Bernat Dot",
+        personaje: "Hermano de Dot",
+        imagen: "hermanoDot"
+    },
+    {
+        nombre: "Javier Amengual",
+        personaje: "Padre de Dot",
+        imagen: "javiMadre"
+    },
+    {
+        nombre: "Asier Alemany",
+        personaje: "Ciberdelincuente Osier",
+        imagen: "osier"
+    },
+    {
+        nombre: "Carlos Pesquera",
+        personaje: "Grafitero Carlos",
+        imagen: "carlos"
+    },
+    {
+        nombre: "Javier Amengual",
+        personaje: "Pandillero Javi Peron",
+        imagen: "javi"
+    },
+    {
+        nombre: "Milan Gavaric",
+        personaje: "Milovan Milovanovic",
+        imagen: "milan"
+    }
+]
+
+/**
+ * @param {any} num
+ */
+ function hideActor(num) {
+    for (let i = actores.length - 1; i > num; i--) {
+        secuenciaContainers[i].addClass('d-none');
+        mostrados[i] = false;
+    }
+}
+
+/**
+ * @param {any} num
+ */
+function showActor(num) {
+    if (num < actores.length) {
+        secuenciaContainers[num].removeClass('d-none');
+        mostrados[num] = true;
+        ultimo = -1;
+    }
+}
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
+    for (let i in actores) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#contenedor-actores").append(
+            `<div class="col-24">
+                <div id="actor-container${i}" class="row g-0 border card rounded-5 overflow-hidden flex-md-row mb-4 shadow h-md-250 position-relative text-white bg-dark">
+                    <div class="col-auto d-lg-block">
+                        <img id="" class="" src="img/${actores[i].imagen}.png" width="100">
+                    </div>
+                    <div class="col p-8 d-flex flex-column position-static">
+                        <div class="card-body">
+                            <h5 class="card-title">${actores[i].nombre}</h5>
+                            <p class="card-text">${actores[i].personaje}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`);
+    }
+});
+
+
+
+/***/ }),
+
 /***/ "./js/muslos.js":
 /*!**********************!*\
   !*** ./js/muslos.js ***!
@@ -75,21 +178,25 @@ window['setHungerLevel'] = setHungerLevel
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "hideSecuencias": () => (/* binding */ hideSecuencias),
-/* harmony export */   "showSecuencia": () => (/* binding */ showSecuencia)
+/* harmony export */   "showSecuencia": () => (/* binding */ showSecuencia),
+/* harmony export */   "getUltimo": () => (/* binding */ getUltimo)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 
-const elecciones = [1, 4, 7, 9, 13, 19, 21, 26];
+const elecciones = [1, 4, 7, 11, 15, 21, 23, 28];
 const numSecuencias = elecciones.length;
-const secuenciaContainers = new Array(numSecuencias);
+var secuenciaContainers = new Array(numSecuencias);
+var mostrados = new Array(numSecuencias);
+var ultimo = -1;
 
 /**
  * @param {any} num
  */
 function hideSecuencias(num) {
-    for (let i = num; i < numSecuencias; i++) {
-        secuenciaContainers[i].hide(500);
+    for (let i = numSecuencias - 1; i > num; i--) {
+        secuenciaContainers[i].addClass('d-none');
+        mostrados[i] = false;
     }
 }
 
@@ -97,20 +204,27 @@ function hideSecuencias(num) {
  * @param {any} num
  */
 function showSecuencia(num) {
-    if (num < numSecuencias)
-        secuenciaContainers[num].show(500);
+    if (num < numSecuencias) {
+        secuenciaContainers[num].removeClass('d-none');
+        mostrados[num] = true;
+        ultimo = -1;
+    }
+}
+
+function getUltimo() {
+    return ultimo;
 }
 
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     for (let i in elecciones) {
-        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#contenedor-secuencias").append(
-            `<div id="secuencia-container${i}" class="secuencia col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center">
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#contenedor-secuencias").prepend(
+            `<div id="secuencia-container${i}" class="secuencia col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center d-none">
                 <a class="escena" href = "#">
                     <img id="eleccion${elecciones[i]}" class="imageUp thumbnail" src="img/decision${i}.jpg" width="200">
                 </a>
             </div>`);
-        secuenciaContainers[i] = jquery__WEBPACK_IMPORTED_MODULE_0___default()(`secuencia-container${i}`);
+        secuenciaContainers[i] = jquery__WEBPACK_IMPORTED_MODULE_0___default()(`#secuencia-container${i}`);
     }
 });
 
@@ -245,6 +359,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "video": () => (/* binding */ video),
+/* harmony export */   "audioTrap": () => (/* binding */ audioTrap),
+/* harmony export */   "audioMetal": () => (/* binding */ audioMetal),
 /* harmony export */   "videoControls": () => (/* binding */ videoControls),
 /* harmony export */   "playButton": () => (/* binding */ playButton),
 /* harmony export */   "volumeSlider": () => (/* binding */ volumeSlider),
@@ -261,6 +377,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /** @type {HTMLVideoElement} */
 var video;
+var audioTrap;
+var audioMetal;
 /** @type {JQuery<HTMLElement>} */
 var videoControls;
 /** @type {JQuery<HTMLElement>} */
@@ -283,6 +401,8 @@ var fastForward;
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     // @ts-ignore
     video = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#video').get(0)
+    audioTrap = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#video').get(1);
+    audioMetal = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#video').get(2);
     videoControls = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#video-controls');
     playButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#play-button');
     volumeSlider = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#volume-slider');
@@ -399,6 +519,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _videoElements__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./videoElements */ "./js/videoElements.js");
 /* harmony import */ var _videoCards__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./videoCards */ "./js/videoCards.js");
+/* harmony import */ var _secuencias__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./secuencias */ "./js/secuencias.js");
+
 
 
 
@@ -466,6 +588,13 @@ function togglePlay() {
     }
 }
 
+function rewindScene() {
+    var ultimo = _secuencias__WEBPACK_IMPORTED_MODULE_3__.getUltimo();
+    if(ultimo != -1){
+        _secuencias__WEBPACK_IMPORTED_MODULE_3__.hideSecuencias(ultimo);
+    }
+}
+
 /**
 * @param {number} volume
 */
@@ -505,6 +634,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
         canHideControls = true;
         hideControlsEvent = setTimeout(hideControls, 1500);
     });
+
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.rewind.on('click', rewindScene);
 
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.videoContainer).on('mousemove', (e) => {
         if (hideControlsEvent)
@@ -584,7 +715,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "textTracks": () => (/* binding */ textTracks),
 /* harmony export */   "decisionTrack": () => (/* binding */ decisionTrack),
-/* harmony export */   "decisionCues": () => (/* binding */ decisionCues)
+/* harmony export */   "decisionCues": () => (/* binding */ decisionCues),
+/* harmony export */   "goToScene": () => (/* binding */ goToScene)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -613,12 +745,23 @@ function goToScene(num) {
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = decisionCues[num].startTime
 }
 
-var waitDisbaleGoing;
+/**
+ * @param {number} num
+ *  @param {number} data
+ */
+function playSound(num, data) {
+    going = true;
+    //ve.audioTrap.
+    //goToScene(data)
+}
+
+var waitDisableGoing;
 
 var status = {
     haComido: false,
     levantamientos: 0,
     levantar: false,
+    escenas: []
 };
 
 function levantar() {
@@ -627,10 +770,12 @@ function levantar() {
 }
 
 /**
- * @param {{ [x: string]: any; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
+ * @param {TextTrackCue} cue
+ * @param {{ [x: string]: any; decision: number; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
  */
-function decision(data) {
-    waitDisbaleGoing = setTimeout(() => {
+function decision(cue, data) {
+
+    waitDisableGoing = setTimeout(() => {
         going = false;
     }, 100);
 
@@ -639,9 +784,19 @@ function decision(data) {
         status.levantamientos = 0;
     }
 
-    if (data['muerte']) {
-        status.levantamientos = 0;
-    } else if (data['levantando']) {
+    if (data['comido']) status.haComido = true;
+    else if (data['noComido']) status.haComido = false;
+
+    console.log(data);
+
+    if(data['decision'] >= 0) {
+        console.log("decision");
+        status.escenas.push(data.decision);
+        _secuencias__WEBPACK_IMPORTED_MODULE_2__.hideSecuencias(data.decision);
+        _secuencias__WEBPACK_IMPORTED_MODULE_2__.showSecuencia(data.decision)
+    }
+
+    if (data['levantando']) {
         status.levantamientos++;
         status.levantar = false;
     } else if (data['pesa']) {
@@ -668,22 +823,17 @@ function decision(data) {
                 data['escena1'] = null
             _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
         }
-
-        if (data['musica0']) {
-            if (!data['musica1'])
-                data['musica1'] = null
-            _videoCards__WEBPACK_IMPORTED_MODULE_3__.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
-        }
-    } else _videoCards__WEBPACK_IMPORTED_MODULE_3__.hideCards();
+    } else {
+        _videoCards__WEBPACK_IMPORTED_MODULE_3__.hideCards();
+    }
 }
-console.log("hola");
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 
     textTracks = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.textTracks;
     decisionTrack = textTracks[0];
     decisionCues = decisionTrack.cues;
 
-    // @ts-ignore
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.escena').on('click', function (e) {
         var escena = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).children().get(0).id;
         var numEscena = parseInt(escena.substring(8));
@@ -711,10 +861,20 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                         goToScene(data.next)
                     }
                 };
+            if (data['muerte'])
+                cue.onexit = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.pause
+            else if (data['comida'])
+                cue.onexit = function () {
+                    if (status.haComido) {
+                        goToScene(data.haComido)
+                    } else {
+                        goToScene(data.noHaComido)
+                    }
+                };
             else if (data['next']) {
                 cue.onexit = () => { if (!going) { goToScene(data.next) } }
             }
-            cue.onenter = (e) => decision(data);
+            cue.onenter = (e) => decision(undefined, data);
         }
         start = decisionCues.length;
     });
@@ -19775,8 +19935,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _videoCards__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./videoCards */ "./js/videoCards.js");
 /* harmony import */ var _videoTracks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./videoTracks */ "./js/videoTracks.js");
 /* harmony import */ var _secuencias__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./secuencias */ "./js/secuencias.js");
+/* harmony import */ var _actores__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./actores */ "./js/actores.js");
 
 window['jQuery'] = window['$'] = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
+
 
 
 
@@ -19788,6 +19950,7 @@ window['jQuery'] = window['$'] = (jquery__WEBPACK_IMPORTED_MODULE_0___default())
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     __webpack_require__(/*! ./videoEvents */ "./js/videoEvents.js");
     __webpack_require__(/*! ./secuencias */ "./js/secuencias.js");
+    __webpack_require__(/*! ./actores */ "./js/actores.js");
     __webpack_require__(/*! ./videoTracks */ "./js/videoTracks.js")
 
     window['vc'] = _videoCards__WEBPACK_IMPORTED_MODULE_5__;

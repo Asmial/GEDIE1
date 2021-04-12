@@ -7,10 +7,12 @@ import * as vp from './videoPlayer'
 import * as vc from './videoCards'
 import * as vt from './videoTracks'
 import * as sc from './secuencias'
+import * as ac from './actores'
 
 $(() => {
     require("./videoEvents");
     require("./secuencias");
+    require("./actores");
     require("./videoTracks")
 
     window['vc'] = vc;

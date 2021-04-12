@@ -15,17 +15,28 @@ var going = false;
 /**
  * @param {number} num
  */
-function goToScene(num) {
+export function goToScene(num) {
     going = true;
     ve.video.currentTime = decisionCues[num].startTime
 }
 
-var waitDisbaleGoing;
+/**
+ * @param {number} num
+ *  @param {number} data
+ */
+function playSound(num, data) {
+    going = true;
+    //ve.audioTrap.
+    //goToScene(data)
+}
+
+var waitDisableGoing;
 
 var status = {
     haComido: false,
     levantamientos: 0,
     levantar: false,
+    escenas: []
 };
 
 function levantar() {
@@ -34,10 +45,12 @@ function levantar() {
 }
 
 /**
- * @param {{ [x: string]: any; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
+ * @param {TextTrackCue} cue
+ * @param {{ [x: string]: any; decision: number; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
  */
-function decision(data) {
-    waitDisbaleGoing = setTimeout(() => {
+function decision(cue, data) {
+
+    waitDisableGoing = setTimeout(() => {
         going = false;
     }, 100);
 
@@ -46,9 +59,19 @@ function decision(data) {
         status.levantamientos = 0;
     }
 
-    if (data['muerte']) {
-        status.levantamientos = 0;
-    } else if (data['levantando']) {
+    if (data['comido']) status.haComido = true;
+    else if (data['noComido']) status.haComido = false;
+
+    console.log(data);
+
+    if(data['decision'] >= 0) {
+        console.log("decision");
+        status.escenas.push(data.decision);
+        es.hideSecuencias(data.decision);
+        es.showSecuencia(data.decision)
+    }
+
+    if (data['levantando']) {
         status.levantamientos++;
         status.levantar = false;
     } else if (data['pesa']) {
@@ -75,22 +98,17 @@ function decision(data) {
                 data['escena1'] = null
             vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
         }
-
-        if (data['musica0']) {
-            if (!data['musica1'])
-                data['musica1'] = null
-            vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
-        }
-    } else vc.hideCards();
+    } else {
+        vc.hideCards();
+    }
 }
-console.log("hola");
+
 $(() => {
 
     textTracks = ve.video.textTracks;
     decisionTrack = textTracks[0];
     decisionCues = decisionTrack.cues;
 
-    // @ts-ignore
     $('.escena').on('click', function (e) {
         var escena = $(this).children().get(0).id;
         var numEscena = parseInt(escena.substring(8));
@@ -118,10 +136,20 @@ $(() => {
                         goToScene(data.next)
                     }
                 };
+            if (data['muerte'])
+                cue.onexit = ve.video.pause
+            else if (data['comida'])
+                cue.onexit = function () {
+                    if (status.haComido) {
+                        goToScene(data.haComido)
+                    } else {
+                        goToScene(data.noHaComido)
+                    }
+                };
             else if (data['next']) {
                 cue.onexit = () => { if (!going) { goToScene(data.next) } }
             }
-            cue.onenter = (e) => decision(data);
+            cue.onenter = (e) => decision(this, data);
         }
         start = decisionCues.length;
     });

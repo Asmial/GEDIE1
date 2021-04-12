@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import * as ve from './videoElements';
 import * as vc from './videoCards';
+import * as sc from './secuencias';
 
 var canHideControls = true;
 /** @type {NodeJS.Timeout} */
@@ -65,6 +66,13 @@ export function togglePlay() {
     }
 }
 
+function rewindScene() {
+    var ultimo = sc.getUltimo();
+    if(ultimo != -1){
+        sc.hideSecuencias(ultimo);
+    }
+}
+
 /**
 * @param {number} volume
 */
@@ -104,6 +112,8 @@ $(() => {
         canHideControls = true;
         hideControlsEvent = setTimeout(hideControls, 1500);
     });
+
+    ve.rewind.on('click', rewindScene);
 
     $(ve.videoContainer).on('mousemove', (e) => {
         if (hideControlsEvent)
