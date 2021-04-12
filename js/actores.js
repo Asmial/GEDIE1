@@ -43,32 +43,27 @@ const actores = [
     }
 ]
 
+var actoresContainers = new Array(actores.length);
+
 /**
- * @param {any} num
+ * @param {number} id
  */
- export function hideActor(num) {
-    for (let i = actores.length - 1; i > num; i--) {
-        secuenciaContainers[i].addClass('d-none');
-        mostrados[i] = false;
-    }
+ export function hideActor(id) {
+    actoresContainers[id].addClass('d-none');
 }
 
 /**
- * @param {any} num
+ * @param {number} id
  */
-export function showActor(num) {
-    if (num < actores.length) {
-        secuenciaContainers[num].removeClass('d-none');
-        mostrados[num] = true;
-        ultimo = -1;
-    }
+export function showActor(id) {
+    actoresContainers[id].removeClass('d-none');
 }
 
 $(() => {
     for (let i in actores) {
         $("#contenedor-actores").append(
-            `<div class="col-24">
-                <div id="actor-container${i}" class="row g-0 border card rounded-5 overflow-hidden flex-md-row mb-4 shadow h-md-250 position-relative text-white bg-dark">
+            `<div id="actor-container${i}" class="col-24 d-none">
+                <div class="row g-0 border card rounded-5 overflow-hidden flex-md-row mb-4 shadow h-md-250 position-relative text-white bg-dark">
                     <div class="col-auto d-lg-block">
                         <img id="" class="" src="img/${actores[i].imagen}.png" width="100">
                     </div>
@@ -80,6 +75,8 @@ $(() => {
                     </div>
                 </div>
             </div>`);
+        actoresContainers[i] = $(`#actor-container${i}`);
     }
+    showActor(0)
 });
 

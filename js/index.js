@@ -8,6 +8,7 @@ import * as vc from './videoCards'
 import * as vt from './videoTracks'
 import * as sc from './secuencias'
 import * as ac from './actores'
+import * as ms from './muslos'
 
 $(() => {
     require("./videoEvents");
@@ -19,24 +20,20 @@ $(() => {
     window['vt'] = vt;
     window['ve'] = ve;
 
-    function desapareceEscena(num) {
-        var str = "#eleccion" + num
-        $(str).hide(500)
-    }
-
-    function apareceEscena(num) {
-        var str = "#eleccion" + num
-        $(str).show(500)
-    }
-
     window['sc'] = sc;
+    window['ac'] = ac;
+    window['ms'] = ms;
+
+    ve.decisionAudio.loop = true;
 
     $(document).on('keypress', function (e) {
         e.preventDefault();
         switch (e.key) {
             case ' ':
             case 'k':
-                vp.togglePlay();
+                if (!ve.playButton.hasClass("d-none")) {
+                    vp.togglePlay();
+                }
                 break;
             default:
                 console.log('has pulsado ' + e.key);

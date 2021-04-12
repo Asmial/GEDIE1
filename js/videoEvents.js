@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import * as ve from './videoElements';
 import * as vp from './videoPlayer';
+import * as ac from './actores';
 
 $(() => {
 
@@ -20,7 +21,7 @@ $(() => {
 
     $(ve.video).on('play', () => {
         var icon = ve.playButton.children();
-        ve.playButton.attr('data-title', 'Pausar (k)');
+        ve.playButton.attr('title', 'Pausar (k)');
         icon.removeClass("mdi-play");
         icon.addClass("mdi-pause");
         vp.waitHideControls(1500);
@@ -28,16 +29,19 @@ $(() => {
 
     $(ve.video).on('pause', () => {
         var icon = ve.playButton.children()
-        ve.playButton.attr('data-title', 'Reproducir (k)')
+        ve.playButton.attr('title', 'Reproducir (k)')
         icon.removeClass("mdi-pause");
         icon.addClass("mdi-play");
         ve.playMain.show(300);
         ve.videoControls.fadeIn(100);
     });
 
+    ve.decisionAudio.volume = ve.video.volume * .4;
+
     $(ve.video).on('volumechange', () => {
         ve.volumeSlider.val(ve.video.volume)
         var icon = ve.muteToggle.children();
+        ve.decisionAudio.volume = ve.video.volume * .4;
 
         if (!ve.video.muted) {
             if (ve.video.volume < .25) {

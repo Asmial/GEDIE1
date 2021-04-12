@@ -1,6 +1,8 @@
 import $ from 'jquery';
 import * as ve from './videoElements';
 import * as es from './secuencias';
+import * as ac from './actores';
+import * as ms from './muslos';
 import * as vc from './videoCards';
 
 /** @type {TextTrackList} */
@@ -9,6 +11,14 @@ export var textTracks;
 export var decisionTrack;
 /** @type {TextTrackCueList} */
 export var decisionCues;
+/** @type {TextTrack} */
+export var infoActorTrack;
+/** @type {TextTrackCueList} */
+export var infoActorCues;
+/** @type {TextTrack} */
+export var infoMuslosTrack;
+/** @type {TextTrackCueList} */
+export var infoMuslosCues;
 
 var going = false;
 
@@ -18,16 +28,6 @@ var going = false;
 export function goToScene(num) {
     going = true;
     ve.video.currentTime = decisionCues[num].startTime
-}
-
-/**
- * @param {number} num
- *  @param {number} data
- */
-function playSound(num, data) {
-    going = true;
-    //ve.audioTrap.
-    //goToScene(data)
 }
 
 var waitDisableGoing;
@@ -46,7 +46,7 @@ function levantar() {
 
 /**
  * @param {TextTrackCue} cue
- * @param {{ [x: string]: any; decision: number; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
+ * @param {{decision: any; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
  */
 function decision(cue, data) {
 
@@ -59,22 +59,27 @@ function decision(cue, data) {
         status.levantamientos = 0;
     }
 
+    ve.muerte.addClass("d-none");
+
     if (data['comido']) status.haComido = true;
     else if (data['noComido']) status.haComido = false;
 
-    console.log(data);
-
-    if(data['decision'] >= 0) {
-        console.log("decision");
-        status.escenas.push(data.decision);
+    if (data['decision'] >= 0) {
         es.hideSecuencias(data.decision);
         es.showSecuencia(data.decision)
     }
 
+    ve.playButton.addClass('d-none');
+
     if (data['levantando']) {
+        ve.decisionAudio.currentTime = 0;
+        ve.decisionAudio.pause();
         status.levantamientos++;
         status.levantar = false;
     } else if (data['pesa']) {
+        ve.video.play();
+        ve.decisionAudio.currentTime = 0;
+        ve.decisionAudio.pause();
         going = false;
         if (vc.getCardsCallbacks()[0] != levantar) {
             vc.setCardsCallbacks(levantar, () => { goToScene(data.seguir) });
@@ -86,6 +91,15 @@ function decision(cue, data) {
         }
         vc.showCards();
     } else if (data['pregunta']) {
+        ve.video.play();
+
+        if (data["nomusica"]) {
+            ve.decisionAudio.currentTime = 0;
+            ve.decisionAudio.pause();
+        } else {
+            ve.decisionAudio.play();
+        }
+
         if (!data['respuesta1'])
             data['respuesta1'] = null
 
@@ -99,27 +113,58 @@ function decision(cue, data) {
             vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
         }
     } else {
+        ve.decisionAudio.currentTime = 0;
+        ve.decisionAudio.pause();
+        ve.playButton.removeClass('d-none');
         vc.hideCards();
     }
 }
 
+
+/**
+ * @param {undefined} cue
+ * @param {{actor: [number]}} data
+ * @param {boolean} entra
+ */
+function actualizarActor(cue, data, entra) {
+    if (data['actor']) {
+        for (let numActor of data.actor) {
+            if (entra) {
+                ac.showActor(numActor);
+            } else {
+                ac.hideActor(numActor);
+            }
+        }
+    }
+}
+
+
+function procesarMuerte() {
+    ve.video.pause(); 
+    ve.playButton.addClass("d-none");
+    ve.muerte.removeClass("d-none");
+}
+
+
 $(() => {
 
     textTracks = ve.video.textTracks;
+
     decisionTrack = textTracks[0];
     decisionCues = decisionTrack.cues;
 
-    $('.escena').on('click', function (e) {
-        var escena = $(this).children().get(0).id;
-        var numEscena = parseInt(escena.substring(8));
-        es.hideSecuencias(numEscena);
-        going = true;
-        goToScene(numEscena);
-    });
+    infoActorTrack = textTracks[1];
+    infoActorTrack.mode = 'hidden';
+    infoActorCues = infoActorTrack.cues;
+
+    infoMuslosTrack = textTracks[2];
+    infoMuslosTrack.mode = 'hidden';
+    infoMuslosCues = infoMuslosTrack.cues;
 
     var start = 0;
 
     decisionTrack.mode = 'hidden';
+
 
     decisionTrack.addEventListener('cuechange', () => {
         for (let i = start; i < decisionCues.length; i++) {
@@ -128,16 +173,16 @@ $(() => {
             const cue = decisionCues[i];
             const data = JSON.parse(cue.text);
 
-            if (data['pesa'])
+            if (data['pesa']) {
                 cue.onexit = function () {
                     if (status.levantamientos >= 4 && status.levantar) {
                         goToScene(data.morirse)
                     } else if (!status.levantar && !going) {
                         goToScene(data.next)
                     }
-                };
-            if (data['muerte'])
-                cue.onexit = ve.video.pause
+                }
+            } else if (data['muerte'])
+                cue.onexit = () => { if (!going) procesarMuerte() };
             else if (data['comida'])
                 cue.onexit = function () {
                     if (status.haComido) {
@@ -152,5 +197,32 @@ $(() => {
             cue.onenter = (e) => decision(this, data);
         }
         start = decisionCues.length;
+    });
+
+    infoActorTrack.addEventListener('cuechange', () => {
+        for (let i = 0; i < infoActorCues.length; i++) {
+            /** @type {VTTCue} */
+            // @ts-ignore
+            const cue = infoActorCues[i];
+            const data = JSON.parse(cue.text);
+
+            if (data['actor']) {
+                cue.onenter = (e) => actualizarActor(this, data, true);
+                cue.onexit = (e) => actualizarActor(this, data, false);
+            }
+        }
+    });
+
+    infoMuslosTrack.addEventListener('cuechange', () => {
+        for (let i = 0; i < infoMuslosCues.length; i++) {
+            /** @type {VTTCue} */
+            // @ts-ignore
+            const cue = infoMuslosCues[i];
+            const data = JSON.parse(cue.text);
+
+            if (data['muslos']) {
+                cue.onenter = (e) => ms.actualizaMuslo(data.muslos);
+            }
+        }
     });
 });

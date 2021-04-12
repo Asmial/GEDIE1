@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 const numMuslos = 8
+var muslosAct = 4
 const muslos = new Array(8);
 
 $(() => {
@@ -14,6 +15,7 @@ $(() => {
         `);
         muslos[i] = $(`#hambre-dot${i}`);
     }
+    setHungerLevel(muslosAct)
 });
 
 /**
@@ -28,6 +30,11 @@ function menosMuslo(num) {
  */
 function masMuslo(num) {
     $(muslos[num]).show(500)
+}
+
+export function actualizaMuslo(num) {
+    muslosAct = muslosAct + num;
+    setHungerLevel(muslosAct)
 }
 
 /**

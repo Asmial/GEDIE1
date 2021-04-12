@@ -3,6 +3,9 @@ import * as ve from './videoElements';
 import * as vc from './videoCards';
 import * as sc from './secuencias';
 
+// @ts-ignore
+require('jquery-ui-bundle');
+
 var canHideControls = true;
 /** @type {NodeJS.Timeout} */
 var hideControlsEvent;
@@ -67,10 +70,9 @@ export function togglePlay() {
 }
 
 function rewindScene() {
-    var ultimo = sc.getUltimo();
-    if(ultimo != -1){
-        sc.hideSecuencias(ultimo);
-    }
+    console.log("rewind");
+    sc.irUltimo();
+    $('[data-toggle="tooltip"]').tooltip('hide');
 }
 
 /**
@@ -100,6 +102,9 @@ function volumeChanged() {
 }
 
 $(() => {
+
+    //ve.rewind.tooltip({trigger: 'manual'});
+
 
     ve.muteToggle.on('click', toggleMute);
 
@@ -147,13 +152,14 @@ $(() => {
     $(ve.videoContainer).on('click touchend', (e) => {
         if (!vc.isCardsShown()) {
             if (e.type == 'click') {
-                togglePlay()
+                if (!ve.playButton.hasClass('d-none'))
+                    togglePlay()
             }
             else {
                 console.log(e.type);
                 e.stopPropagation();
                 e.preventDefault();
-                if (ve.video.ended || ve.video.paused) {
+                if (!ve.playButton.hasClass('d-none') && (ve.video.ended || ve.video.paused)) {
                     ve.video.play();
                 }
                 else if (ve.videoControls.css('display') === 'none') {

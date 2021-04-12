@@ -7,7 +7,7 @@ WEBVTT
 1 - Eleccion 1
 00:05.000 --> 00:09.900
 {
-    "decision": 0,
+    "nomusica": true,
     "next": 1,
     "pregunta": "¿Posponer o desactivar?",
     "respuesta0": "Posponer",
@@ -22,12 +22,11 @@ WEBVTT
 
 3 - Desactivar
 00:20.000 --> 01:04.950
-{ }
+{ "decision": 0 }
 
 4 - Elección 2
 01:05.000 --> 01:09.900
 {
-    "decision": 1,
     "next": 4,
     "pregunta": "¿Qué quieres desayunar?",
     "respuesta0": "Colacao",
@@ -38,16 +37,21 @@ WEBVTT
 
 5 - Nesquik
 01:10.000 --> 01:21.450
-{ "next": 6 }
+{ 
+    "decision": 1,
+    "next": 6
+}
 
 6 - Colacao
 01:25.050 --> 02:19.950
-{ "next": 7 }
+{
+    "decision": 1,
+    "next": 7
+}
 
 7 - Elección Musica
 02:20.000 --> 02:24.900
 {
-    "decision": 2,
     "next": 7,
     "pregunta": "¿Qué quieres que suene?",
     "respuesta0": "Brutal Death Metal",
@@ -58,11 +62,16 @@ WEBVTT
 
 8 - Trap Local
 02:25.000 --> 02:49.950
-{ "next": 10 }
+{ 
+    "decision": 2,
+    "next": 10
+}
 
 9 - Brutal Death Metal
 02:50.000 --> 03:15.000
-{ }
+{
+    "decision": 2
+}
 
 10 - Carrefour
 03:15.100 --> 04:24.950
@@ -71,7 +80,6 @@ WEBVTT
 11 - Elección Comer
 04:25.000 --> 04:29.900
 {
-    "decision": 3,
     "next": 11,
     "pregunta": "¿Quiéres ir a comer?",
     "respuesta0": "Ir a comer",
@@ -82,7 +90,8 @@ WEBVTT
 
 12 - Comer
 04:30.000 --> 05:07.167
-{ 
+{
+    "decision": 3,
     "next": 14,
     "comido": true
 }
@@ -90,6 +99,7 @@ WEBVTT
 13 - No Comer
 05:10.000 --> 05:14.350
 {
+    "decision": 3,
     "next": 14,
     "noComido": true
 }
@@ -101,7 +111,6 @@ WEBVTT
 15 - Entrenamiento
 05:25.000 --> 05:25.900
 {
-    "decision": 4,
     "next": 15,
     "pregunta": "¡A entrenar!",
     "respuesta0": "Levantar 💪🏿",
@@ -120,19 +129,23 @@ WEBVTT
 }
 
 17 - Morirse Pesa
-05:30.000 --> 05:31.300
-{ "muerte": true }
+05:30.000 --> 05:36.300
+{
+    "decision": 4,
+    "muerte": true
+}
 
 18 - Salir
 05:40.000 --> 05:51.400
 {
+    "decision": 4,
     "comida": true,
     "haComido": 20,
     "noHaComido": 19
 }
 
 19 - Morirse Hambre
-05:51.400 --> 06:03.600
+05:51.400 --> 06:04.000
 {
     "muerte": true
 }
@@ -145,7 +158,6 @@ WEBVTT
 21 - Eleccion Camino
 06:15.000 --> 06:19.900
 {
-    "decision": 5,
     "next": 21,
     "pregunta": "¿Por dónde quiéres ir?",
     "respuesta0": "Izquierda",
@@ -156,12 +168,13 @@ WEBVTT
 
 22 - Derecha
 06:20.000 --> 07:05.000
-{ }
+{
+    "decision": 5
+}
 
 23 - Eleccion Delincuentes
 07:05.000 --> 07:09.900
 {
-    "decision": 6,
     "next": 23,
     "pregunta": "¿Qué utilizas contra ellos?",
     "respuesta0": "La palabra",
@@ -172,16 +185,22 @@ WEBVTT
 
 24 - Palabra
 07:10.000 --> 07:28.050
-{ "muerte": true }
+{
+    "decision": 6,
+    "muerte": true
+}
 
 25 - Violencia
 07:30.000 --> 08:02.533
-{ "next": 27 }
+{
+    "decision": 6,
+    "next": 27
+}
 
 
 26 - Camino duelo
 08:05.000 --> 08:10.000
-{ }
+{ "decision": 5 }
 
 27 - Duelo
 08:10.000 --> 08:50.000
@@ -190,7 +209,6 @@ WEBVTT
 28 - Eleccion arma
 08:50.000 --> 08:54.900
 {
-    "decision": 7,
     "next": 28,
     "pregunta": "¿Qué utilizas contra Milan?",
     "respuesta0": "Pañuelos",
@@ -200,9 +218,15 @@ WEBVTT
 }
 
 29 - Pañuelos
-08:55.000 --> 09:29.000
-{ "muerte": true }
+08:55.000 --> 09:29.500
+{
+    "decision": 7,
+    "muerte": true
+}
 
 30 - Guantes
 09:30.000 --> 10:25.900
-{ "fin": true }
+{
+    "decision": 7,
+    "fin": true
+}

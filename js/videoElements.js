@@ -2,8 +2,6 @@ import $ from 'jquery';
 
 /** @type {HTMLVideoElement} */
 export var video;
-export var audioTrap;
-export var audioMetal;
 /** @type {JQuery<HTMLElement>} */
 export var videoControls;
 /** @type {JQuery<HTMLElement>} */
@@ -22,12 +20,16 @@ export var playMain;
 export var rewind;
 /** @type {JQuery<HTMLElement>} */
 export var fastForward;
+/** @type {HTMLVideoElement} */
+export var decisionAudio;
+/** @type {JQuery<HTMLElement>} */
+export var muerte;
 
 $(() => {
     // @ts-ignore
-    video = $('#video').get(0)
-    audioTrap = $('#video').get(1);
-    audioMetal = $('#video').get(2);
+    video = $('#video').get(0);
+    // @ts-ignore
+    decisionAudio = $("#audio-decision").get(0);
     videoControls = $('#video-controls');
     playButton = $('#play-button');
     volumeSlider = $('#volume-slider');
@@ -35,6 +37,8 @@ $(() => {
     fullscreenToggle = $("#fullscreen-toggle");
     muteToggle = $("#mute-toggle");
     playMain = $("#play-main");
-    rewind = $("#play-rewind")
-    fastForward = $("#play-fast-forward")
-})
+    rewind = $("#rewind-scene");
+    fastForward = $("#play-fast-forward");
+    console.log("testmuerte");
+    muerte = $("#muerte-display");
+});

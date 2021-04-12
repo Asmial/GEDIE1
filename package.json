@@ -20,6 +20,8 @@
     "@mdi/font": "^5.9.55",
     "@popperjs/core": "^2.9.1",
     "bootstrap": "^5.0.0-beta2",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "jquery-ui": "^1.12.1",
+    "jquery-ui-bundle": "^1.12.1-migrate"
   }
 }
