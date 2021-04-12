@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     target: 'web',
-    entry: './js/index.js',
+    entry: './client/index.js',
     mode: 'development',
     watch: true,
     output: {

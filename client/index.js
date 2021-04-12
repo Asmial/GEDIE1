@@ -11,10 +11,6 @@ import * as ac from './actores'
 import * as ms from './muslos'
 
 $(() => {
-    require("./videoEvents");
-    require("./secuencias");
-    require("./actores");
-    require("./videoTracks")
 
     window['vc'] = vc;
     window['vt'] = vt;
