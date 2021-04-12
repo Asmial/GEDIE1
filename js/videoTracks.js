@@ -221,7 +221,7 @@ $(() => {
             const data = JSON.parse(cue.text);
 
             if (data['muslos']) {
-                cue.onenter = (e) => ms.actualizaMuslo(data.muslos);
+                cue.onenter = (e) => ms.setHungerLevel(data.muslos);
             }
         }
     });

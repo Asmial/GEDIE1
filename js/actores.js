@@ -65,12 +65,13 @@ $(() => {
             `<div id="actor-container${i}" class="col-24 d-none">
                 <div class="row g-0 border card rounded-5 overflow-hidden flex-md-row mb-4 shadow h-md-250 position-relative text-white bg-dark">
                     <div class="col-auto d-lg-block">
-                        <img id="" class="" src="img/${actores[i].imagen}.png" width="100">
+                        <img id="" class="" src="img/${actores[i].imagen}.png" width="100" height="118">
                     </div>
                     <div class="col p-8 d-flex flex-column position-static">
                         <div class="card-body">
-                            <h5 class="card-title">${actores[i].nombre}</h5>
-                            <p class="card-text">${actores[i].personaje}</p>
+                        <p>
+                            <h4 class="card-title">${actores[i].nombre}</h4>
+                            <h5 class="card-text">${actores[i].personaje}</h5>
                         </div>
                     </div>
                 </div>
