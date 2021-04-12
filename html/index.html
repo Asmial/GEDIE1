@@ -7,7 +7,8 @@
     <title>Bandersdot</title>
     <script src="bundle/bundle.js"></script>
     <link href="bundle/bundle.css" rel="stylesheet" />
-    <link rel="shorcut icon" type="image/png" href="img/Dicon.svg">
+    <link rel="shorcut icon" type="image/svg" href="img/iconoWeb.svg">
+    <link rel="shorcut icon" type="image/png" href="img/iconoWeb.png">
 </head>
 
 <body>
@@ -16,10 +17,13 @@
     </noscript>
 
     <header class="p-3 border-bottom bg-dark text-white mb-3">
-        <div class="container-fluid d-grid gap-3 align-items-center">
-            <div class="d-flex align-items-center">
+        <div class="d-flex">
+            <div class="d-flex align-items-center flex-fill">
                 <img class="bi me-4" src="img/iconoWeb.svg" width="80">
                 <h1>Bandersdot</h1>
+            </div>
+            <div class="d-flex align-items-center">
+                <h1>GDIE 2021</h1>
             </div>
         </div>
     </header>
@@ -29,8 +33,8 @@
             <div class="col-lg-16 col-md-24 h-100 ">
                 <div class="bg-light border rounded-3 overflow-hidden mb-3">
                     <div class="position-relative p-0 noselect" id="video-container" style="margin-bottom: -5px;">
-                        <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/a_mimir.png">
-                            <source src="video/video.mp4" type="video/mp4" />
+                        <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/poster.png">
+                            <source src="video/video.mp4" type="video/mp4" id="defsource" />
 
                             <track default label="elecciones" kind="subtitles" srclang="en"
                                 src="video/elecciones.vtt" />
@@ -70,18 +74,18 @@
                             </div>
                         </div>
 
-                        <div class="top-50 start-50 translate-middle position-absolute text-white d-none" style="width: 75hw;"
-                            id="muerte-display">
+                        <div class="top-50 start-50 translate-middle position-absolute text-white d-none"
+                            style="width: 75hw;" id="muerte-display">
                             <p class="text-center" style="font-size: 4vw;"><b>Has muerto</b></p>
                             <p class="text-center" style="font-size: 2vw;">Parece que has tomado una mala decisión, usa
                                 el botón <i class="mdi mdi-rewind"></i> o elige una decisión anterior mediante el
                                 selector de escenas de abajo para escoger otro camino.</p>
                         </div>
 
-                        <div class="top-50 start-50 translate-middle position-absolute text-white d-none" style="width: 75hw;"
-                            id="fin-display">
+                        <div class="top-50 start-50 translate-middle position-absolute text-white d-none"
+                            style="width: 75hw;" id="fin-display">
                             <p class="text-center" style="font-size: 4vw;"><b>FIN</b></p>
-                            <p class="text-center" style="font-size: 1vw;">¡Felicidades!, has tomado las decisiones
+                            <p class="text-center" style="font-size: 2vw;">¡Felicidades!, has tomado las decisiones
                                 correctas para llegar al final de tu aventura, ahora puedes usar
                                 el botón <i class="mdi mdi-rewind"></i> o eligir una decisión anterior mediante el
                                 selector de escenas de abajo y probar otros caminos de la historia.</p>
@@ -102,15 +106,9 @@
                                         style="cursor: pointer; width: 44%;" />
                                 </div>
                                 <div class="col-8 text-center">
-                                    <!-- <button id="play-rewind" class="fs-3 text-white"><i class="mdi mdi-rewind-5"
-                                            data-toggle="tooltip" data-placement="top"
-                                            title="retroceder 5 segundos"></i></button> -->
                                     <button id="rewind-scene" class="fs-2 text-white" title="retroceder una decisión"
                                         data-placement="top" data-toggle="tooltip"><i
                                             class="mdi mdi-rewind"></i></button>
-                                    <!-- <button id="play-fast-forward" class="fs-3 text-white"><i
-                                            class="mdi mdi-fast-forward-5" data-toggle="tooltip" data-placement="top"
-                                            title="avanzar 5 segundos"></i></button> -->
                                 </div>
                                 <div class="col-8 text-end">
                                     <button id="fullscreen-toggle" class="fs-2 text-white">
@@ -125,12 +123,12 @@
 
             <div class="col-lg-8 col-md-24 mb-3">
                 <div class="p-0 w-100 h-100 bg-light border rounded-3" id="side">
-                    <div class="text-center py-3 mb-4 border-bottom bg-danger">
+                    <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
                         <h3>Indicador de hambre</h3>
                     </div>
                     <div id="hambre-dot" class="d-flex justify-content-around">
                     </div>
-                    <div class="text-center py-3 mb-4 border-bottom bg-danger">
+                    <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
                         <h3>Reparto</h3>
                     </div>
 
@@ -145,10 +143,13 @@
         <div class="row my-2">
             <div class="col-24">
                 <div class="card">
-                    <div class="text-center py-3 mb-4 border-bottom bg-danger">
+                    <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
                         <h3>Selector de escenas</h3>
                     </div>
                     <div class="container-fluid">
+                        <div id="noescenas">
+                            <p class="text-center">Aquí aparecerán las escenas que veas para poder volver atrás</p>
+                        </div>
                         <div class="row" id="contenedor-secuencias">
                         </div>
                     </div>
@@ -159,9 +160,11 @@
 
 </body>
 
-<footer>
-    <p>Author: Hege Refsnes</p>
-    <p><a href="mailto:hege@example.com">hege@example.com</a></p>
-  </footer>
+
+<footer class="page-footer font-small blue pt-4">
+    <div class="footer-copyright text-center py-3">© 2021 Copyright:
+        <a href="http://gedie.necrospace.rocks/"> gedie.necrospace.rocks</a>
+    </div>
+</footer>
 
 </html>

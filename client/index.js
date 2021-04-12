@@ -11,6 +11,7 @@ import * as ac from './actores'
 import * as ms from './muslos'
 
 $(() => {
+    require('./videoEvents');
 
     window['vc'] = vc;
     window['vt'] = vt;
@@ -21,6 +22,7 @@ $(() => {
     window['ms'] = ms;
 
     ve.decisionAudio.loop = true;
+    
 
     $(document).on('keypress', function (e) {
         e.preventDefault();

@@ -26,8 +26,9 @@ var going = false;
  * @param {number} num
  */
 export function goToScene(num) {
+    clearTimeout(waitDisableGoing);
     going = true;
-    ve.video.currentTime = decisionCues[num].startTime
+    ve.video.currentTime = decisionCues[num].startTime;
 }
 
 var waitDisableGoing;
@@ -60,6 +61,7 @@ function decision(cue, data) {
     }
 
     ve.muerte.addClass("d-none");
+    ve.fin.addClass("d-none");
 
     if (data['comido']) status.haComido = true;
     else if (data['noComido']) status.haComido = false;
@@ -69,18 +71,18 @@ function decision(cue, data) {
         es.showSecuencia(data.decision)
     }
 
-    ve.playButton.addClass('d-none');
-
     if (data['levantando']) {
+        ve.playButton.addClass('d-none');
         ve.decisionAudio.currentTime = 0;
         ve.decisionAudio.pause();
         status.levantamientos++;
         status.levantar = false;
     } else if (data['pesa']) {
-        ve.video.play();
-        ve.decisionAudio.currentTime = 0;
+        ve.playButton.addClass('d-none');
         ve.decisionAudio.pause();
-        going = false;
+        ve.decisionAudio.currentTime = 0;
+        ve.video.play();
+        
         if (vc.getCardsCallbacks()[0] != levantar) {
             vc.setCardsCallbacks(levantar, () => { goToScene(data.seguir) });
         }
@@ -91,6 +93,7 @@ function decision(cue, data) {
         }
         vc.showCards();
     } else if (data['pregunta']) {
+        ve.playButton.addClass('d-none');
         ve.video.play();
 
         if (data["nomusica"]) {
@@ -140,9 +143,15 @@ function actualizarActor(cue, data, entra) {
 
 
 function procesarMuerte() {
-    ve.video.pause(); 
+    ve.video.pause();
     ve.playButton.addClass("d-none");
     ve.muerte.removeClass("d-none");
+}
+
+function procesarFin () {
+    ve.video.pause();
+    ve.playButton.addClass("d-none");
+    ve.fin.removeClass("d-none");
 }
 
 
@@ -176,13 +185,17 @@ $(() => {
             if (data['pesa']) {
                 cue.onexit = function () {
                     if (status.levantamientos >= 4 && status.levantar) {
-                        goToScene(data.morirse)
+                        goToScene(data.morirse);
+                    } else if (status.levantar) {
+                        going = true;
                     } else if (!status.levantar && !going) {
                         goToScene(data.next)
                     }
                 }
             } else if (data['muerte'])
                 cue.onexit = () => { if (!going) procesarMuerte() };
+            else if (data['fin'])
+                cue.onexit = () => { if (!going) procesarFin() };
             else if (data['comida'])
                 cue.onexit = function () {
                     if (status.haComido) {

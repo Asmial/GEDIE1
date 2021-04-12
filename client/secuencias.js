@@ -15,6 +15,9 @@ export function hideSecuencias(num) {
         secuenciaContainers[i].addClass('d-none');
         mostrados[i] = false;
     }
+    if(num <= 0) {
+        $("#noescenas").removeClass("d-none");
+    }
 }
 
 /**
@@ -22,6 +25,7 @@ export function hideSecuencias(num) {
  */
 export function showSecuencia(num) {
     if (num < numSecuencias) {
+        $("#noescenas").addClass("d-none");
         secuenciaContainers[num].removeClass('d-none');
         mostrados[num] = true;
     }

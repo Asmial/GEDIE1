@@ -7,7 +7,7 @@ const muslos = new Array(8);
 $(() => {
     for (let i = 0; i < numMuslos; i++) {
         $('#hambre-dot').append(`
-        <div class="position-relative">
+        <div class="position-relative mb-3">
             <img id="hambre-dot${i}" class="position-absolute top-50 start-50 translate-middle"
                 src="img/hungerIcon.png" height="37">
             <img class="image1" src="img/hungerEmptyIcon.png" height="37">

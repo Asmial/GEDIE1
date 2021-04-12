@@ -19,16 +19,16 @@ $(() => {
         }
     });
 
-    $(ve.video).on('play', () => {
+    ve.video.onplay = () => {
         var icon = ve.playButton.children();
         ve.playButton.attr('title', 'Pausar (k)');
         icon.removeClass("mdi-play");
         icon.addClass("mdi-pause");
         vp.waitHideControls(1500);
-    });
+    };
 
     $(ve.video).on('pause', () => {
-        var icon = ve.playButton.children()
+        var icon = ve.playButton.children();
         ve.playButton.attr('title', 'Reproducir (k)')
         icon.removeClass("mdi-pause");
         icon.addClass("mdi-play");

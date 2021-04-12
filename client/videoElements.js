@@ -24,6 +24,8 @@ export var fastForward;
 export var decisionAudio;
 /** @type {JQuery<HTMLElement>} */
 export var muerte;
+/** @type {JQuery<HTMLElement>} */
+export var fin;
 
 $(() => {
     // @ts-ignore
@@ -41,4 +43,5 @@ $(() => {
     fastForward = $("#play-fast-forward");
     console.log("testmuerte");
     muerte = $("#muerte-display");
+    fin = $("#fin-display");
 });

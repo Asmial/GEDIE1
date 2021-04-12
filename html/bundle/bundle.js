@@ -125,7 +125,7 @@ const muslos = new Array(8);
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     for (let i = 0; i < numMuslos; i++) {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()('#hambre-dot').append(`
-        <div class="position-relative">
+        <div class="position-relative mb-3">
             <img id="hambre-dot${i}" class="position-absolute top-50 start-50 translate-middle"
                 src="img/hungerIcon.png" height="37">
             <img class="image1" src="img/hungerEmptyIcon.png" height="37">
@@ -208,6 +208,9 @@ function hideSecuencias(num) {
         secuenciaContainers[i].addClass('d-none');
         mostrados[i] = false;
     }
+    if(num <= 0) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#noescenas").removeClass("d-none");
+    }
 }
 
 /**
@@ -215,6 +218,7 @@ function hideSecuencias(num) {
  */
 function showSecuencia(num) {
     if (num < numSecuencias) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#noescenas").addClass("d-none");
         secuenciaContainers[num].removeClass('d-none');
         mostrados[num] = true;
     }
@@ -396,7 +400,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "rewind": () => (/* binding */ rewind),
 /* harmony export */   "fastForward": () => (/* binding */ fastForward),
 /* harmony export */   "decisionAudio": () => (/* binding */ decisionAudio),
-/* harmony export */   "muerte": () => (/* binding */ muerte)
+/* harmony export */   "muerte": () => (/* binding */ muerte),
+/* harmony export */   "fin": () => (/* binding */ fin)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -426,6 +431,8 @@ var fastForward;
 var decisionAudio;
 /** @type {JQuery<HTMLElement>} */
 var muerte;
+/** @type {JQuery<HTMLElement>} */
+var fin;
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     // @ts-ignore
@@ -443,6 +450,94 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     fastForward = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#play-fast-forward");
     console.log("testmuerte");
     muerte = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#muerte-display");
+    fin = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#fin-display");
+});
+
+/***/ }),
+
+/***/ "./client/videoEvents.js":
+/*!*******************************!*\
+  !*** ./client/videoEvents.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _videoElements__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./videoElements */ "./client/videoElements.js");
+/* harmony import */ var _videoPlayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./videoPlayer */ "./client/videoPlayer.js");
+/* harmony import */ var _actores__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actores */ "./client/actores.js");
+
+
+
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            var icon = _videoElements__WEBPACK_IMPORTED_MODULE_1__.fullscreenToggle.children()
+            _videoElements__WEBPACK_IMPORTED_MODULE_1__.fullscreenToggle.attr('data-title', 'Pantalla Completa (f)');
+            icon.removeClass("mdi-fullscreen");
+            icon.addClass("mdi-fullscreen-exit");
+        } else {
+            var icon = _videoElements__WEBPACK_IMPORTED_MODULE_1__.fullscreenToggle.children()
+            _videoElements__WEBPACK_IMPORTED_MODULE_1__.fullscreenToggle.attr('data-title', 'Salir de Pantalla Completa (f)');
+            icon.removeClass("mdi-fullscreen-exit");
+            icon.addClass("mdi-fullscreen");
+        }
+    });
+
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.onplay = () => {
+        var icon = _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.children();
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.attr('title', 'Pausar (k)');
+        icon.removeClass("mdi-play");
+        icon.addClass("mdi-pause");
+        _videoPlayer__WEBPACK_IMPORTED_MODULE_2__.waitHideControls(1500);
+    };
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.video).on('pause', () => {
+        var icon = _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.children();
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.attr('title', 'Reproducir (k)')
+        icon.removeClass("mdi-pause");
+        icon.addClass("mdi-play");
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.playMain.show(300);
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.videoControls.fadeIn(100);
+    });
+
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.decisionAudio.volume = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.volume * .4;
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.video).on('volumechange', () => {
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.volumeSlider.val(_videoElements__WEBPACK_IMPORTED_MODULE_1__.video.volume)
+        var icon = _videoElements__WEBPACK_IMPORTED_MODULE_1__.muteToggle.children();
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.decisionAudio.volume = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.volume * .4;
+
+        if (!_videoElements__WEBPACK_IMPORTED_MODULE_1__.video.muted) {
+            if (_videoElements__WEBPACK_IMPORTED_MODULE_1__.video.volume < .25) {
+                icon.removeClass(icon.get(0).classList[1]);
+                icon.addClass('mdi-volume-low');
+            } else if (_videoElements__WEBPACK_IMPORTED_MODULE_1__.video.volume < .75) {
+                icon.removeClass(icon.get(0).classList[1]);
+                icon.addClass('mdi-volume-medium');
+            } else {
+                icon.removeClass(icon.get(0).classList[1]);
+                icon.addClass('mdi-volume-high');
+            }
+        }
+    });
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.rewind).on('click', () => {
+        var ct = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime;
+
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime - 5;
+    });
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.fastForward).on('click', () => {
+        var ct = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime;
+
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime + 5;
+    });
 });
 
 /***/ }),
@@ -712,8 +807,9 @@ var going = false;
  * @param {number} num
  */
 function goToScene(num) {
+    clearTimeout(waitDisableGoing);
     going = true;
-    _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = decisionCues[num].startTime
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = decisionCues[num].startTime;
 }
 
 var waitDisableGoing;
@@ -746,6 +842,7 @@ function decision(cue, data) {
     }
 
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.muerte.addClass("d-none");
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.fin.addClass("d-none");
 
     if (data['comido']) status.haComido = true;
     else if (data['noComido']) status.haComido = false;
@@ -755,18 +852,18 @@ function decision(cue, data) {
         _secuencias__WEBPACK_IMPORTED_MODULE_2__.showSecuencia(data.decision)
     }
 
-    _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.addClass('d-none');
-
     if (data['levantando']) {
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.addClass('d-none');
         _videoElements__WEBPACK_IMPORTED_MODULE_1__.decisionAudio.currentTime = 0;
         _videoElements__WEBPACK_IMPORTED_MODULE_1__.decisionAudio.pause();
         status.levantamientos++;
         status.levantar = false;
     } else if (data['pesa']) {
-        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.play();
-        _videoElements__WEBPACK_IMPORTED_MODULE_1__.decisionAudio.currentTime = 0;
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.addClass('d-none');
         _videoElements__WEBPACK_IMPORTED_MODULE_1__.decisionAudio.pause();
-        going = false;
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.decisionAudio.currentTime = 0;
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.play();
+        
         if (_videoCards__WEBPACK_IMPORTED_MODULE_5__.getCardsCallbacks()[0] != levantar) {
             _videoCards__WEBPACK_IMPORTED_MODULE_5__.setCardsCallbacks(levantar, () => { goToScene(data.seguir) });
         }
@@ -777,6 +874,7 @@ function decision(cue, data) {
         }
         _videoCards__WEBPACK_IMPORTED_MODULE_5__.showCards();
     } else if (data['pregunta']) {
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.addClass('d-none');
         _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.play();
 
         if (data["nomusica"]) {
@@ -826,9 +924,15 @@ function actualizarActor(cue, data, entra) {
 
 
 function procesarMuerte() {
-    _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.pause(); 
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.pause();
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.addClass("d-none");
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.muerte.removeClass("d-none");
+}
+
+function procesarFin () {
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.pause();
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.playButton.addClass("d-none");
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.fin.removeClass("d-none");
 }
 
 
@@ -862,13 +966,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
             if (data['pesa']) {
                 cue.onexit = function () {
                     if (status.levantamientos >= 4 && status.levantar) {
-                        goToScene(data.morirse)
+                        goToScene(data.morirse);
+                    } else if (status.levantar) {
+                        going = true;
                     } else if (!status.levantar && !going) {
                         goToScene(data.next)
                     }
                 }
             } else if (data['muerte'])
                 cue.onexit = () => { if (!going) procesarMuerte() };
+            else if (data['fin'])
+                cue.onexit = () => { if (!going) procesarFin() };
             else if (data['comida'])
                 cue.onexit = function () {
                     if (status.haComido) {
@@ -38696,6 +38804,7 @@ window['jQuery'] = window['$'] = (jquery__WEBPACK_IMPORTED_MODULE_0___default())
 
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
+    __webpack_require__(/*! ./videoEvents */ "./client/videoEvents.js");
 
     window['vc'] = _videoCards__WEBPACK_IMPORTED_MODULE_5__;
     window['vt'] = _videoTracks__WEBPACK_IMPORTED_MODULE_6__;
@@ -38706,6 +38815,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     window['ms'] = _muslos__WEBPACK_IMPORTED_MODULE_2__;
 
     _videoElements__WEBPACK_IMPORTED_MODULE_3__.decisionAudio.loop = true;
+    
 
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('keypress', function (e) {
         e.preventDefault();
