@@ -401,7 +401,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "fastForward": () => (/* binding */ fastForward),
 /* harmony export */   "decisionAudio": () => (/* binding */ decisionAudio),
 /* harmony export */   "muerte": () => (/* binding */ muerte),
-/* harmony export */   "fin": () => (/* binding */ fin)
+/* harmony export */   "fin": () => (/* binding */ fin),
+/* harmony export */   "subs": () => (/* binding */ subs)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -433,6 +434,8 @@ var decisionAudio;
 var muerte;
 /** @type {JQuery<HTMLElement>} */
 var fin;
+/** @type {JQuery<HTMLElement>} */
+var subs;
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     // @ts-ignore
@@ -448,9 +451,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     playMain = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#play-main");
     rewind = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rewind-scene");
     fastForward = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#play-fast-forward");
-    console.log("testmuerte");
     muerte = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#muerte-display");
     fin = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#fin-display");
+    subs = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#subtitles-toggle");
 });
 
 /***/ }),
@@ -557,7 +560,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "toggleMute": () => (/* binding */ toggleMute),
 /* harmony export */   "toggleFullScreen": () => (/* binding */ toggleFullScreen),
 /* harmony export */   "togglePlay": () => (/* binding */ togglePlay),
-/* harmony export */   "setVolume": () => (/* binding */ setVolume)
+/* harmony export */   "setVolume": () => (/* binding */ setVolume),
+/* harmony export */   "toggleSubs": () => (/* binding */ toggleSubs)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -667,6 +671,19 @@ function volumeChanged() {
     }
 }
 
+function toggleSubs() {
+    var icon = _videoElements__WEBPACK_IMPORTED_MODULE_1__.subs.children();
+    if (_videoElements__WEBPACK_IMPORTED_MODULE_1__.video.textTracks[3].mode === 'showing') {
+        icon.removeClass('mdi-subtitles');
+        icon.addClass('mdi-subtitles-outline');
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.textTracks[3].mode = 'hidden';
+    } else {
+        icon.removeClass('mdi-subtitles-outline');
+        icon.addClass('mdi-subtitles');
+        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.textTracks[3].mode = 'showing';
+    }
+}
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
 
     //ve.rewind.tooltip({trigger: 'manual'});
@@ -749,6 +766,19 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.videoControls.on('click dblclick touchend', (e) => {
         e.stopPropagation();
     });
+
+    (function updateSubs() {
+        var icon = _videoElements__WEBPACK_IMPORTED_MODULE_1__.subs.children();
+        if (_videoElements__WEBPACK_IMPORTED_MODULE_1__.video.textTracks[3].mode === 'showing') {
+            icon.removeClass('mdi-subtitles-outline');
+            icon.addClass('mdi-subtitles');
+        } else {
+            icon.removeClass('mdi-subtitles');
+            icon.addClass('mdi-subtitles-outline');
+        }
+    })();
+
+    _videoElements__WEBPACK_IMPORTED_MODULE_1__.subs.on('click', toggleSubs);
 })
 
 
@@ -770,6 +800,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "infoActorCues": () => (/* binding */ infoActorCues),
 /* harmony export */   "infoMuslosTrack": () => (/* binding */ infoMuslosTrack),
 /* harmony export */   "infoMuslosCues": () => (/* binding */ infoMuslosCues),
+/* harmony export */   "subtitulosTrack": () => (/* binding */ subtitulosTrack),
+/* harmony export */   "subtitulosCues": () => (/* binding */ subtitulosCues),
 /* harmony export */   "goToScene": () => (/* binding */ goToScene)
 /* harmony export */ });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
@@ -800,6 +832,10 @@ var infoActorCues;
 var infoMuslosTrack;
 /** @type {TextTrackCueList} */
 var infoMuslosCues;
+/** @type {TextTrack} */
+var subtitulosTrack;
+/** @type {TextTrackCueList} */
+var subtitulosCues;
 
 var going = false;
 
@@ -951,13 +987,33 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
     infoMuslosTrack.mode = 'hidden';
     infoMuslosCues = infoMuslosTrack.cues;
 
-    var start = 0;
+    subtitulosTrack = textTracks[3];
+    subtitulosTrack.mode = 'showing';
+    subtitulosCues = infoMuslosTrack.cues;
+
+    var dectrackstart = 0;
+    var mustrackstart = 0;
+    var inftrackstart = 0;
+    var subtrackstart = 0;
 
     decisionTrack.mode = 'hidden';
 
+    subtitulosTrack.addEventListener('cuechange', function () {
+        for (let i = 0; i < subtitulosCues.length; i++) {
+            /** @type {VTTCue} */
+            // @ts-ignore
+            const cue = subtitulosCues[i];
+            cue.line = 15;
+            cue.align = 'center';
+            cue.vertical = 'lr';
+            cue.positionAlign = 'center';
+            console.log(cue);
+        }
+        subtrackstart = subtitulosCues.length;
+    })
 
     decisionTrack.addEventListener('cuechange', () => {
-        for (let i = start; i < decisionCues.length; i++) {
+        for (let i = dectrackstart; i < decisionCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
             const cue = decisionCues[i];
@@ -990,11 +1046,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
             }
             cue.onenter = (e) => decision(undefined, data);
         }
-        start = decisionCues.length;
+        dectrackstart = decisionCues.length;
     });
 
     infoActorTrack.addEventListener('cuechange', () => {
-        for (let i = 0; i < infoActorCues.length; i++) {
+        for (let i = inftrackstart; i < infoActorCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
             const cue = infoActorCues[i];
@@ -1005,10 +1061,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                 cue.onexit = (e) => actualizarActor(undefined, data, false);
             }
         }
+        inftrackstart = infoActorCues.length;
     });
 
     infoMuslosTrack.addEventListener('cuechange', () => {
-        for (let i = 0; i < infoMuslosCues.length; i++) {
+        for (let i = mustrackstart; i < infoMuslosCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
             const cue = infoMuslosCues[i];
@@ -1018,7 +1075,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                 cue.onenter = (e) => _muslos__WEBPACK_IMPORTED_MODULE_4__.setHungerLevel(data.muslos);
             }
         }
+        mustrackstart = infoMuslosCues.length;
     });
+
 });
 
 /***/ }),
@@ -38825,6 +38884,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                 if (!_videoElements__WEBPACK_IMPORTED_MODULE_3__.playButton.hasClass("d-none")) {
                     _videoPlayer__WEBPACK_IMPORTED_MODULE_4__.togglePlay();
                 }
+                break;
+            case 'f':
+                _videoPlayer__WEBPACK_IMPORTED_MODULE_4__.toggleFullScreen();
+                break;
+            case 'c':
+                _videoPlayer__WEBPACK_IMPORTED_MODULE_4__.toggleSubs();
                 break;
             default:
                 console.log('has pulsado ' + e.key);

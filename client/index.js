@@ -33,6 +33,12 @@ $(() => {
                     vp.togglePlay();
                 }
                 break;
+            case 'f':
+                vp.toggleFullScreen();
+                break;
+            case 'c':
+                vp.toggleSubs();
+                break;
             default:
                 console.log('has pulsado ' + e.key);
         }

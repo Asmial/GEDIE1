@@ -19,6 +19,10 @@ export var infoActorCues;
 export var infoMuslosTrack;
 /** @type {TextTrackCueList} */
 export var infoMuslosCues;
+/** @type {TextTrack} */
+export var subtitulosTrack;
+/** @type {TextTrackCueList} */
+export var subtitulosCues;
 
 var going = false;
 
@@ -170,13 +174,33 @@ $(() => {
     infoMuslosTrack.mode = 'hidden';
     infoMuslosCues = infoMuslosTrack.cues;
 
-    var start = 0;
+    subtitulosTrack = textTracks[3];
+    subtitulosTrack.mode = 'showing';
+    subtitulosCues = infoMuslosTrack.cues;
+
+    var dectrackstart = 0;
+    var mustrackstart = 0;
+    var inftrackstart = 0;
+    var subtrackstart = 0;
 
     decisionTrack.mode = 'hidden';
 
+    subtitulosTrack.addEventListener('cuechange', function () {
+        for (let i = 0; i < subtitulosCues.length; i++) {
+            /** @type {VTTCue} */
+            // @ts-ignore
+            const cue = subtitulosCues[i];
+            cue.line = 15;
+            cue.align = 'center';
+            cue.vertical = 'lr';
+            cue.positionAlign = 'center';
+            console.log(cue);
+        }
+        subtrackstart = subtitulosCues.length;
+    })
 
     decisionTrack.addEventListener('cuechange', () => {
-        for (let i = start; i < decisionCues.length; i++) {
+        for (let i = dectrackstart; i < decisionCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
             const cue = decisionCues[i];
@@ -209,11 +233,11 @@ $(() => {
             }
             cue.onenter = (e) => decision(this, data);
         }
-        start = decisionCues.length;
+        dectrackstart = decisionCues.length;
     });
 
     infoActorTrack.addEventListener('cuechange', () => {
-        for (let i = 0; i < infoActorCues.length; i++) {
+        for (let i = inftrackstart; i < infoActorCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
             const cue = infoActorCues[i];
@@ -224,10 +248,11 @@ $(() => {
                 cue.onexit = (e) => actualizarActor(this, data, false);
             }
         }
+        inftrackstart = infoActorCues.length;
     });
 
     infoMuslosTrack.addEventListener('cuechange', () => {
-        for (let i = 0; i < infoMuslosCues.length; i++) {
+        for (let i = mustrackstart; i < infoMuslosCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
             const cue = infoMuslosCues[i];
@@ -237,5 +262,7 @@ $(() => {
                 cue.onenter = (e) => ms.setHungerLevel(data.muslos);
             }
         }
+        mustrackstart = infoMuslosCues.length;
     });
+
 });

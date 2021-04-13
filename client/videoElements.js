@@ -26,6 +26,8 @@ export var decisionAudio;
 export var muerte;
 /** @type {JQuery<HTMLElement>} */
 export var fin;
+/** @type {JQuery<HTMLElement>} */
+export var subs;
 
 $(() => {
     // @ts-ignore
@@ -41,7 +43,7 @@ $(() => {
     playMain = $("#play-main");
     rewind = $("#rewind-scene");
     fastForward = $("#play-fast-forward");
-    console.log("testmuerte");
     muerte = $("#muerte-display");
     fin = $("#fin-display");
+    subs = $("#subtitles-toggle");
 });

@@ -101,6 +101,19 @@ function volumeChanged() {
     }
 }
 
+export function toggleSubs() {
+    var icon = ve.subs.children();
+    if (ve.video.textTracks[3].mode === 'showing') {
+        icon.removeClass('mdi-subtitles');
+        icon.addClass('mdi-subtitles-outline');
+        ve.video.textTracks[3].mode = 'hidden';
+    } else {
+        icon.removeClass('mdi-subtitles-outline');
+        icon.addClass('mdi-subtitles');
+        ve.video.textTracks[3].mode = 'showing';
+    }
+}
+
 $(() => {
 
     //ve.rewind.tooltip({trigger: 'manual'});
@@ -183,4 +196,17 @@ $(() => {
     ve.videoControls.on('click dblclick touchend', (e) => {
         e.stopPropagation();
     });
+
+    (function updateSubs() {
+        var icon = ve.subs.children();
+        if (ve.video.textTracks[3].mode === 'showing') {
+            icon.removeClass('mdi-subtitles-outline');
+            icon.addClass('mdi-subtitles');
+        } else {
+            icon.removeClass('mdi-subtitles');
+            icon.addClass('mdi-subtitles-outline');
+        }
+    })();
+
+    ve.subs.on('click', toggleSubs);
 })
