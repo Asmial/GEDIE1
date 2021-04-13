@@ -181,23 +181,8 @@ $(() => {
     var dectrackstart = 0;
     var mustrackstart = 0;
     var inftrackstart = 0;
-    var subtrackstart = 0;
 
     decisionTrack.mode = 'hidden';
-
-    subtitulosTrack.addEventListener('cuechange', function () {
-        for (let i = 0; i < subtitulosCues.length; i++) {
-            /** @type {VTTCue} */
-            // @ts-ignore
-            const cue = subtitulosCues[i];
-            cue.line = 15;
-            cue.align = 'center';
-            cue.vertical = 'lr';
-            cue.positionAlign = 'center';
-            console.log(cue);
-        }
-        subtrackstart = subtitulosCues.length;
-    })
 
     decisionTrack.addEventListener('cuechange', () => {
         for (let i = dectrackstart; i < decisionCues.length; i++) {
