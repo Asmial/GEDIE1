@@ -23,7 +23,7 @@
                 <h1>Bandersdot</h1>
             </div>
             <div class="d-flex align-items-center">
-                <h1>GDIE 2021</h1>
+                <h1 class="d-none d-sm-block">GDIE 2021</h1>
             </div>
         </div>
     </header>
@@ -32,68 +32,61 @@
         <div class="row">
             <div class="col-lg-16 col-md-24 h-100 ">
                 <div class="bg-light border rounded-3 overflow-hidden mb-3">
-                    <div class="position-relative p-0 noselect" id="video-container" style="margin-bottom: -5px;">
-                        <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/poster.png">
-                            <source src="video/videohd.mp4" type="video/mp4" id="defsource" />
+                    <div class="position-relative p-0 noselect videofix" id="video-container">
+                        <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/poster.jpg">
+                            <source src="video/video.mp4" type="video/mp4" id="defsource" />
 
                             <track default label="elecciones" kind="subtitles" srclang="en"
                                 src="video/elecciones.vtt" />
                             <track label="actores" kind="subtitles" srclang="en" src="video/infoActor.vtt" />
                             <track label="muslos" kind="subtitles" srclang="en" src="video/infoMuslos.vtt" />
+                            <track label="subtitulos" kind="subtitles" srclang="en" src="video/subitulos.vtt" />
                         </video>
 
                         <audio hidden id="audio-decision" preload="metadata">
                             <source src="video/decision.mp3" type="audio/mp3" />
                         </audio>
 
-                        <div class="left-50 top-50 position-absolute justify-content-center"
-                            style="width: 80px; height: 80px;margin-left: -40px; margin-top: -40px;">
-                            <button id="play-main" class="text-white">
-                                <i class="mdi mdi-play" data-toggle="tooltip" data-placement="top"
-                                    title="Tooltip on top"></i>
-                            </button>
-                        </div>
-
-                        <div class="top-0 left-0 right-0 position-absolute p-2 container-fluid" id="video-cards"
-                            style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)); display: none;">
+                        <div class="top-0 left-0 right-0 position-absolute p-2 container-fluid greyGradient"
+                            id="video-cards">
                             <div class="row justify-content-center">
                                 <div class="col-12 text-white">
-                                    <div class="text-center mb-3" id="cards-question" style="font-size: 2vw;"></div>
+                                    <div class="text-center mb-3 font2vw" id="cards-question"></div>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-12">
-                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer" id="card-answer0"
-                                        style="font-size: 2vw;"></div>
+                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer font2vw"
+                                        id="card-answer0"></div>
                                 </div>
                                 <div class="col-12" id="single-option">
-                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer" id="card-answer1"
-                                        style="font-size: 2vw;">
+                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer font2vw"
+                                        id="card-answer1">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="top-50 start-50 translate-middle position-absolute text-white d-none"
-                            style="width: 75hw;" id="muerte-display">
-                            <p class="text-center" style="font-size: 4vw;"><b>Has muerto</b></p>
-                            <p class="text-center" style="font-size: 2vw;">Parece que has tomado una mala decisión, usa
+                        <div class="top-50 start-50 translate-middle position-absolute text-white d-none textdisplay"
+                            id="muerte-display">
+                            <p class="text-center font4vw"><b>Has muerto</b></p>
+                            <p class="text-center font2vw">Parece que has tomado una mala decisión, usa
                                 el botón <i class="mdi mdi-rewind"></i> o elige una decisión anterior mediante el
                                 selector de escenas de abajo para escoger otro camino.</p>
                         </div>
 
-                        <div class="top-50 start-50 translate-middle position-absolute text-white d-none"
-                            style="width: 75hw;" id="fin-display">
-                            <p class="text-center" style="font-size: 4vw;"><b>FIN</b></p>
-                            <p class="text-center" style="font-size: 2vw;">¡Felicidades!, has tomado las decisiones
+                        <div class="top-50 start-50 translate-middle position-absolute text-white d-none textdisplay"
+                            id="fin-display">
+                            <p class="text-center font4vw"><b>FIN</b></p>
+                            <p class="text-center font2vw">¡Felicidades!, has tomado las decisiones
                                 correctas para llegar al final de tu aventura, ahora puedes usar
                                 el botón <i class="mdi mdi-rewind"></i> o eligir una decisión anterior mediante el
                                 selector de escenas de abajo y probar otros caminos de la historia.</p>
                         </div>
 
 
-                        <div class="bottom-0 left-0 right-0 position-absolute p-2 container-fluid" id="video-controls"
-                            style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));">
+                        <div class="bottom-0 left-0 right-0 position-absolute p-2 container-fluid greyGradient"
+                            id="video-controls">
                             <div class="row">
                                 <div class="col-8 justify-content-start">
                                     <button id="play-button" class="fs-3 text-white"><i class="mdi mdi-play"
@@ -101,9 +94,9 @@
                                             title="Reproducir (k)"></i></button>
                                     <button id="mute-toggle" class="fs-3 text-white"><i class="mdi mdi-volume-high"
                                             data-toggle="tooltip" data-placement="top" title="silenciar"></i></button>
-                                    <input type="range" id='volume-slider' class="form-range d-none d-sm-inline"
-                                        value="1" data-mute="0.5" max="1" min="0" step="0.01"
-                                        style="cursor: pointer; width: 44%;" />
+                                    <input type="range" id='volume-slider'
+                                        class="form-range d-none d-sm-inline volumebar" value="1" data-mute="0.5"
+                                        max="1" min="0" step="0.01" />
                                 </div>
                                 <div class="col-8 text-center">
                                     <button id="rewind-scene" class="fs-2 text-white" title="retroceder una decisión"
@@ -111,9 +104,11 @@
                                             class="mdi mdi-rewind"></i></button>
                                 </div>
                                 <div class="col-8 text-end">
-                                    <button id="fullscreen-toggle" class="fs-2 text-white">
-                                        <i class="mdi mdi-fullscreen" data-toggle="tooltip" data-placement="left"
-                                            title="pantalla completa"></i></button>
+                                    <button id="subtitles-toggle" class="fs-2 text-white"><i
+                                            class="mdi mdi-subtitles-outline" data-toggle="tooltip" data-placement="top"
+                                            title="subtítulos"></i></button><button id="fullscreen-toggle"
+                                        class="fs-2 text-white"><i class="mdi mdi-fullscreen" data-toggle="tooltip"
+                                            data-placement="left" title="pantalla completa"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -124,12 +119,12 @@
             <div class="col-lg-8 col-md-24 mb-3">
                 <div class="p-0 w-100 h-100 bg-light border rounded-3" id="side">
                     <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
-                        <h3>Indicador de hambre</h3>
+                        <h4>Indicador de hambre</h4>
                     </div>
                     <div id="hambre-dot" class="d-flex justify-content-around">
                     </div>
                     <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
-                        <h3>Reparto</h3>
+                        <h4>Reparto</h4>
                     </div>
 
                     <div class="container">
@@ -163,7 +158,7 @@
 
 <footer class="page-footer font-small blue pt-4">
     <div class="footer-copyright text-center py-3">© 2021 Copyright:
-        <a href="http://gedie.necrospace.rocks/"> gedie.necrospace.rocks</a>
+        <a href="https://gdie.necrospace.rocks/">gdie.necrospace.rocks</a>
     </div>
 </footer>
 

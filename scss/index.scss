@@ -65,3 +65,28 @@ button {
 .c-pointer {
   cursor: pointer;
 }
+
+.greyGradient {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+}
+
+.font2vw {
+  font-size: 2vw;
+}
+
+.font4vw {
+  font-size: 4vw;
+}
+
+.volumebar {
+  cursor: pointer;
+  width: 44%;
+}
+
+.videofix {
+  margin-bottom: -5px;
+}
+
+.textdisplay {
+  width: 75hw;
+}
