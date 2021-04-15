@@ -32,6 +32,15 @@ var going = false;
 export function goToScene(num) {
     clearTimeout(waitDisableGoing);
     going = true;
+    //escena de las pesas
+    if (num == 15) {
+        if (status.haComido) {
+            ms.setHungerLevel(6)
+        } else {
+            ms.setHungerLevel(1)
+        }
+        
+    }
     ve.video.currentTime = decisionCues[num].startTime;
 }
 
@@ -50,10 +59,9 @@ function levantar() {
 }
 
 /**
- * @param {TextTrackCue} cue
  * @param {{decision: any; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
  */
-function decision(cue, data) {
+function decision(data) {
 
     waitDisableGoing = setTimeout(() => {
         going = false;
@@ -129,11 +137,10 @@ function decision(cue, data) {
 
 
 /**
- * @param {undefined} cue
  * @param {{actor: [number]}} data
  * @param {boolean} entra
  */
-function actualizarActor(cue, data, entra) {
+function actualizarActor(data, entra) {
     if (data['actor']) {
         for (let numActor of data.actor) {
             if (entra) {
@@ -216,7 +223,7 @@ $(() => {
             else if (data['next']) {
                 cue.onexit = () => { if (!going) { goToScene(data.next) } }
             }
-            cue.onenter = (e) => decision(this, data);
+            cue.onenter = (e) => decision(data);
         }
         dectrackstart = decisionCues.length;
     });
@@ -229,8 +236,8 @@ $(() => {
             const data = JSON.parse(cue.text);
 
             if (data['actor']) {
-                cue.onenter = (e) => actualizarActor(this, data, true);
-                cue.onexit = (e) => actualizarActor(this, data, false);
+                cue.onenter = (e) => actualizarActor(data, true);
+                cue.onexit = (e) => actualizarActor(data, false);
             }
         }
         inftrackstart = infoActorCues.length;

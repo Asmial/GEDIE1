@@ -159,6 +159,8 @@ function actualizaMuslo(num) {
  * @param {number} level
  */
 function setHungerLevel(level) {
+    //En caso de que el número de muslos tenga que ser 0
+    if (level == 9) level = 0
     if (level > numMuslos)
         level = numMuslos;
 
@@ -527,20 +529,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
                 icon.removeClass(icon.get(0).classList[1]);
                 icon.addClass('mdi-volume-high');
             }
+        } else {
+            _videoElements__WEBPACK_IMPORTED_MODULE_1__.decisionAudio.volume = 0;
         }
     });
 
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.rewind).on('click', () => {
-        var ct = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime;
+    /*$(ve.rewind).on('click', () => {
+        var ct = ve.video.currentTime;
 
-        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime - 5;
+        ve.video.currentTime = ve.video.currentTime - 5;
     });
 
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(_videoElements__WEBPACK_IMPORTED_MODULE_1__.fastForward).on('click', () => {
-        var ct = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime;
+    $(ve.fastForward).on('click', () => {
+        var ct = ve.video.currentTime;
 
-        _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime + 5;
-    });
+        ve.video.currentTime = ve.video.currentTime + 5;
+    });*/
 });
 
 /***/ }),
@@ -845,6 +849,15 @@ var going = false;
 function goToScene(num) {
     clearTimeout(waitDisableGoing);
     going = true;
+    //escena de las pesas
+    if (num == 15) {
+        if (status.haComido) {
+            _muslos__WEBPACK_IMPORTED_MODULE_4__.setHungerLevel(6)
+        } else {
+            _muslos__WEBPACK_IMPORTED_MODULE_4__.setHungerLevel(1)
+        }
+        
+    }
     _videoElements__WEBPACK_IMPORTED_MODULE_1__.video.currentTime = decisionCues[num].startTime;
 }
 
@@ -863,10 +876,9 @@ function levantar() {
 }
 
 /**
- * @param {TextTrackCue} cue
  * @param {{decision: any; seguir: number; pregunta: string; respuesta0: string; respuesta1: string; escena0: number; escena1: number; }} data
  */
-function decision(cue, data) {
+function decision(data) {
 
     waitDisableGoing = setTimeout(() => {
         going = false;
@@ -942,11 +954,10 @@ function decision(cue, data) {
 
 
 /**
- * @param {undefined} cue
  * @param {{actor: [number]}} data
  * @param {boolean} entra
  */
-function actualizarActor(cue, data, entra) {
+function actualizarActor(data, entra) {
     if (data['actor']) {
         for (let numActor of data.actor) {
             if (entra) {
@@ -1029,7 +1040,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
             else if (data['next']) {
                 cue.onexit = () => { if (!going) { goToScene(data.next) } }
             }
-            cue.onenter = (e) => decision(undefined, data);
+            cue.onenter = (e) => decision(data);
         }
         dectrackstart = decisionCues.length;
     });
@@ -1042,8 +1053,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(() => {
             const data = JSON.parse(cue.text);
 
             if (data['actor']) {
-                cue.onenter = (e) => actualizarActor(undefined, data, true);
-                cue.onexit = (e) => actualizarActor(undefined, data, false);
+                cue.onenter = (e) => actualizarActor(data, true);
+                cue.onexit = (e) => actualizarActor(data, false);
             }
         }
         inftrackstart = infoActorCues.length;

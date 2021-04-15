@@ -54,10 +54,12 @@ $(() => {
                 icon.removeClass(icon.get(0).classList[1]);
                 icon.addClass('mdi-volume-high');
             }
+        } else {
+            ve.decisionAudio.volume = 0;
         }
     });
 
-    $(ve.rewind).on('click', () => {
+    /*$(ve.rewind).on('click', () => {
         var ct = ve.video.currentTime;
 
         ve.video.currentTime = ve.video.currentTime - 5;
@@ -67,5 +69,5 @@ $(() => {
         var ct = ve.video.currentTime;
 
         ve.video.currentTime = ve.video.currentTime + 5;
-    });
+    });*/
 });

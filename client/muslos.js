@@ -41,6 +41,8 @@ export function actualizaMuslo(num) {
  * @param {number} level
  */
 export function setHungerLevel(level) {
+    //En caso de que el número de muslos tenga que ser 0
+    if (level == 9) level = 0
     if (level > numMuslos)
         level = numMuslos;
 
