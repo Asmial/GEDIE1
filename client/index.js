@@ -1,18 +1,32 @@
 import $ from 'jquery';
 window['jQuery'] = window['$'] = $;
 import bootstrap from 'bootstrap';
-import { setHungerLevel } from './muslos';
-import * as ve from './videoElements'
-import * as vp from './videoPlayer'
-import * as vc from './videoCards'
-import * as vt from './videoTracks'
-import * as sc from './secuencias'
-import * as ac from './actores'
-import * as ms from './muslos'
-import * as dashjs from 'dashjs'
+import dashjs from 'dashjs'
 import Hls from 'hls.js'
+import * as ve from './videoElements';
 
 $(() => {
+
+    if (dashjs.supportsMediaSource()) {
+        var player = dashjs.MediaPlayer().create();
+        player.initialize(ve.video, "video/output/out_highest_dash.mpd", false);
+    } else if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource("video/hls.m3u8");
+        hls.attachMedia(ve.video);
+    } else {
+        $(ve.video).append(`<source src="video/video.mp4" type="video/mp4"/>`);
+    }
+
+    require('./muslos');
+    
+    const vp = require('./videoPlayer');
+    const vc = require('./videoCards');
+    const vt = require('./videoTracks');
+    const sc = require('./secuencias');
+    const ac = require('./actores');
+    const ms = require('./muslos');
+
     require('./videoEvents');
 
     window['vc'] = vc;
@@ -24,14 +38,6 @@ $(() => {
     window['ms'] = ms;
 
     ve.decisionAudio.loop = true;
-
-    // var hls = new Hls();
-    // hls.loadSource("video/hls.m3u8");
-    // hls.attachMedia(ve.video);
-
-    var player = dashjs.MediaPlayer().create();
-    player.initialize(ve.video, "video/output/out_highest_dash.mpd", false);
-
 
     $(document).on('keypress', function (e) {
         e.preventDefault();
