@@ -9,6 +9,8 @@ import * as vt from './videoTracks'
 import * as sc from './secuencias'
 import * as ac from './actores'
 import * as ms from './muslos'
+import * as dashjs from 'dashjs'
+import Hls from 'hls.js'
 
 $(() => {
     require('./videoEvents');
@@ -22,7 +24,14 @@ $(() => {
     window['ms'] = ms;
 
     ve.decisionAudio.loop = true;
-    
+
+    // var hls = new Hls();
+    // hls.loadSource("video/hls.m3u8");
+    // hls.attachMedia(ve.video);
+
+    var player = dashjs.MediaPlayer().create();
+    player.initialize(ve.video, "video/output/out_highest_dash.mpd", false);
+
 
     $(document).on('keypress', function (e) {
         e.preventDefault();

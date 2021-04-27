@@ -10,6 +10,13 @@ module.exports = {
         path: path.resolve(__dirname, 'html/bundle'),
         sourceMapFilename: "bundle.js.map"
     },
-    
+    resolve: {
+        fallback:
+        {
+            "stream": require.resolve("stream-browserify"),
+            "buffer": require.resolve("buffer/")
+        }
+    },
+
     devtool: "source-map"
 }

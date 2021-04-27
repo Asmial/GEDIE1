@@ -24,6 +24,9 @@ done
 MP4Box -dash 3000 -rap -profile dashavc264:onDemand ${fs[@]}
 
 
+bitrates=("7400k" "5300k" "3200k" "1600k" "900k")
+audioBitrates=("192k" "192k" "128k" "128k" "96k")
+
 for (( i=0; i<$len; i++ ));
 do
     ffmpeg -n -i /videohd.mp4 -c:a libmp3lame -b:a "${audioBitrates[$i]}" -ar 32000 -s "${resoluciones[$i]}" -c:v libx264 -b:v "${bitrates[$i]}" -flags -global_header -map 0 -f segment -segment_time 5 -segment_list "${nombres[$i]}.m3u8" -segment_format mpegts "/output/str${nombres[$i]}%03d.ts"
