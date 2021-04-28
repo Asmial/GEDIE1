@@ -1,0 +1,94 @@
+.image1 {
+    position: relative;
+}
+.image2 {
+    position: absolute;
+}
+
+.imageUp {
+    border: 5px solid #ccc;
+    margin: 15px;
+    -webkit-transition: margin 0.5s ease-out;
+    -moz-transition: margin 0.5s ease-out;
+    -ms-transition: margin 0.5s ease-out;
+    transition: margin 0.5s ease-out;
+}
+
+.secuencia:hover > a:nth-child(1) > img:nth-child(1) {
+    margin-top: 2px;
+    opacity: 0.5;
+}
+
+#containerZoom {
+    width: 300px;
+    margin: 0 auto;
+}
+.ex2 img {
+    height: 100px;
+    width: 300px;
+    margin: 15px 0;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.ex2 img:hover {
+    height: 133px;
+    width: 400px;
+    margin-left: -50px;
+}
+
+#ex4 {
+    width: 730px;
+    height: 133px;
+    line-height: 0px;
+    color: transparent;
+    font-size: 50px;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+#ex4:hover {
+    line-height: 133px;
+    color: #575858;
+}
+#ex4 img {
+    float: left;
+    margin: 0 15px;
+}
+
+.thumbnail:hover {
+    opacity: 0.5;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+    color: black;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.imgActores {
+    opacity: 0.5;
+}
+
+.special-card {
+    /* create a custom class so you 
+       do not run into specificity issues 
+       against bootstraps styles
+       which tends to work better than using !important 
+       (future you will thank you later)*/
+    
+      background-color: rgba(0, 0, 0, 1);
+      opacity: .4;
+    }

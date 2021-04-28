@@ -1,12 +1,14 @@
 import $ from 'jquery';
 window['jQuery'] = window['$'] = $;
-import bootstrap from 'bootstrap';
 import dashjs from 'dashjs'
 import Hls from 'hls.js'
 import * as ve from './videoElements';
 
-$(() => {
 
+$(() => {
+    require('bootstrap/dist/js/bootstrap.bundle');
+
+    //hol
     if (dashjs.supportsMediaSource()) {
         var player = dashjs.MediaPlayer().create();
         player.initialize(ve.video, "video/output/out_highest_dash.mpd", false);
@@ -19,7 +21,7 @@ $(() => {
     }
 
     require('./muslos');
-    
+
     const vp = require('./videoPlayer');
     const vc = require('./videoCards');
     const vt = require('./videoTracks');

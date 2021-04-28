@@ -1,14 +1,70 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const fs = require('fs');
 const path = require('path');
 
 const webpack = require('webpack');
 webpack({
-   entry: './js/index.js',
-   mode: 'development',
-   output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'html/bundle')
-   }
+   target: 'web',
+    entry: {
+        index: {
+            import: './client/index.js',
+            dependOn: ['jquery_ui_bundle', 'bootstrap']
+        },
+        videoElements: {
+            import: './client/videoElements.js',
+            dependOn: 'jquery'
+        },
+        jquery: 'jquery',
+        jquery_ui_bundle: {
+            import: ['jquery-ui', 'jquery-ui-bundle', '@popperjs/core'],
+            dependOn: 'jquery',
+        },
+        bootstrap: ['bootstrap', '@popperjs/core'],
+    },
+    mode: 'development',
+    output: {
+        filename: '[name].[contenthash].js',
+        path: path.resolve(__dirname, 'html/bundle'),
+        sourceMapFilename: "[name].[contenthash].bundle.js.map"
+    },
+    resolve: {
+        fallback:
+        {
+            "stream": require.resolve("stream-browserify"),
+            "buffer": require.resolve("buffer/")
+        }
+    },
+    optimization: {
+        runtimeChunk: 'single',
+        splitChunks: {
+            chunks: 'async',
+            minSize: 20000,
+            minRemainingSize: 0,
+            minChunks: 1,
+            maxAsyncRequests: 30,
+            maxInitialRequests: 30,
+            enforceSizeThreshold: 50000,
+            cacheGroups: {
+                defaultVendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    reuseExistingChunk: true,
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true,
+                },
+            },
+        },
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: '../index.html',
+            template: 'client/index.html'
+        })
+    ],
+    devtool: "source-map"
 }, (err, stats) => {
    if (err || stats.hasErrors()) {
       console.error(err)

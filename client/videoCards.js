@@ -1,6 +1,4 @@
 import $ from 'jquery';
-import * as ve from './videoElements';
-import { hideControls } from './videoPlayer';
 
 
 var cardsShown = false;

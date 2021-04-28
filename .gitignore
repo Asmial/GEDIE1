@@ -2,3 +2,4 @@ package-lock.json
 node_modules
 html/video/videohd.mp4
 html/video/output/*
+html/bundle/*

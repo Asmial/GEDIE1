@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import * as ve from './videoElements';
 import * as vp from './videoPlayer';
-import * as ac from './actores';
 
 $(() => {
 
