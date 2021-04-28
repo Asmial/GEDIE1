@@ -1,6 +1,5 @@
 import $ from 'jquery';
 
-
 var cardsShown = false;
 
 /** @type {JQuery<HTMLElement>} */

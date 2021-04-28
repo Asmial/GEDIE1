@@ -7,11 +7,39 @@ module.exports = {
     entry: {
         style: './client/scss/style.scss',
         index: {
-            import: './client/index.js',
-            dependOn: ['jquery_ui_bundle', 'bootstrap', 'videoElements', 'dashjs', 'hlsjs']
+            import: './client/js/index.js',
+            dependOn: ['bootstrap', 'videoElements', 'dashjs', 'hlsjs', 'muslos', 'actores', 'videoCards', 'secuencias', 'videoTracks']
+        },
+        videoPlayer: {
+            import: './client/js/videoPlayer.js',
+            dependOn: ['jquery_ui_bundle','videoElements', 'videoCards', 'secuencias']
+        },
+        videoEvents: {
+            import: './client/js/videoEvents.js',
+            dependOn: ['jquery','videoElements', 'videoPlayer']
+        },
+        videoTracks: {
+            import: './client/js/videoTracks.js',
+            dependOn: ['jquery','videoElements', 'secuencias', 'actores', 'muslos', 'videoCards']
+        },
+        secuencias: {
+            import: './client/js/secuencias.js',
+            dependOn: ['jquery', 'videoElements']
+        },
+        muslos: {
+            import: './client/js/muslos.js',
+            dependOn: ['jquery']
+        },
+        actores: {
+            import: './client/js/actores.js',
+            dependOn: ['jquery']
         },
         videoElements: {
-            import: './client/videoElements.js',
+            import: './client/js/videoElements.js',
+            dependOn: 'jquery'
+        },
+        videoCards: {
+            import: './client/js/videoCards.js',
             dependOn: 'jquery'
         },
         dashjs: 'dashjs',
@@ -19,9 +47,9 @@ module.exports = {
         jquery: 'jquery',
         jquery_ui_bundle: {
             import: ['jquery-ui', 'jquery-ui-bundle'],
-            dependOn: 'jquery',
+            dependOn: ['jquery', 'bootstrap'],
         },
-        bootstrap: ['bootstrap'],
+        bootstrap: 'bootstrap'
     },
     module: {
         rules: [
@@ -56,7 +84,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: '../index.html',
+            filename: '../dev.html',
             template: 'client/index.html'
         })
     ],
