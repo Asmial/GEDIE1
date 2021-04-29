@@ -8,49 +8,49 @@ webpack({
    entry: {
       style: './client/scss/style.scss',
       index: {
-         import: './client/js/index.js',
-         dependOn: ['bootstrap', 'videoElements', 'hlsjs', 'muslos', 'actores', 'videoCards', 'secuencias', 'videoTracks']
+          import: './client/js/index.js',
+          dependOn: ['bootstrap', 'videoElements', 'muslos', 'actores', 'videoCards', 'secuencias', 'videoTracks']
       },
       videoPlayer: {
-         import: './client/js/videoPlayer.js',
-         dependOn: ['jquery_ui_bundle', 'videoElements', 'videoCards', 'secuencias']
+          import: './client/js/videoPlayer.js',
+          dependOn: ['jquery_ui_bundle', 'videoElements', 'videoCards', 'secuencias']
       },
       videoEvents: {
-         import: './client/js/videoEvents.js',
-         dependOn: ['jquery', 'videoElements', 'videoPlayer']
+          import: './client/js/videoEvents.js',
+          dependOn: ['jquery', 'videoElements', 'videoPlayer']
       },
       videoTracks: {
-         import: './client/js/videoTracks.js',
-         dependOn: ['jquery', 'videoElements', 'secuencias', 'actores', 'muslos', 'videoCards']
+          import: './client/js/videoTracks.js',
+          dependOn: ['jquery', 'videoElements', 'secuencias', 'actores', 'muslos', 'videoCards']
       },
       secuencias: {
-         import: './client/js/secuencias.js',
-         dependOn: ['jquery', 'videoElements']
+          import: './client/js/secuencias.js',
+          dependOn: ['jquery', 'videoElements']
       },
       muslos: {
-         import: './client/js/muslos.js',
-         dependOn: ['jquery']
+          import: './client/js/muslos.js',
+          dependOn: ['jquery']
       },
       actores: {
-         import: './client/js/actores.js',
-         dependOn: ['jquery']
+          import: './client/js/actores.js',
+          dependOn: ['jquery']
       },
       videoElements: {
-         import: './client/js/videoElements.js',
-         dependOn: 'jquery'
+          import: './client/js/videoElements.js',
+          dependOn: 'jquery'
       },
       videoCards: {
-         import: './client/js/videoCards.js',
-         dependOn: 'jquery'
+          import: './client/js/videoCards.js',
+          dependOn: 'jquery'
       },
-      hlsjs: 'hls.js',
+      // hlsjs: 'hls.js',
       jquery: 'jquery',
       jquery_ui_bundle: {
-         import: ['jquery-ui', 'jquery-ui-bundle'],
-         dependOn: ['jquery', 'bootstrap'],
+          import: ['jquery-ui', 'jquery-ui-bundle'],
+          dependOn: ['jquery', 'bootstrap'],
       },
       bootstrap: 'bootstrap'
-   },
+  },
    module: {
       rules: [
          {
