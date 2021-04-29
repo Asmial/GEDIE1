@@ -9,7 +9,7 @@ webpack({
       style: './client/scss/style.scss',
       index: {
          import: './client/js/index.js',
-         dependOn: ['bootstrap', 'videoElements', 'dashjs', 'hlsjs', 'muslos', 'actores', 'videoCards', 'secuencias', 'videoTracks']
+         dependOn: ['bootstrap', 'videoElements', 'hlsjs', 'muslos', 'actores', 'videoCards', 'secuencias', 'videoTracks']
       },
       videoPlayer: {
          import: './client/js/videoPlayer.js',
@@ -43,7 +43,6 @@ webpack({
          import: './client/js/videoCards.js',
          dependOn: 'jquery'
       },
-      dashjs: 'dashjs',
       hlsjs: 'hls.js',
       jquery: 'jquery',
       jquery_ui_bundle: {

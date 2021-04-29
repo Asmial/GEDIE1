@@ -1,23 +1,44 @@
 import $ from 'jquery';
 window['jQuery'] = window['$'] = $;
-import bootstrap from 'bootstrap/dist/js/bootstrap.bundle';
-import dashjs from 'dashjs'
-import Hls from 'hls.js'
 import * as ve from './videoElements';
+import Hls from 'hls.js';
+//import dashjs from 'dashjs';
+var dash = false;
+if ( ('WebKitMediaSource' in window || 'MediaSource' in window)){
+    dash =true;
+} else {
+    var hls = new Hls();
+}
+
 
 
 $(() => {
-    if (dashjs.supportsMediaSource()) {
-        var player = dashjs.MediaPlayer().create();
-        player.initialize(ve.video, "video/output/out_highest_dash.mpd", false);
-    } else if (Hls.isSupported()) {
-        var hls = new Hls();
-        hls.loadSource("video/hls.m3u8");
-        hls.attachMedia(ve.video);
+    const bootstrap = require('bootstrap/dist/js/bootstrap.bundle');
+    if (dash) {
+         import(
+             /* webpackChunkName: "dashjs" */
+             'dashjs').then(module => {
+                 const dashjs = module.default;
+                var player = dashjs.MediaPlayer().create();
+                player.initialize(ve.video, "video/output/out_highest_dash.mpd", false);
+             });
     } else {
-        $(ve.video).append(`<source src="video/video.mp4" type="video/mp4"/>`);
+        if (Hls.isSupported()) {
+            /*var hlsmodal = new bootstrap.Modal(document.getElementById('hlsproblem'), { backdrop: 'static', keyboard: false });
+            hlsmodal.toggle();
+            $("#soyTonto").on('click', () => {*/
+                //var hls = new Hls();
+                hls.loadSource("video/hls.m3u8");
+                hls.config.enableWebVTT = true;
+                hls.attachMedia(ve.video);
+            /*});
+            $("#soyListo").on('click', () => {
+                $(ve.video).append(`<source src="video/video.mp4" type="video/mp4"/>`);
+            });*/
+        } else {
+            $(ve.video).append(`<source src="video/video.mp4" type="video/mp4"/>`);
+        }
     }
-
     require('./muslos');
 
     const vp = require('./videoPlayer');

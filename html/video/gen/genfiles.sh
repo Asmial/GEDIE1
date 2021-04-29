@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+chmod 777 /output
+
 nombres=("highest" "high" "hd" "sd" "low")
 resoluciones=("1920x1080" "1920x1080" "1280x720" "848x480" "640x360")
 bitrates=("3000k" "2000k" "1000k" "500k" "200k")
@@ -7,25 +9,21 @@ audioBitrates=("320k" "160k" "160k" "120k" "80k")
 
 len=${#nombres[@]}
 
-for (( i=0; i<$len; i++ ));
-do
-    ffmpeg -n -i /videohd.mp4 -s "${resoluciones[$i]}" -c:v libx264 -b:v "${bitrates[$i]}" -bf 2 -g 300 -sc_threshold 0 -c:a aac -strict experimental -b:a "${audioBitrates[$i]}" -ar 32000 "/output/out_${nombres[$i]}.mp4"
-done
+# for (( i=0; i<$len; i++ ));
+# do
+#     ffmpeg -n -i /videohd.mp4 -s "${resoluciones[$i]}" -c:v libx264 -b:v "${bitrates[$i]}" -bf 2 -g 300 -sc_threshold 0 -c:a aac -strict experimental -b:a "${audioBitrates[$i]}" -ar 32000 "/output/out_${nombres[$i]}.mp4"
+# done
 
-cd /output
-
-
-fs=( )
-for i in ${nombres[@]}; do
-    fs+="/output/out_$i.mp4#video "
-    fs+="/output/out_$i.mp4#audio "
-done
-
-MP4Box -dash 3000 -rap -profile dashavc264:onDemand ${fs[@]}
+# cd /output
 
 
-bitrates=("7400k" "5300k" "3200k" "1600k" "900k")
-audioBitrates=("192k" "192k" "128k" "128k" "96k")
+# fs=( )
+# for i in ${nombres[@]}; do
+#     fs+="/output/out_$i.mp4#video "
+#     fs+="/output/out_$i.mp4#audio "
+# done
+
+# MP4Box -dash 3000 -rap -profile dashavc264:onDemand ${fs[@]}
 
 for (( i=0; i<$len; i++ ));
 do

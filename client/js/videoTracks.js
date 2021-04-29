@@ -39,7 +39,7 @@ export function goToScene(num) {
         } else {
             ms.setHungerLevel(1)
         }
-        
+
     }
     ve.video.currentTime = decisionCues[num].startTime;
 }
@@ -94,7 +94,7 @@ function decision(data) {
         ve.decisionAudio.pause();
         ve.decisionAudio.currentTime = 0;
         ve.video.play();
-        
+
         if (vc.getCardsCallbacks()[0] != levantar) {
             vc.setCardsCallbacks(levantar, () => { goToScene(data.seguir) });
         }
@@ -159,7 +159,7 @@ function procesarMuerte() {
     ve.muerte.removeClass("d-none");
 }
 
-function procesarFin () {
+function procesarFin() {
     ve.video.pause();
     ve.playButton.addClass("d-none");
     ve.fin.removeClass("d-none");
@@ -171,6 +171,7 @@ $(() => {
     textTracks = ve.video.textTracks;
 
     decisionTrack = textTracks[0];
+    decisionTrack.mode = 'hidden';
     decisionCues = decisionTrack.cues;
 
     infoActorTrack = textTracks[1];
@@ -189,9 +190,14 @@ $(() => {
     var mustrackstart = 0;
     var inftrackstart = 0;
 
-    decisionTrack.mode = 'hidden';
 
-    decisionTrack.addEventListener('cuechange', () => {
+    $(ve.video).children().on('load', () => {
+        decisiontrackChange();
+        infoActorTrackChange();
+        infoMuslosTrackChange();
+    })
+
+    function decisiontrackChange() {
         for (let i = dectrackstart; i < decisionCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
@@ -226,9 +232,9 @@ $(() => {
             cue.onenter = (e) => decision(data);
         }
         dectrackstart = decisionCues.length;
-    });
+    }
 
-    infoActorTrack.addEventListener('cuechange', () => {
+    function infoActorTrackChange() {
         for (let i = inftrackstart; i < infoActorCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
@@ -241,9 +247,9 @@ $(() => {
             }
         }
         inftrackstart = infoActorCues.length;
-    });
+    }
 
-    infoMuslosTrack.addEventListener('cuechange', () => {
+    function infoMuslosTrackChange() {
         for (let i = mustrackstart; i < infoMuslosCues.length; i++) {
             /** @type {VTTCue} */
             // @ts-ignore
@@ -255,6 +261,10 @@ $(() => {
             }
         }
         mustrackstart = infoMuslosCues.length;
-    });
+    }
+
+    decisionTrack.addEventListener('cuechange', decisiontrackChange);
+    infoActorTrack.addEventListener('cuechange', infoActorTrackChange);
+    infoMuslosTrack.addEventListener('cuechange', infoMuslosTrackChange);
 
 });

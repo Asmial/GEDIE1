@@ -197,16 +197,5 @@ $(() => {
         e.stopPropagation();
     });
 
-    (function updateSubs() {
-        var icon = ve.subs.children();
-        if (ve.video.textTracks[3].mode === 'showing') {
-            icon.removeClass('mdi-subtitles-outline');
-            icon.addClass('mdi-subtitles');
-        } else {
-            icon.removeClass('mdi-subtitles');
-            icon.addClass('mdi-subtitles-outline');
-        }
-    })();
-
     ve.subs.on('click', toggleSubs);
 })

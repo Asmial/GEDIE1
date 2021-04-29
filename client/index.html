@@ -15,6 +15,30 @@
         <h1>BRO, ACTÍVATE EL JAVASCRIPT, BRO </h1>
     </noscript>
 
+
+    <div class="modal fade" id="hlsproblem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="hlsproblemLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hlsproblemLabel">¡Atención!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tu navegador esta intentando usar HLS como sistema de reproducción de vídeo. <br />
+                    El sistema HLS no es completamente compatible con el sistema de decisiones y puede causar problemas
+                    en la experiencia a la hora de ver el vídeo. <br />
+                    ¿Quieres usar HLS?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="soyTonto">Si (puede causar
+                        problemas)</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="soyListo">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header class="p-3 border-bottom bg-dark text-white mb-3">
         <div class="d-flex">
             <div class="d-flex align-items-center flex-fill">
@@ -33,10 +57,12 @@
                 <div class="bg-light border rounded-3 overflow-hidden mb-3">
                     <div class="position-relative p-0 noselect videofix" id="video-container">
                         <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/poster.jpg">
-                            <track default label="elecciones" kind="subtitles" srclang="en"
-                                src="video/elecciones.vtt" />
-                            <track label="actores" kind="subtitles" srclang="en" src="video/infoActor.vtt" />
-                            <track label="muslos" kind="subtitles" srclang="en" src="video/infoMuslos.vtt" />
+                            <track label="elecciones" kind="chapters" srclang="en" src="video/elecciones.vtt"
+                                id="eleccionesTrack" />
+                            <track label="actores" kind="descriptions" srclang="en" src="video/infoActor.vtt"
+                                id="actoresTrack" />
+                            <track label="muslos" kind="metadata" srclang="en" src="video/infoMuslos.vtt"
+                                id="muslosTrack" />
                             <track label="subtitulos" kind="subtitles" srclang="en" src="video/subitulos.vtt" />
                         </video>
 

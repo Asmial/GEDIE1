@@ -8,19 +8,19 @@ module.exports = {
         style: './client/scss/style.scss',
         index: {
             import: './client/js/index.js',
-            dependOn: ['bootstrap', 'videoElements', 'dashjs', 'hlsjs', 'muslos', 'actores', 'videoCards', 'secuencias', 'videoTracks']
+            dependOn: ['bootstrap', 'videoElements', 'hlsjs', 'muslos', 'actores', 'videoCards', 'secuencias', 'videoTracks']
         },
         videoPlayer: {
             import: './client/js/videoPlayer.js',
-            dependOn: ['jquery_ui_bundle','videoElements', 'videoCards', 'secuencias']
+            dependOn: ['jquery_ui_bundle', 'videoElements', 'videoCards', 'secuencias']
         },
         videoEvents: {
             import: './client/js/videoEvents.js',
-            dependOn: ['jquery','videoElements', 'videoPlayer']
+            dependOn: ['jquery', 'videoElements', 'videoPlayer']
         },
         videoTracks: {
             import: './client/js/videoTracks.js',
-            dependOn: ['jquery','videoElements', 'secuencias', 'actores', 'muslos', 'videoCards']
+            dependOn: ['jquery', 'videoElements', 'secuencias', 'actores', 'muslos', 'videoCards']
         },
         secuencias: {
             import: './client/js/secuencias.js',
@@ -42,7 +42,6 @@ module.exports = {
             import: './client/js/videoCards.js',
             dependOn: 'jquery'
         },
-        dashjs: 'dashjs',
         hlsjs: 'hls.js',
         jquery: 'jquery',
         jquery_ui_bundle: {
