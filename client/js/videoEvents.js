@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import * as ve from './videoElements';
 import * as vp from './videoPlayer';
+import * as socket from './socket';
 
 $(() => {
 
@@ -24,6 +25,9 @@ $(() => {
         icon.removeClass("mdi-play");
         icon.addClass("mdi-pause");
         vp.waitHideControls(1500);
+        if (socket.isOnRoom) {
+            socket.emit('pause-video');
+        }
     };
 
     $(ve.video).on('pause', () => {
@@ -33,6 +37,9 @@ $(() => {
         icon.addClass("mdi-play");
         ve.playMain.show(300);
         ve.videoControls.fadeIn(100);
+        if (socket.isOnRoom) {
+            socket.emit('play-video');
+        }
     });
 
     ve.decisionAudio.volume = ve.video.volume * .4;
@@ -57,16 +64,4 @@ $(() => {
             ve.decisionAudio.volume = 0;
         }
     });
-
-    /*$(ve.rewind).on('click', () => {
-        var ct = ve.video.currentTime;
-
-        ve.video.currentTime = ve.video.currentTime - 5;
-    });
-
-    $(ve.fastForward).on('click', () => {
-        var ct = ve.video.currentTime;
-
-        ve.video.currentTime = ve.video.currentTime + 5;
-    });*/
 });

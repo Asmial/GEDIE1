@@ -42,7 +42,6 @@ module.exports = {
             import: './client/js/videoCards.js',
             dependOn: 'jquery'
         },
-        // hlsjs: 'hls.js',
         jquery: 'jquery',
         jquery_ui_bundle: {
             import: ['jquery-ui', 'jquery-ui-bundle'],
@@ -85,6 +84,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: '../dev.html',
             template: 'client/index.html'
+        }),
+        new HtmlWebpackPlugin({
+            filename: '../room.html',
+            template: 'client/room.html'
         })
     ],
 

@@ -1,12 +1,14 @@
 import $ from 'jquery';
 window['jQuery'] = window['$'] = $;
 import * as ve from './videoElements';
+import * as socket from './socket';
 import Hls from 'hls.js';
 var dashsupp = false;
 var hlssupp = false;
 if (('WebKitMediaSource' in window || 'MediaSource' in window)) {
     dashsupp = true;
 }
+
 
 
 $(() => {
@@ -39,6 +41,8 @@ $(() => {
                 });
         }
     }
+
+    
 
     require('./muslos');
 
