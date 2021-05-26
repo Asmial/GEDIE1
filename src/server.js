@@ -17,29 +17,47 @@ app.get('/getId', (req, res) => {
 io.on("connection", (socket) => {
     console.log("connection: " + socket.id);
 
-    socket.on("unirse-sala", (idSala) => {
-        if (validate(idSala)) {
-            socket.join(idSala);
+    socket.on("check-room", (
+        /** @type {{room: string}} */
+        data) => {
+        if (validate(data.room)) {
             socket.emit("sala-correcta");
-
-            socket.to(idSala).emit("usuario-conectado", "Mianga");
-
-            socket.on("disconnection", () => {
-                socket.to(idSala).emit("usuario-desconectado", "Mianga");
-            })
-
-            socket.on("pause-video", (data) => {
-                socket.to(idSala).emit("pause-video");
-            });
-
-            socket.on("play-video", (data) => {
-                console.log("playvideo");
-                socket.to(idSala).emit("play-video");
-            });
-
         } else {
             socket.emit("sala-erronea");
         }
+    })
+
+    socket.on("join-room", (
+        /** @type {{room: string, name: string, peerId: string}} */
+        userData) => {
+
+        socket.join(userData.room);
+        socket.emit("unido-sala");
+
+        socket.broadcast.to(userData.room).emit("user-connected",
+            { id: socket.id, name: userData.name, peerId: userData.peerId });
+
+
+        socket.on('handshake-peer',
+            /** @type {{ id: string, peerId: peerId }} */
+            (data) => {
+                socket.to(data.id).emit(
+                    'handshake-peer',
+                    { name: userData.name, peerId: userData.peerId });
+            })
+
+        socket.on("disconnection", () => {
+            socket.to(userData.room).emit("user-disconnected", userData.peerId);
+        })
+
+        socket.on("pause-video", (data) => {
+            socket.to(userData.room).emit("pause-video");
+        });
+
+        socket.on("play-video", (data) => {
+            console.log("playvideo");
+            socket.to(userData.room).emit("play-video");
+        });
     })
 });
 

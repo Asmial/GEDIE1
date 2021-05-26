@@ -1,13 +1,12 @@
 const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     target: 'web',
     entry: {
-        style: './client/scss/style.scss',
         index: {
-            import: './client/js/index.js',
+            import: './client/main.js',
             dependOn: ['bootstrap', 'videoElements', 'muslos', 'actores', 'videoCards', 'secuencias', 'videoTracks']
         },
         videoPlayer: {
@@ -49,26 +48,29 @@ module.exports = {
         },
         bootstrap: 'bootstrap'
     },
+    mode: 'development',
+    watch: true,
     module: {
         rules: [
             {
-                test: /\.scss$/i,
+                test: /\.s[ac]ss$/i,
                 use: [
-                    {
-                        loader: 'file-loader',
-                        options: { name: '[name].css' }
-                    },
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
                     'sass-loader'
                 ]
+            },
+            {
+                test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                loader: "file-loader",
+                options: { name: '[name].[contenthash].[ext]', outputPath: 'css/fonts' }
             }
         ],
     },
-    mode: 'development',
-    watch: true,
     output: {
-        filename: '[name].[contenthash].js',
-        path: path.resolve(__dirname, 'html/bundle'),
-        sourceMapFilename: "[name].[contenthash].bundle.js.map"
+        filename: 'lib/[name].[contenthash].js',
+        path: path.resolve(__dirname, 'package/'),
+        sourceMapFilename: "lib/[name].[contenthash].bundle.js.map"
     },
     resolve: {
         fallback:
@@ -80,15 +82,21 @@ module.exports = {
     optimization: {
         runtimeChunk: 'single'
     },
+    ignoreWarnings: [
+        {
+            module: /peerjs\.min\.js/
+        }
+    ],
     plugins: [
         new HtmlWebpackPlugin({
-            filename: '../dev.html',
+            filename: 'dev.html',
             template: 'client/index.html'
         }),
         new HtmlWebpackPlugin({
-            filename: '../room.html',
+            filename: 'rdev.html',
             template: 'client/room.html'
-        })
+        }),
+        new MiniCssExtractPlugin({ filename: "css/[name].[contenthash].css" })
     ],
 
     devtool: "source-map"

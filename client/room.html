@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta id="room" data-room="true">
     <title>Bandersdot</title>
-    <link href="bundle/style.css" rel="stylesheet" />
     <link rel="shorcut icon" type="image/svg" href="img/iconoWeb.svg">
     <link rel="shorcut icon" type="image/png" href="img/iconoWeb.png">
 </head>
@@ -15,6 +14,41 @@
     <noscript>
         <h1>BRO, ACTÍVATE EL JAVASCRIPT, BRO </h1>
     </noscript>
+
+    <!-- Modal -->
+    <div class="modal fade in" id="roomModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="roomModallLabel">Estás a punto de unirte a una sala</h5>
+                </div>
+                <form id="roomForm" action="javascript:void(0);">
+                    <div class="modal-body text-center">
+                        <div>Estas en el proceso de unirte a una sala</div>
+                        <div id="errorSala" class="text-danger d-none">
+                            La sala que intentas entrar no existe.
+                        </div>
+                        <div id="cambioSala" class="text-success d-none">
+                            Vamos a redirigirte a una nueva.
+                        </div>
+                        <div id="salaNueva" class="text-info d-none">
+                            La sala ha cargado
+                        </div>
+                        <label for="userName" class="form-label mt-3">Nombre de usuario:</label>
+                        <input name="user-name" required="required" class="form-control" id="userName"
+                            pattern="[A-Za-z0-9\-_]{1,12}" type="text" aria-describedby="userNameHelp" />
+                        <div id="userNameHelp" class="form-text">Debes de introducir un nombre de usuario para entrar en
+                            la sala.</div>
+                        <div id="roomId"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary w-100" id="vamosButton">¡Vamos!</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <header class="p-3 border-bottom bg-dark text-white mb-3">
         <div id="audio-grid"></div>
@@ -27,19 +61,8 @@
                 <h1 class="d-none d-sm-block">GDIE 2021</h1>
             </div>
             <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Opciones
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </div>
+                
             </div>
-        </div>
         </div>
     </header>
 
@@ -59,7 +82,7 @@
                         </video>
 
                         <audio hidden id="audio-decision" preload="metadata">
-                            <source src="video/decision.mp3" type="audio/mp3" />
+                            <source src="audio/decision.mp3" type="audio/mp3" />
                         </audio>
 
                         <div class="top-0 left-0 right-0 position-absolute p-2 container-fluid greyGradient"
@@ -79,6 +102,10 @@
                                         id="card-answer1">
                                     </div>
                                 </div>
+                            </div>
+                            <div id="votaciones" class="d-flex mt-1">
+                                <div style="width: 90%; height: 3vh;background-color: aqua;"></div>
+                                <div style="width: 10%; height: 3vh;background-color: red;"></div>
                             </div>
                         </div>
 
@@ -119,8 +146,8 @@
                                             class="mdi mdi-rewind"></i></button>
                                 </div>
                                 <div class="col-8 text-end">
-                                    <button id="subtitles-toggle" class="fs-2 text-white"><i
-                                            class="mdi mdi-subtitles" data-toggle="tooltip" data-placement="top"
+                                    <button id="subtitles-toggle" class="fs-2 text-white"><i class="mdi mdi-subtitles"
+                                            data-toggle="tooltip" data-placement="top"
                                             title="subtítulos"></i></button><button id="fullscreen-toggle"
                                         class="fs-2 text-white"><i class="mdi mdi-fullscreen" data-toggle="tooltip"
                                             data-placement="left" title="pantalla completa"></i></button>
@@ -151,7 +178,7 @@
             </div>
         </div>
         <div class="row my-2">
-            <div class="col-24">
+            <div class="col-lg-16 col-md-24">
                 <div class="card">
                     <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
                         <h3>Selector de escenas</h3>
@@ -165,9 +192,20 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-8 col-md-24">
+                <div class="card">
+                    <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
+                        <h3>Integrantes de la sala</h3>
+                    </div>
+                    <div id="integrantes">
+                        <div id="integrante-tu" class="integrante">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
-
 </body>
 
 

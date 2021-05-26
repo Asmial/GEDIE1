@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import * as ve from './videoElements';
 import * as vp from './videoPlayer';
-import * as socket from './socket';
+import * as room from './room';
 
 $(() => {
 
@@ -25,8 +25,8 @@ $(() => {
         icon.removeClass("mdi-play");
         icon.addClass("mdi-pause");
         vp.waitHideControls(1500);
-        if (socket.isOnRoom) {
-            socket.emit('pause-video');
+        if (room.isOnRoom) {
+            room.emit('pause-video');
         }
     };
 
@@ -37,8 +37,8 @@ $(() => {
         icon.addClass("mdi-play");
         ve.playMain.show(300);
         ve.videoControls.fadeIn(100);
-        if (socket.isOnRoom) {
-            socket.emit('play-video');
+        if (room.isOnRoom) {
+            room.emit('play-video');
         }
     });
 
