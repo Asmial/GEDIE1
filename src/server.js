@@ -33,7 +33,7 @@ app.get('/getId', (req, res) => {
 })
 
 /**
- * @typedef {{time: number, playing: boolean, voteLeft: number, voteRight: number, 
+ * @typedef {{time: number, playing: boolean, voteLeft: number, voteRight: number, winLeft: boolean,
  * inVote: boolean, inVoteRewind: boolean, rewindScene: number, voteAdmin: string, 
  * voteAdminLeft: boolean, viewers: number, escenas: boolean [], status: { haComido: boolean, levantamientos: number,
  * levantar: boolean }}} roomStatus
@@ -44,6 +44,9 @@ var roomsData = {};
 
 /** @type {Object <string,Object <string,boolean>>} */
 var votedSceneRooms = {};
+
+/** @type {Object <string,Object <string,boolean>>} */
+var votedRewindRooms = {};
 
 io.on("connection", (socket) => {
     console.log("connection: " + socket.id);
@@ -65,10 +68,13 @@ io.on("connection", (socket) => {
         var roomData;
         /** @type {Object <string,boolean>} */
         var votedScene;
+        /** @type {Object <string,boolean>} */
+        var votedRewind;
         const clients = io.sockets.adapter.rooms.get(userData.room);
         if (!clients) {
             roomData = {
                 time: 0,
+                winLeft: false,
                 playing: false,
                 voteLeft: 0,
                 voteRight: 0,
@@ -88,9 +94,12 @@ io.on("connection", (socket) => {
             roomsData[userData.room] = roomData;
             votedScene = {};
             votedSceneRooms[userData.room] = votedScene;
+            votedRewind = {};
+            votedRewindRooms[userData.room] = votedRewind;
         } else {
             roomData = roomsData[userData.room];
             votedScene = votedSceneRooms[userData.room];
+            votedRewind = votedRewindRooms[userData.room];
             roomData.viewers++;
         }
 
@@ -100,22 +109,32 @@ io.on("connection", (socket) => {
         //var nombre = String($("#userName").val());
         //console.log(nombre);
 
+        socket.to(userData.room).emit("user-connected",
+            { id: socket.id, name: userData.name, peerId: userData.peerId });
+
         socket.on('entrar-votacion',
         /** @type {{time: number}} */(data) => {
-                roomData.inVote = true
-                roomData.time = data.time;
+                if (!roomData.inVote) {
+                    roomData.inVote = true;
+                    roomData.playing = true;
+                    roomData.time = data.time;
+                    roomData.voteLeft = 0;
+                    roomData.voteRight = 0;
+                    io.in(userData.room).emit("update-status", roomData);
+                }
             })
 
         socket.on('entrar-pesa',
         /** @type {{time: number}} */(data) => {
-                roomData.inVote = true
-                roomData.time = data.time;
+                if (!roomData.inVote) {
+                    roomData.inVote = true;
+                    roomData.playing = true;
+                    roomData.time = data.time;
+                    roomData.voteLeft = 0;
+                    roomData.voteRight = 0;
+                    io.in(userData.room).emit("update-status", roomData);
+                }
             })
-
-        socket.to(userData.room).emit("user-connected",
-
-            { id: socket.id, name: userData.name, peerId: userData.peerId });
-
 
         socket.on('handshake-peer',
             /** @type {{ id: string, peerId: peerId }} */
@@ -132,12 +151,57 @@ io.on("connection", (socket) => {
             if (!clients) {
                 delete roomsData[userData.room];
                 delete votedSceneRooms[userData.room];
+                delete votedRewindRooms[userData.room];
             }
         })
 
+        socket.on('vote-rewind',
+            ( /** @type {{time: number, scene: number}} */ data) => {
+                if (!roomData.inVote && !roomData.inVoteRewind) {
+                    roomData.inVoteRewind = true
+                    roomData.voteLeft = 0;
+                    roomData.voteRight = 0;
+                    roomData.voteLeft++;
+                    roomData.voteAdminLeft = true;
+                    roomData.voteAdmin = socket.id;
+                    votedRewind[socket.id] = true;
+                    roomData.playing = false;
+                    roomData.rewindScene = data.scene;
+                    io.in(userData.room).emit("update-status-time", roomData);
+                }
+            });
+
+        socket.on('vote-rewind-option',
+        /** @type {{left: boolean}} */(data) => {
+                if (roomData.inVoteRewind && !votedRewind[socket.id]) {
+                    votedRewind[socket.id] = true;
+                }
+                if (data.left) {
+                    roomData.voteLeft++;
+                } else {
+                    roomData.voteRight++;
+                }
+                const clients = io.sockets.adapter.rooms.get(userData.room);
+                if (roomData.voteLeft + roomData.voteRight == clients.size) {
+                    roomData.winLeft = roomData.voteLeft > roomData.voteRight || roomData.voteLeft == roomData.voteRight && roomData.voteAdminLeft;
+                    //procesar voto
+                    var continuar = true;
+                    var i;
+                    for (i = roomData.rewindScene; i < escenas.length && continuar; i++) {
+                        roomData.escenas[i] = false;
+                    }
+                    roomData.inVoteRewind = false;
+                    roomData.playing = true;
+                    io.in(userData.room).emit("update-status-time", roomData);
+                    votedRewindRooms[userData.room] = votedRewind = {};
+                    roomData.voteLeft = 0;
+                    roomData.voteRight = 0;
+                }
+            });
+
         socket.on("vote-option",
         /** @type {{left: boolean, time: number}} */(data) => {
-                if (!votedScene[socket.id]) {
+                if (roomData.inVote && !votedScene[socket.id]) {
                     votedScene[socket.id] = true;
                     if (roomData.voteLeft + roomData.voteRight == 0) {
                         roomData.inVote = true;
@@ -148,7 +212,6 @@ io.on("connection", (socket) => {
                     }
                     console.log('vote');
                     if (data.left) {
-                        console.log("left");
                         roomData.voteLeft++;
                     } else {
                         roomData.voteRight++;
@@ -156,7 +219,7 @@ io.on("connection", (socket) => {
                     const clients = io.sockets.adapter.rooms.get(userData.room);
                     console.log(clients.size);
                     if (roomData.voteLeft + roomData.voteRight == clients.size) {
-                        var left = roomData.voteLeft > roomData.voteRight || roomData.voteLeft == roomData.voteRight && roomData.voteAdminLeft;
+                        var left = roomData.winLeft = roomData.voteLeft > roomData.voteRight || roomData.voteLeft == roomData.voteRight && roomData.voteAdminLeft;
                         //procesar voto
                         var escena;
                         var continuar = true;
@@ -171,7 +234,7 @@ io.on("connection", (socket) => {
                         if (escena.especial) {
                             switch (escena.especial) {
                                 case COMER:
-                                    if(left){
+                                    if (left) {
                                         roomData.status.haComido = true;
                                     } else {
                                         roomData.status.haComido = false;
@@ -195,10 +258,10 @@ io.on("connection", (socket) => {
                         roomData.inVote = false;
                         roomData.escenas[i - 1] = true;
                         roomData.playing = true;
+                        io.in(userData.room).emit("update-status-time", roomData);
+                        votedSceneRooms[userData.room] = votedScene = {};
                         roomData.voteLeft = 0;
                         roomData.voteRight = 0;
-                        votedSceneRooms[userData.room] = votedScene = {};
-                        io.in(userData.room).emit("update-status-time", roomData);
                     } else {
                         io.in(userData.room).emit("update-status", roomData);
                     }
@@ -208,22 +271,28 @@ io.on("connection", (socket) => {
             });
 
         socket.on("pause-video", (data) => {
-            console.log("pausevideo");
-            if (!roomData.inVote) {
+            if (!roomData.inVote && roomData.playing) {
+                // console.log("not invote");
                 roomData.playing = false;
                 roomData.time = data.time;
                 io.in(userData.room).emit("update-status-time", roomData);
-            } else {
+            } else  if (roomData.playing) {
+                // console.log("invote");
                 roomData.playing = true;
                 io.in(userData.room).emit("update-status", roomData);
             }
         });
 
         socket.on("play-video", (data) => {
-            console.log("playvideo");
-            roomData.playing = true;
-            roomData.time = data.time;
-            io.in(userData.room).emit("update-status-time", roomData);
+            // console.log("playvideo");
+            if (!roomData.inVoteRewind && !roomData.playing) {
+                roomData.playing = true;
+                roomData.time = data.time;
+                io.in(userData.room).emit("update-status-time", roomData);
+            } else if (!roomData.playing) {
+                roomData.playing = false;
+                io.in(userData.room).emit("update-status-time", roomData);
+            }
         });
     })
 });

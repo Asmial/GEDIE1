@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import * as vt from './videoTracks';
 import * as ve from './videoElements';
+import { isOnRoom } from './room';
 
 const elecciones = [1, 4, 7, 11, 15, 21, 23, 28];
 const numSecuencias = elecciones.length;
@@ -15,7 +16,7 @@ export function hideSecuencias(num) {
         secuenciaContainers[i].addClass('d-none');
         mostrados[i] = false;
     }
-    if(num <= 0) {
+    if (num <= 0) {
         $("#noescenas").removeClass("d-none");
     }
 }
@@ -36,7 +37,7 @@ export function irUltimo() {
     for (let i = mostrados.length - 1; indice == -1 && i >= 0; i--) {
         if (mostrados[i]) indice = i;
     }
-    if (indice != -1){
+    if (indice != -1) {
         hideSecuencias(indice);
         vt.goToScene(elecciones[indice]);
         ve.video.play();
@@ -60,8 +61,12 @@ $(() => {
             </div>`);
         secuenciaContainers[i] = $(`#secuencia-container${i}`);
         secuenciaContainers[i].on('click', function (e) {
-            hideSecuencias(i);
-            vt.goToScene(elecciones[i]);
+            if (isOnRoom()) {
+
+            } else {
+                hideSecuencias(i);
+                vt.goToScene(elecciones[i]);
+            }
         });
     }
 });

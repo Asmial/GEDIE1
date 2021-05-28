@@ -66,7 +66,7 @@ webpack({
          {
             test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
             loader: "file-loader",
-            options: { name: 'fonts/[name].[contenthash].[ext]'}
+            options: { name: '/fonts/[name].[contenthash].[ext]'}
          }
       ],
    },
@@ -111,19 +111,3 @@ webpack({
       console.error(err);
    }
 });
-
-if (process.argv[2] === 'full') {
-   var os = require('os');
-   var exec = require('child_process').exec;
-   switch (os.type()) {
-      case 'Linux':
-      case 'Darwin':
-         exec('./scripts/build-client.sh')
-         break;
-      case 'Windows_NT':
-         exec('.\\scripts\\build-client.bat')
-         break;
-      default:
-         throw new Error("Unsupported OS found: " + os.type());
-   }
-}

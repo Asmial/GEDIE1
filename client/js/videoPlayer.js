@@ -2,6 +2,7 @@ import $ from 'jquery';
 import * as ve from './videoElements';
 import * as vc from './videoCards';
 import * as sc from './secuencias';
+import { isOnRoom } from './room';
 
 // @ts-ignore
 require('jquery-ui-bundle');
@@ -73,9 +74,13 @@ export function togglePlay() {
 }
 
 function rewindScene() {
-    console.log("rewind");
-    sc.irUltimo();
-    $('[data-toggle="tooltip"]').tooltip('hide');
+    if (isOnRoom()) {
+
+    } else {
+        console.log("rewind");
+        sc.irUltimo();
+        $('[data-toggle="tooltip"]').tooltip('hide');
+    }
 }
 
 /**

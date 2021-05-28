@@ -7,10 +7,10 @@ import * as sc from './secuencias';
 import { left } from '@popperjs/core';
 
 /**
- * @typedef {{time: number, playing: boolean, voteLeft: number, voteRight: number, 
+ * @typedef {{time: number, playing: boolean, voteLeft: number, voteRight: number, winLeft: boolean,
  * inVote: boolean, inVoteRewind: boolean, rewindScene: number, voteAdmin: string, 
  * voteAdminLeft: boolean, viewers: number, escenas: boolean [], status: { haComido: boolean, levantamientos: number,
- * levantar: boolean}}} roomStatus
+ * levantar: boolean }}} roomStatus
  */
 
 export var socket = io();
@@ -62,7 +62,7 @@ export function connectRoom(callback) {
         socket.on('user-disconnected', userId => {
             if (integrantes[userId]) {
                 integrantes[userId].call.close();
-                $("#" + userId).remove();
+                $("#peer-" + userId).remove();
                 delete integrantes[userId];
             }
         });
@@ -71,9 +71,8 @@ export function connectRoom(callback) {
 
             call.answer(voiceStream);
             const audio = document.createElement('audio');
-            audio.className = "idUser";
+            audio.id = "idUser";
             call.on('stream', userAudioStream => {
-                console.log("got stream");
                 addAudioStream(audio, userAudioStream)
             });
             call.on('close', () => {
@@ -89,17 +88,23 @@ export function connectRoom(callback) {
             integrantes[userData.peerId] = { call: null, name: userData.name };
 
             for (let id in integrantes) {
-                for (let i = 0; i < $("#integrantes").length; i++) {
-                    if ($("#integrantes").get(i).id != id) {
-                        $("#integrantes").append(
-                            `<p id="${id}" class="integrante">${integrantes[id].name}</p>`);
-                    } else {
+                var repetido = false;
+                var children = document.getElementById("integrantes").children;
+                for (let i = 0; i < children.length && !repetido; i++) {
+                    if (children[i].id.substring(5, children[i].id.length) == id) {
+                        repetido = true;
                     }
+                }
+                if (!repetido) {
+                    $("#integrantes").append(
+                        `<p id="peer-${id}" class="integrante">${integrantes[id].name}</p>`);
+                    repetido = false;
                 }
             }
 
             const call = peer.call(userData.peerId, voiceStream);
             const audio = document.createElement('audio');
+            audio.id = "audio-" + userData.id
             call.on('stream', userAudioStream => {
                 addAudioStream(audio, userAudioStream);
             });
@@ -111,32 +116,29 @@ export function connectRoom(callback) {
         socket.on('user-connected', (
             /** @type {{id: string, name: string, peerId: string}} */
             userData) => {
-            console.log("pues na");
-            socket.emit('pause-video', { time: ve.video.currentTime });
+            ve.video.pause();
             integrantes[userData.peerId] = { call: null, name: userData.name };
-            console.log("user connected, handshaking");
-            $("#integrantes").append(`<p id="${userData.peerId}" class="integrante"> ${userData.name}
+            $("#integrantes").append(`<p id="peer-${userData.peerId}" class="integrante"> ${userData.name}
             </p>`);
 
             socket.emit('handshake-peer', { id: userData.id });
-            console.log(integrantes)
         });
 
         socket.on('unido-sala',
-            /** @type {roomStatus} */
-            (data) => {
-                console.log(data);
+            (/** @type {roomStatus} */data) => {
+                data.playing = false;
                 updateRoomStatus(data);
                 var nombre = String($("#userName").val());
-                console.log(nombre);
-                $("#integrante-tu").append(nombre);
-                console.log(integrantes)
+                $("#integrante-tu").prepend(nombre);
             });
 
 
-        function updateRoomStatus(
-            /** @type {roomStatus} */
-            status) {
+        /**
+         * 
+         * @param {roomStatus} status 
+         */
+        function updateRoomStatus(status) {
+            console.log("playing: " + status.playing);
             if (status.playing) {
                 ve.video.play();
             } else {
@@ -154,9 +156,26 @@ export function connectRoom(callback) {
             console.log(status.status.levantamientos);
             var max = status.viewers;
             if (max == 0) max = 1;
-            var leftPercent = Math.round(status.voteLeft * 100 / max);
-            var rightPercent = Math.round(status.voteRight * 100 / max);
-            console.log("lp:" + leftPercent);
+            var leftPercent;
+            var rightPercent;
+            if (status.voteLeft + status.voteRight == status.viewers) {
+                console.log("all");
+                if (status.winLeft) {
+                    leftPercent = 100;
+                    rightPercent = 0;
+                } else {
+                    leftPercent = 0;
+                    rightPercent = 100;
+                }
+            } else {
+                leftPercent = Math.round(status.voteLeft * 100 / max);
+                rightPercent = Math.round(status.voteRight * 100 / max);
+            }
+
+            if (status.inVote) {
+                ve.playButton.addClass('d-none');
+            }
+
             $("#votebar-left").animate({ width: `${leftPercent}%` });
             $("#votebar-right").animate({ width: `${rightPercent}%` });
         }
@@ -226,8 +245,10 @@ export function join() {
 }
 
 export function mute() {
-    var bool = $(".idUser").prop("muted");
-    $(".idUser").prop("muted", !bool);
+    $("#mute-button").click(function () {
+        var bool = $(".idUser").prop("muted");
+        $(".idUser").prop("muted", !bool);
+    });
 }
 
 /**

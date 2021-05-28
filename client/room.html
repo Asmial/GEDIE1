@@ -82,7 +82,7 @@
                         </video>
 
                         <audio hidden id="audio-decision" preload="metadata">
-                            <source src="audio/decision.mp3" type="audio/mp3" />
+                            <source src="/assets/audio/decision.mp3" type="audio/mp3" />
                         </audio>
 
                         <div class="top-0 left-0 right-0 position-absolute p-2 container-fluid greyGradient"
@@ -106,6 +106,32 @@
                             <div id="votaciones" class="d-flex justify-content-between mt-1">
                                 <div id="votebar-left" style="width: 0%;height: 3vh;background-color: aqua;"></div>
                                 <div id="votebar-right" style="width: 0%;height: 3vh;background-color: springgreen;"></div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="top-0 left-0 right-0 position-absolute p-2 container-fluid greyGradient"
+                             id="rewind-vote">
+                             <!-- style="display: none;" -->
+                            <div class="row justify-content-center">
+                                <div class="col-12 text-white">
+                                    <div class="text-center mb-3 font2vw" id="rewind-bannet"></div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer font2vw"
+                                        id="rewind-answer0"></div>
+                                </div>
+                                <div class="col-12" id="single-option">
+                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer font2vw"
+                                        id="rewind-answer1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="votaciones" class="d-flex justify-content-between mt-1">
+                                <div id="votebar-rewind-left" style="width: 0%;height: 3vh;background-color: aqua;"></div>
+                                <div id="votebar-rewind-right" style="width: 0%;height: 3vh;background-color: springgreen;"></div>
                             </div>
                         </div>
 
