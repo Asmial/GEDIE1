@@ -1,4 +1,6 @@
 import $ from 'jquery';
+import * as ve from './videoElements';
+import * as vp from './videoPlayer';
 
 var onRoom = false;
 var socket = null;
@@ -31,8 +33,6 @@ $(() => {
             backdrop: 'static'
         });
         modal.show();
-
-
     } else {
         window['room'] = false;
         registerKeys();
@@ -78,12 +78,10 @@ function registerKeys() {
 
 /**
  * @param {string} event
- * @param {any[]} [args]
+ * @param {any} [args]
  */
 export function emit(event, args) {
-    if (!socket) {
-        console.error("Socket no inicializado");
-        return
+    if (socket) {
+        socket.emit(event, args);
     }
-    socket.emit(event, args);
 }

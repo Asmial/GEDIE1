@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta id="room" data-room="true">
     <title>Bandersdot</title>
-    <link rel="shorcut icon" type="image/svg" href="img/iconoWeb.svg">
-    <link rel="shorcut icon" type="image/png" href="img/iconoWeb.png">
+    <link rel="shorcut icon" type="image/svg" href="assets/img/iconoWeb.svg">
+    <link rel="shorcut icon" type="image/png" href="assets/img/iconoWeb.png">
 </head>
 
 <body>
@@ -54,14 +54,14 @@
         <div id="audio-grid"></div>
         <div class="d-flex">
             <div class="d-flex align-items-center flex-fill">
-                <img class="bi me-4" src="img/iconoWeb.svg" width="80">
+                <img class="bi me-4" src="assets/img/iconoWeb.svg" width="80">
                 <h1>Bandersdot</h1>
             </div>
             <div class="d-flex align-items-center">
                 <h1 class="d-none d-sm-block">GDIE 2021</h1>
             </div>
             <div class="d-flex align-items-center">
-                
+
             </div>
         </div>
     </header>
@@ -71,14 +71,14 @@
             <div class="col-lg-16 col-md-24 h-100 ">
                 <div class="bg-light border rounded-3 overflow-hidden mb-3">
                     <div class="position-relative p-0 noselect videofix" id="video-container">
-                        <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="img/poster.jpg">
-                            <track label="elecciones" kind="chapters" srclang="en" src="video/elecciones.vtt"
+                        <video class="w-100 h-100 p-0" id="video" preload="metadata" poster="assets/img/poster.jpg">
+                            <track label="elecciones" kind="chapters" srclang="en" src="assets/video/elecciones.vtt"
                                 id="eleccionesTrack" />
-                            <track label="actores" kind="descriptions" srclang="en" src="video/infoActor.vtt"
+                            <track label="actores" kind="descriptions" srclang="en" src="assets/video/infoActor.vtt"
                                 id="actoresTrack" />
-                            <track label="muslos" kind="metadata" srclang="en" src="video/infoMuslos.vtt"
+                            <track label="muslos" kind="metadata" srclang="en" src="assets/video/infoMuslos.vtt"
                                 id="muslosTrack" />
-                            <track label="subtitulos" kind="subtitles" srclang="en" src="video/subitulos.vtt" />
+                            <track label="subtitulos" kind="subtitles" srclang="en" src="assets/video/subitulos.vtt" />
                         </video>
 
                         <audio hidden id="audio-decision" preload="metadata">
@@ -103,9 +103,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="votaciones" class="d-flex mt-1">
-                                <div style="width: 90%; height: 3vh;background-color: aqua;"></div>
-                                <div style="width: 10%; height: 3vh;background-color: red;"></div>
+                            <div id="votaciones" class="d-flex justify-content-between mt-1">
+                                <div id="votebar-left" style="width: 0%;height: 3vh;background-color: aqua;"></div>
+                                <div id="votebar-right" style="width: 0%;height: 3vh;background-color: springgreen;"></div>
                             </div>
                         </div>
 
@@ -158,14 +158,16 @@
                 </div>
             </div>
 
-            <div class="col-lg-8 col-md-24 mb-3">
-                <div class="p-0 w-100 h-100 bg-light border rounded-3" id="side">
-                    <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
+            <div class="col-lg-8 col-md-24 flex-column mb-3 d-flex">
+                <div class="card mb-3 w-100 rounded-3 d-flex" id="side">
+                    <div class="card-header text-center py-1 mb-4 bg-danger noselect">
                         <h4>Indicador de hambre</h4>
                     </div>
                     <div id="hambre-dot" class="d-flex justify-content-around">
                     </div>
-                    <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
+                </div>
+                <div class="card p-0 w-100 h-auto rounded-3 flex-fill flex-grow-1">
+                    <div class="card-header text-center py-1 mb-4 bg-danger noselect">
                         <h4>Reparto</h4>
                     </div>
 
@@ -173,14 +175,13 @@
                         <div id="contenedor-actores" class="row">
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <div class="row my-2">
-            <div class="col-lg-16 col-md-24">
-                <div class="card">
-                    <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
+            <div class="col-lg-16 col-md-24 h-100">
+                <div class="card h-100">
+                    <div class="card-header text-center py-1 mb-4 bg-danger noselect">
                         <h3>Selector de escenas</h3>
                     </div>
                     <div class="container-fluid">
@@ -192,15 +193,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-24">
-                <div class="card">
-                    <div class="text-center py-1 mb-4 border-bottom bg-danger noselect">
+            <div class="col-lg-8 col-md-24 h-100">
+                <div class="card h-100">
+                    <div class="card-header text-center py-1 mb-4 border-bottom bg-danger noselect">
                         <h3>Integrantes de la sala</h3>
                     </div>
-                    <div id="integrantes">
-                        <div id="integrante-tu" class="integrante">
-
-                        </div>
+                    <div class="container-fluid" id="integrantes">
+                        <p id="integrante-tu" class="integrante">
+                            
+                            <button type="button" onclick="mute()">Mute</button>
+                            <script>
+                                function mute() {
+                                    var bool = $(".idUser").prop("muted");
+                                    $(".idUser").prop("muted", !bool);
+                                }
+                            </script>
+                        </p>
                     </div>
                 </div>
             </div>

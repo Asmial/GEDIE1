@@ -25,8 +25,8 @@ $(() => {
         icon.removeClass("mdi-play");
         icon.addClass("mdi-pause");
         vp.waitHideControls(1500);
-        if (room.isOnRoom) {
-            room.emit('pause-video');
+        if (room.isOnRoom()) {
+            room.emit('play-video', { time: ve.video.currentTime });
         }
     };
 
@@ -37,8 +37,8 @@ $(() => {
         icon.addClass("mdi-play");
         ve.playMain.show(300);
         ve.videoControls.fadeIn(100);
-        if (room.isOnRoom) {
-            room.emit('play-video');
+        if (room.isOnRoom()) {
+            room.emit('pause-video', { time: ve.video.currentTime });
         }
     });
 

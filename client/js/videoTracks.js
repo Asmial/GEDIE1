@@ -4,6 +4,7 @@ import * as es from './secuencias';
 import * as ac from './actores';
 import * as ms from './muslos';
 import * as vc from './videoCards';
+import * as room from './room';
 
 /** @type {TextTrackList} */
 export var textTracks;
@@ -46,12 +47,21 @@ export function goToScene(num) {
 
 var waitDisableGoing;
 
+export function setGoing(g) {
+    going = g;
+}
+
 var status = {
     haComido: false,
     levantamientos: 0,
-    levantar: false,
-    escenas: []
+    levantar: false
 };
+
+export function updateStatus(newstatus) {
+    status.haComido = newstatus.haComido;
+    status.levantamientos = newstatus.levantamientos;
+    status.levantar = newstatus.levantar;
+}
 
 function levantar() {
     going = true;
@@ -67,16 +77,18 @@ function decision(data) {
         going = false;
     }, 100);
 
-    if (!data['levantando'] && !data['pesa']) {
-        status.levantar = false;
-        status.levantamientos = 0;
+    if (!room.isOnRoom()) {
+        if (!data['levantando'] && !data['pesa']) {
+            status.levantar = false;
+            status.levantamientos = 0;
+        }
+        if (data['comido']) status.haComido = true;
+        else if (data['noComido']) status.haComido = false;
     }
 
     ve.muerte.addClass("d-none");
     ve.fin.addClass("d-none");
 
-    if (data['comido']) status.haComido = true;
-    else if (data['noComido']) status.haComido = false;
 
     if (data['decision'] >= 0) {
         es.hideSecuencias(data.decision);
@@ -87,24 +99,40 @@ function decision(data) {
         ve.playButton.addClass('d-none');
         ve.decisionAudio.currentTime = 0;
         ve.decisionAudio.pause();
-        status.levantamientos++;
-        status.levantar = false;
+        if (!room.isOnRoom()) {
+            status.levantamientos++;
+            status.levantar = false;
+        } else {
+            vc.hideCards();
+        }
     } else if (data['pesa']) {
+        room.emit('entrar-pesa', { time: ve.video.currentTime });
         ve.playButton.addClass('d-none');
         ve.decisionAudio.pause();
         ve.decisionAudio.currentTime = 0;
         ve.video.play();
 
-        if (vc.getCardsCallbacks()[0] != levantar) {
-            vc.setCardsCallbacks(levantar, () => { goToScene(data.seguir) });
-        }
-        if (status.levantamientos == 0) {
-            vc.setCardsText(data.pregunta, data.respuesta0, null);
+        if (room.isOnRoom()) {
+            if (status.levantamientos == 0) {
+                vc.setCardsText(data.pregunta, data.respuesta0, null);
+                vc.setCardsCallbacks(() => vote(true));
+            } else {
+                vc.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+                vc.setCardsCallbacks(() => vote(true), () => vote(false));
+            }
         } else {
-            vc.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+            if (vc.getCardsCallbacks()[0] != levantar) {
+                vc.setCardsCallbacks(levantar, () => { goToScene(data.seguir) });
+            }
+            if (status.levantamientos == 0) {
+                vc.setCardsText(data.pregunta, data.respuesta0, null);
+            } else {
+                vc.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
+            }
         }
         vc.showCards();
     } else if (data['pregunta']) {
+        room.emit('entrar-votacion', { time: ve.video.currentTime });
         ve.playButton.addClass('d-none');
         ve.video.play();
 
@@ -123,9 +151,20 @@ function decision(data) {
         vc.showCards();
 
         if (data['escena0']) {
-            if (!data['escena1'])
-                data['escena1'] = null
-            vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
+            if (room.isOnRoom()) {
+                if (data['escena1']) {
+                    vc.setCardsCallbacks(() => vote(true), () => vote(false));
+                } else {
+                    vc.setCardsCallbacks(() => vote(true), null);
+                }
+            } else {
+                if (data['escena1']) {
+                    vc.setCardsCallbacks(() => goToScene(data.escena0), () => goToScene(data.escena1));
+                } else {
+                    vc.setCardsCallbacks(() => goToScene(data.escena0));
+                }
+
+            }
         }
     } else {
         ve.decisionAudio.currentTime = 0;
@@ -133,6 +172,13 @@ function decision(data) {
         ve.playButton.removeClass('d-none');
         vc.hideCards();
     }
+}
+
+/**
+ * @param {boolean} left
+ */
+function vote(left) {
+    room.emit('vote-option', { left: left, time: ve.video.currentTime });
 }
 
 

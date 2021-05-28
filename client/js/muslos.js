@@ -9,8 +9,8 @@ $(() => {
         $('#hambre-dot').append(`
         <div class="position-relative mb-3">
             <img id="hambre-dot${i}" class="position-absolute top-50 start-50 translate-middle"
-                src="img/hungerIcon.png" height="37">
-            <img class="image1" src="img/hungerEmptyIcon.png" height="37">
+                src="assets/img/hungerIcon.png" height="37">
+            <img class="image1" src="assets/img/hungerEmptyIcon.png" height="37">
         </div>
         `);
         muslos[i] = $(`#hambre-dot${i}`);

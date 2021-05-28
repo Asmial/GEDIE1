@@ -63,7 +63,7 @@ module.exports = {
             {
                 test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
                 loader: "file-loader",
-                options: { name: '[name].[contenthash].[ext]', outputPath: 'css/fonts' }
+                options: { name: 'fonts/[name].[contenthash].[ext]'}
             }
         ],
     },

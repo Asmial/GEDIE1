@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:lts-slim
 
 WORKDIR /app
 
@@ -16,4 +16,4 @@ USER 1000:1000
 
 EXPOSE 80
 
-CMD ["webpack" ]
+CMD ["node", "--max-old-space-size=756", "/usr/local/lib/node_modules/webpack/bin/webpack.js" ]

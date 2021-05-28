@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import * as room from './room';
 
 var cardsShown = false;
 
@@ -60,7 +61,10 @@ export function showCards() {
 
 export function hideCards() {
     cardsShown = false;
-    videoCards.fadeOut(200);
+    videoCards.fadeOut(200, () => {
+        $("#votebar-left").css({ width: '0%' });
+        $("#votebar-right").css({ width: '0%' });
+    });
 }
 
 
@@ -73,18 +77,26 @@ $(() => {
     cardAnswer1 = $('#card-answer1');
 
     videoCards.fadeOut(0);
+    videoCards.on('dblclick', (e) => {
+        e.stopPropagation();
+    })
 
     cardAnswer0.on('click', (e) => {
         e.stopPropagation();
         if (cardsShown && cardCallback0)
             cardCallback0(e);
-        hideCards();
+        if (room.isOnRoom()) { } else {
+            hideCards();
+        }
     });
     cardAnswer1.on('click', (e) => {
         e.stopPropagation();
         if (cardsShown && cardCallback1)
             cardCallback1(e);
-        hideCards();
+        if (room.isOnRoom()) {
+        } else {
+            hideCards();
+        }
     });
     videoCards.on('click', (e) => {
         e.stopPropagation();

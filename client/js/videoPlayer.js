@@ -33,6 +33,7 @@ export function hideControls() {
 export function toggleMute() {
     ve.video.muted = !ve.video.muted;
     var icon = ve.muteToggle.children();
+    $('[data-toggle="tooltip"]').tooltip('hide');
 
     if (ve.video.muted) {
         icon.removeClass('mdi-volume-high');
@@ -44,6 +45,7 @@ export function toggleMute() {
 }
 
 export function toggleFullScreen() {
+    $('[data-toggle="tooltip"]').tooltip('hide');
     if (document.fullscreenElement) {
         document.exitFullscreen();
         // @ts-ignore
@@ -62,6 +64,7 @@ export function toggleFullScreen() {
 }
 
 export function togglePlay() {
+    $('[data-toggle="tooltip"]').tooltip('hide');
     if (ve.video.paused || ve.video.ended) {
         ve.video.play();
     } else {
@@ -79,11 +82,13 @@ function rewindScene() {
 * @param {number} volume
 */
 export function setVolume(volume) {
+    $('[data-toggle="tooltip"]').tooltip('hide');
     ve.video.volume = volume;
     ve.video.muted = false;
 }
 
 function volumeChanged() {
+    $('[data-toggle="tooltip"]').tooltip('hide');
     ve.volumeSlider.val(ve.video.volume)
     var icon = ve.muteToggle.children();
 
@@ -102,6 +107,7 @@ function volumeChanged() {
 }
 
 export function toggleSubs() {
+    $('[data-toggle="tooltip"]').tooltip('hide');
     var icon = ve.subs.children();
     if (ve.video.textTracks[3].mode === 'showing') {
         icon.removeClass('mdi-subtitles');
@@ -160,7 +166,7 @@ $(() => {
         setVolume(Number(ve.volumeSlider.val()))
     })
 
-    $(ve.videoContainer).on('dblclick', toggleFullScreen);
+    $(ve.video).on('dblclick', toggleFullScreen);
 
     $(ve.videoContainer).on('click touchend', (e) => {
         if (!vc.isCardsShown()) {

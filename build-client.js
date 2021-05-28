@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const fs = require('fs');
@@ -64,7 +66,7 @@ webpack({
          {
             test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
             loader: "file-loader",
-            options: { name: '[name].[contenthash].[ext]', outputPath: 'fonts' }
+            options: { name: 'fonts/[name].[ext]'}
          }
       ],
    },
