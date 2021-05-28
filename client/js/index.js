@@ -20,11 +20,11 @@ $(() => {
             'dashjs').then(module => {
                 const dashjs = module.default;
                 var player = dashjs.MediaPlayer().create();
-                player.initialize(ve.video, "assets/video/adaptive/out_dash.mpd", false);
+                player.initialize(ve.video, "/assets/video/adaptive/out_dash.mpd", false);
             });
     } else {
         if (ve.video.canPlayType('application/vnd.apple.mpegurl')) {
-            ve.video.src = "assets/video/adaptive/hls.m3u8";
+            ve.video.src = "/assets/video/adaptive/hls.m3u8";
         } else {
             import(
                 /* webpackChunkName: "hlsjs" */
@@ -37,9 +37,9 @@ $(() => {
                         hls.renderTextTracksNatively = false;
                         // @ts-ignore
                         hls.attachMedia(document.getElementById('video'));
-                        hls.loadSource("assets/video/adaptive/hls.m3u8");
+                        hls.loadSource("/assets/video/adaptive/hls.m3u8");
                     } else {
-                        $(ve.video).append(`<source src="assets/video/video.mp4" type="video/mp4"/>`);
+                        $(ve.video).append(`<source src="/assets/video/video.mp4" type="video/mp4"/>`);
                     }
                 });
         }

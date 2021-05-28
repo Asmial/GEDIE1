@@ -55,7 +55,7 @@ $(() => {
         $("#contenedor-secuencias").append(
             `<div id="secuencia-container${i}" class="secuencia col-xs-24 col-sm-12 col-md-8 col-lg-6 col-xxl-4 col-xxxl-3 d-flex justify-content-center d-none">
                 <a class="escena" href = "#">
-                    <img id="eleccion${elecciones[i]}" class="imageUp thumbnail" src="assets/img/decision${i}.jpg" width="200">
+                    <img id="eleccion${elecciones[i]}" class="imageUp thumbnail" src="/assets/img/decision${i}.jpg" width="200">
                 </a>
             </div>`);
         secuenciaContainers[i] = $(`#secuencia-container${i}`);

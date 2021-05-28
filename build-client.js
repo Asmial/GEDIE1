@@ -66,7 +66,7 @@ webpack({
          {
             test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
             loader: "file-loader",
-            options: { name: 'fonts/[name].[ext]'}
+            options: { name: 'fonts/[name].[contenthash].[ext]'}
          }
       ],
    },
