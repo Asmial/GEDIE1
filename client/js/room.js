@@ -4,11 +4,21 @@ import * as vp from './videoPlayer';
 
 var onRoom = false;
 var socket = null;
+var syncPlay = true;
 
+/**
+ * @param {boolean} set
+ */
+export function setSyncPlay(set) {
+    syncPlay = set;
+}
 
+export function isSyncPlay() {
+    return syncPlay;
+}
 
 $(() => {
-    if ($("#room").data('room')) {
+    if ($("#room").attr('content')) {
         import( /* webpackChunkName: "room" */ './socket').
             then((module) => {
                 module.connectRoom(() => {
@@ -17,6 +27,8 @@ $(() => {
                     function submitForm() {
                         modal.hide();
                         module.join();
+                        registerKeys();
+                        delete window['submitForm'];
                     }
                     /** @type {HTMLFormElement} */
                     // @ts-ignore

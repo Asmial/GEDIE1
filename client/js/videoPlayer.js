@@ -2,7 +2,8 @@ import $ from 'jquery';
 import * as ve from './videoElements';
 import * as vc from './videoCards';
 import * as sc from './secuencias';
-import { isOnRoom } from './room';
+import * as room from './room';
+import * as rc from './rewindCards';
 
 // @ts-ignore
 require('jquery-ui-bundle');
@@ -74,8 +75,11 @@ export function togglePlay() {
 }
 
 function rewindScene() {
-    if (isOnRoom()) {
-
+    if (room.isOnRoom()) {
+        room.emit("vote-rewind",
+            { time: ve.video.currentTime, scene: sc.getUltimo() });
+            $('[data-toggle="tooltip"]').tooltip('hide');
+            rc.setNextVote(true);
     } else {
         console.log("rewind");
         sc.irUltimo();

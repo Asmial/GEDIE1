@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta id="room" data-room="true">
+    <meta name="room" id="room" content="true">
     <title>Bandersdot</title>
     <link rel="shorcut icon" type="image/svg" href="/assets/img/iconoWeb.svg">
     <link rel="shorcut icon" type="image/png" href="/assets/img/iconoWeb.png">
@@ -17,7 +17,7 @@
 
     <!-- Modal -->
     <div class="modal fade in" id="roomModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -38,9 +38,15 @@
                         <label for="userName" class="form-label mt-3">Nombre de usuario:</label>
                         <input name="user-name" required="required" class="form-control" id="userName"
                             pattern="[A-Za-z0-9\-_]{1,12}" type="text" aria-describedby="userNameHelp" />
-                        <div id="userNameHelp" class="form-text">Debes de introducir un nombre de usuario para entrar en
+                        <div id="userNameHelp" class="form-text mb-3">Debes de introducir un nombre de usuario para
+                            entrar en
                             la sala.</div>
-                        <div id="roomId"></div>
+                        <div class="d-flex">
+                            <input name="room-url" required="required" class="form-control" id="roomUrl" type="text"
+                            readonly='readonly' aria-describedby="roomUrlHelp" />
+                            <button type="button" class="btn btn-secondary" id="copiarButton">Copiar</button>
+                        </div>
+                        <div id="roomUrlHelp" class="form-text">Este es el enlace para que se unan a tu sala.</div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary w-100" id="vamosButton">¡Vamos!</button>
@@ -85,6 +91,16 @@
                             <source src="/assets/audio/decision.mp3" type="audio/mp3" />
                         </audio>
 
+                        <div class="top-0 left-0 bottom-0 position-absolute p-2 container-fluid"
+                             id="user-enter" style="pointer-events: none">
+                            <div class="row justify-content-center">
+                                <div class="col-15 text-white">
+                                    <div class="d-flex flex-column user-name-enter justify-content-center" id="user-name-enter">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="top-0 left-0 right-0 position-absolute p-2 container-fluid greyGradient"
                             style="display: none;" id="video-cards">
                             <div class="row justify-content-center">
@@ -94,51 +110,65 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-12">
-                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer font2vw"
+                                    <div class="card-answer bg-light bg-gradient border rounded-3 text-center h-100 c-pointer font2vw"
                                         id="card-answer0"></div>
                                 </div>
                                 <div class="col-12" id="single-option">
-                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer font2vw"
+                                    <div class="card-answer bg-light bg-gradient border rounded-3 text-center h-100 c-pointer font2vw"
                                         id="card-answer1">
                                     </div>
                                 </div>
                             </div>
                             <div id="votaciones" class="d-flex justify-content-between mt-1">
-                                <div id="votebar-left" style="width: 0%;height: 3vh;background-color: aqua;"></div>
-                                <div id="votebar-right" style="width: 0%;height: 3vh;background-color: springgreen;"></div>
+                                <div class="bg-gradient bg-primary" id="votebar-left" style="width: 0%;height: 3vh;">
+                                </div>
+                                <div class="bg-gradient bg-success" id="votebar-right" style="width: 0%;height: 3vh;">
+                                </div>
                             </div>
                         </div>
 
                         
+
                         <div class="top-0 left-0 right-0 position-absolute p-2 container-fluid greyGradient"
-                             id="rewind-vote">
-                             <!-- style="display: none;" -->
+                            style="display: none;" id="rewind-vote">
                             <div class="row justify-content-center">
-                                <div class="col-12 text-white">
-                                    <div class="text-center mb-3 font2vw" id="rewind-bannet"></div>
+                                <div class="col-19 text-white">
+                                    <div class="d-flex">
+                                        <div class="w-50 d-flex flex-column justify-content-center">
+                                            <div style="font-size: 4vh;" id="cards-name"></div>
+                                            <div style="font-size: 4vh;">quiere volver a la escena:</div>
+                                        </div>
+                                        <div class="flex-grow-1 w-50 d-flex justify-content-center">
+                                            <img id='cards-image' src="/assets/img/decision0.jpg">
+                                        </div>
+                                    </div>
+                                    <div class="text-center mb-3" style="font-size: 4vh;">¿Deseas volver?</div>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-12">
-                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer font2vw"
-                                        id="rewind-answer0"></div>
+                                    <div class="bg-light rewind-answer border rounded-3 text-center h-100 c-pointer font2vw"
+                                        id="rewind-answer0">Sí</div>
                                 </div>
-                                <div class="col-12" id="single-option">
-                                    <div class="bg-light border rounded-3 text-center h-100 c-pointer font2vw"
-                                        id="rewind-answer1">
+                                <div class="col-12">
+                                    <div class="bg-light rewind-answer border rounded-3 text-center h-100 c-pointer font2vw"
+                                        id="rewind-answer1">No
                                     </div>
                                 </div>
                             </div>
-                            <div id="votaciones" class="d-flex justify-content-between mt-1">
-                                <div id="votebar-rewind-left" style="width: 0%;height: 3vh;background-color: aqua;"></div>
-                                <div id="votebar-rewind-right" style="width: 0%;height: 3vh;background-color: springgreen;"></div>
+                            <div id="votaciones-rewind" class="d-flex justify-content-between mt-1">
+                                <div id="votebar-rewind-left" class="bg-primary bg-gradient"
+                                    style="width: 0%;height: 3vh;">
+                                </div>
+                                <div id="votebar-rewind-right" class="bg-success bg-gradient"
+                                    style="width: 0%;height: 3vh;"></div>
                             </div>
                         </div>
 
                         <div class="top-50 start-50 translate-middle position-absolute text-white d-none textdisplay"
                             id="muerte-display">
                             <p class="text-center font4vw"><b>Has muerto</b></p>
-                            <p class="text-center font2vw">Parece que has tomado una mala decisión, usa
+                            <p class="text-center font2vw">Parece que habéis tomado una mala decisión, usa
                                 el botón <i class="mdi mdi-rewind"></i> o elige una decisión anterior mediante el
                                 selector de escenas de abajo para escoger otro camino.</p>
                         </div>
@@ -146,9 +176,9 @@
                         <div class="top-50 start-50 translate-middle position-absolute text-white d-none textdisplay"
                             id="fin-display">
                             <p class="text-center font4vw"><b>FIN</b></p>
-                            <p class="text-center font2vw">¡Felicidades!, has tomado las decisiones
+                            <p class="text-center font2vw">¡Felicidades!, habéis tomado las decisiones
                                 correctas para llegar al final de tu aventura, ahora puedes usar
-                                el botón <i class="mdi mdi-rewind"></i> o eligir una decisión anterior mediante el
+                                el botón <i class="mdi mdi-rewind"></i> o elegir una decisión anterior mediante el
                                 selector de escenas de abajo y probar otros caminos de la historia.</p>
                         </div>
 
@@ -214,6 +244,9 @@
                         <div id="noescenas">
                             <p class="text-center">Aquí aparecerán las escenas que veas para poder volver atrás</p>
                         </div>
+                        <div id="novotar" class="d-none">
+                            <p class="text-center">No se puede cambiar de escena durante una votación</p>
+                        </div>
                         <div class="row" id="contenedor-secuencias">
                         </div>
                     </div>
@@ -226,27 +259,23 @@
                     </div>
                     <div class="container-fluid" id="integrantes">
                         <p id="integrante-tu" class="integrante">
-                            
-                            <button type="button" onclick="mute()">Mute</button>
-                            <script>
-                                function mute() {
-                                    var bool = $(".idUser").prop("muted");
-                                    $(".idUser").prop("muted", !bool);
-                                }
-                            </script>
+                            <button id="boton-muteo" type="button"><i class="mdi mdi-microphone" data-toggle="tooltip"
+                                    data-placement="left" title="silenciar"></i></button>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <footer class="page-footer font-small blue pt-4">
+        <div class="footer-copyright text-center py-3">© 2021 Copyright:
+            <a href="https://gdie.necrospace.rocks/">gdie.necrospace.rocks</a>
+        </div>
+    </footer>
 </body>
 
 
-<footer class="page-footer font-small blue pt-4">
-    <div class="footer-copyright text-center py-3">© 2021 Copyright:
-        <a href="https://gdie.necrospace.rocks/">gdie.necrospace.rocks</a>
-    </div>
-</footer>
+
 
 </html>

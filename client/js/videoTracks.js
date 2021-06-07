@@ -47,6 +47,10 @@ export function goToScene(num) {
 
 var waitDisableGoing;
 
+export function getGoing() {
+    return going;
+}
+
 export function setGoing(g) {
     going = g;
 }
@@ -99,11 +103,11 @@ function decision(data) {
         ve.playButton.addClass('d-none');
         ve.decisionAudio.currentTime = 0;
         ve.decisionAudio.pause();
-        if (!room.isOnRoom()) {
+        if (room.isOnRoom()) {
+            vc.hideCards();
+        } else {
             status.levantamientos++;
             status.levantar = false;
-        } else {
-            vc.hideCards();
         }
     } else if (data['pesa']) {
         room.emit('entrar-pesa', { time: ve.video.currentTime });
@@ -113,8 +117,10 @@ function decision(data) {
         ve.video.play();
 
         if (room.isOnRoom()) {
-            if (status.levantamientos == 0) {
+            console.log("levantamientos " + status.levantamientos);
+            if (Number(status.levantamientos) == 0) {
                 vc.setCardsText(data.pregunta, data.respuesta0, null);
+                vc.hideAwnser1();
                 vc.setCardsCallbacks(() => vote(true));
             } else {
                 vc.setCardsText(data.pregunta, data.respuesta0, data.respuesta1);
@@ -200,13 +206,17 @@ function actualizarActor(data, entra) {
 
 
 function procesarMuerte() {
+    room.setSyncPlay(false);
     ve.video.pause();
+    room.setSyncPlay(true);
     ve.playButton.addClass("d-none");
     ve.muerte.removeClass("d-none");
 }
 
 function procesarFin() {
+    room.setSyncPlay(false);
     ve.video.pause();
+    room.setSyncPlay(true);
     ve.playButton.addClass("d-none");
     ve.fin.removeClass("d-none");
 }
@@ -261,7 +271,9 @@ $(() => {
                     }
                 }
             } else if (data['muerte'])
-                cue.onexit = () => { if (!going) procesarMuerte() };
+                cue.onexit = () => {
+                    if (!going) procesarMuerte()
+                };
             else if (data['fin'])
                 cue.onexit = () => { if (!going) procesarFin() };
             else if (data['comida'])
